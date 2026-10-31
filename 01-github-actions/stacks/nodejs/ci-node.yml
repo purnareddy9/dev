@@ -1,0 +1,50 @@
+name: Node.js Enterprise CI Pipeline
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'services/node-app/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'services/node-app/**'
+
+defaults:
+  run:
+    working-directory: services/node-app
+
+jobs:
+  lint-and-test:
+    name: Lint, Test & Coverage
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [ 18.x, 20.x ]
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          cache-dependency-path: services/node-app/package-lock.json
+
+      - name: Clean Install Dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npm run lint
+
+      - name: Run Unit Tests with Coverage
+        run: npm test -- --coverage --ci
+
+      - name: Upload Coverage to Summary
+        uses: actions/upload-artifact@v4
+        if: matrix.node-version == '20.x'
+        with:
+          name: node-coverage
+          path: services/node-app/coverage/

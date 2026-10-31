@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: payment-service-production
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io # Deletes K8s resources when App is deleted from Git
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/purnareddy9/devops-gitops-manifests.git
+    targetRevision: main
+    path: environments/production/payment-service
+    kustomize:
+      images:
+        - payment-service=123456789012.dkr.ecr.us-east-1.amazonaws.com/payment-service:v2.4.1
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: payment-production
+  syncPolicy:
+    automated:
+      prune: true     # Deletes resources removed from Git
+      selfHeal: true  # Reverts manual kubectl changes back to Git desired state
+    syncOptions:
+      - CreateNamespace=true
+      - PruneLast=true
+      - ApplyOutOfSyncOnly=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m

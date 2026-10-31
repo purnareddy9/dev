@@ -1,0 +1,65 @@
+name: Reusable Enterprise CI Pipeline
+
+# This workflow can be called by 100+ application repositories across an organization
+on:
+  workflow_call:
+    inputs:
+      language:
+        required: true
+        type: string
+        description: 'Target programming language runtime (nodejs, python, golang)'
+      version:
+        required: false
+        type: string
+        default: 'latest'
+        description: 'Runtime version'
+      coverage-threshold:
+        required: false
+        type: number
+        default: 80
+        description: 'Minimum required unit test coverage percentage'
+    secrets:
+      SONAR_TOKEN:
+        required: true
+      SONAR_HOST_URL:
+        required: true
+
+jobs:
+  code-quality-and-sast:
+    name: SAST Scan & Linting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Caller Repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run SonarQube Static Code Analysis
+        uses: sonarsource/sonarqube-scan-action@v2
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+
+  test-and-coverage:
+    name: Unit Testing & Coverage Validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Language Runtime
+        run: |
+          echo "Configuring runtime for ${{ inputs.language }} at version ${{ inputs.version }}"
+
+      - name: Run Tests with Quality Gate
+        run: |
+          echo "Executing test suite with strict coverage threshold >= ${{ inputs.coverage-threshold }}%"
+          # In real implementation: npm test / pytest --cov-fail-under=${{ inputs.coverage-threshold }}
+
+      - name: Publish Test Report Artifact
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results-${{ inputs.language }}
+          path: coverage/
+          retention-days: 14

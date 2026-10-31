@@ -1,0 +1,38 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: enterprise-microservices-matrix
+  namespace: argocd
+spec:
+  generators:
+    - matrix:
+        generators:
+          # Generator 1: Target Clusters / Environments
+          - clusters:
+              selector:
+                matchLabels:
+                  tier: production
+          # Generator 2: List of Services from Git Directories
+          - git:
+              repoURL: https://github.com/purnareddy9/devops-gitops-manifests.git
+              revision: main
+              directories:
+                - path: apps/*
+  template:
+    metadata:
+      name: '{{path.basename}}-{{name}}'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/purnareddy9/devops-gitops-manifests.git
+        targetRevision: main
+        path: '{{path}}/overlays/{{metadata.labels.env}}'
+      destination:
+        server: '{{server}}'
+        namespace: '{{path.basename}}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true

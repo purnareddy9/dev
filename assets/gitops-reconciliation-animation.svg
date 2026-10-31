@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 280" width="100%" height="280">
+  <defs>
+    <linearGradient id="gitopsBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b0e14" />
+      <stop offset="100%" stop-color="#161b22" />
+    </linearGradient>
+
+    <linearGradient id="circleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f0883e" />
+      <stop offset="100%" stop-color="#db61a2" />
+    </linearGradient>
+
+    <style>
+      .orbit-path {
+        fill: none;
+        stroke: #30363d;
+        stroke-width: 2px;
+        stroke-dasharray: 4 6;
+      }
+
+      .pulse-satellite {
+        animation: rotateRecon 8s linear infinite;
+        transform-origin: 480px 140px;
+      }
+
+      .ping-wave {
+        animation: ping 3s cubic-bezier(0, 0, 0.2, 1) infinite;
+        transform-origin: 480px 140px;
+      }
+
+      @keyframes rotateRecon {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+
+      @keyframes ping {
+        0% { r: 50px; opacity: 0.8; stroke-width: 3px; }
+        80% { r: 120px; opacity: 0; stroke-width: 1px; }
+        100% { r: 120px; opacity: 0; stroke-width: 0; }
+      }
+
+      .box-state { rx: 8px; stroke-width: 1.5px; }
+      .text-title { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-weight: 700; fill: #ffffff; }
+      .text-body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 11px; fill: #8b949e; }
+    </style>
+  </defs>
+
+  <rect width="960" height="280" rx="12" fill="url(#gitopsBg)" stroke="#30363d" stroke-width="1.5"/>
+
+  <!-- Ping Waves from Argo Controller -->
+  <circle cx="480" cy="140" r="50" fill="none" stroke="#f0883e" class="ping-wave" />
+
+  <!-- Center Hub: ArgoCD Reconciler -->
+  <circle cx="480" cy="140" r="52" fill="#1c2128" stroke="url(#circleGrad)" stroke-width="3"/>
+  <text x="480" y="132" text-anchor="middle" font-size="28">🐙</text>
+  <text x="480" y="152" text-anchor="middle" class="text-title" font-size="12">ARGOCD</text>
+  <text x="480" y="165" text-anchor="middle" class="text-body" font-size="9" fill="#f0883e">RECONCILER LOOP</text>
+
+  <!-- Left Side: Desired State (Git) -->
+  <g transform="translate(60, 65)">
+    <rect width="260" height="150" class="box-state" fill="#161b22" stroke="#58a6ff"/>
+    <text x="20" y="32" class="text-title" font-size="14" fill="#58a6ff">📁 Git (Desired State)</text>
+    <text x="20" y="55" class="text-body">Source of Truth (Single Source)</text>
+    <rect x="20" y="70" width="220" height="60" rx="4" fill="#0d1117" stroke="#30363d"/>
+    <text x="30" y="90" font-family="monospace" font-size="10" fill="#7ee787">apiVersion: apps/v1</text>
+    <text x="30" y="105" font-family="monospace" font-size="10" fill="#7ee787">replicas: 5</text>
+    <text x="30" y="120" font-family="monospace" font-size="10" fill="#7ee787">image: app:v2.4.1 (sha:a8c1)</text>
+  </g>
+
+  <!-- Right Side: Live State (Kubernetes Cluster) -->
+  <g transform="translate(640, 65)">
+    <rect width="260" height="150" class="box-state" fill="#161b22" stroke="#2ea043"/>
+    <text x="20" y="32" class="text-title" font-size="14" fill="#2ea043">☸️ Cluster (Live State)</text>
+    <text x="20" y="55" class="text-body">Runtime Production Pods (EKS/GKE)</text>
+    <rect x="20" y="70" width="220" height="60" rx="4" fill="#0d1117" stroke="#30363d"/>
+    <text x="30" y="90" font-family="monospace" font-size="10" fill="#58a6ff">STATUS: Synced</text>
+    <text x="30" y="105" font-family="monospace" font-size="10" fill="#58a6ff">HEALTH: Healthy (5/5 Pods Running)</text>
+    <text x="30" y="120" font-family="monospace" font-size="10" fill="#2ea043">DRIFT: 0% Detected</text>
+  </g>
+
+  <!-- Left Line (Git to Argo) -->
+  <path d="M 320 140 L 428 140" stroke="#58a6ff" stroke-width="2.5" stroke-dasharray="6 4"/>
+  <polygon points="428,140 420,135 420,145" fill="#58a6ff"/>
+  <text x="375" y="130" text-anchor="middle" font-size="10" class="text-body" fill="#58a6ff">Poll / Webhook</text>
+
+  <!-- Right Line (Argo to Cluster) -->
+  <path d="M 532 140 L 640 140" stroke="#2ea043" stroke-width="2.5" stroke-dasharray="6 4"/>
+  <polygon points="640,140 632,135 632,145" fill="#2ea043"/>
+  <text x="585" y="130" text-anchor="middle" font-size="10" class="text-body" fill="#2ea043">Self-Heal / Apply</text>
+
+  <!-- Subtitle -->
+  <text x="480" y="245" text-anchor="middle" class="text-body" font-size="11">Continuous Automated Drift Detection: Out-of-band kubectl changes are instantly reverted to match Git</text>
+</svg>

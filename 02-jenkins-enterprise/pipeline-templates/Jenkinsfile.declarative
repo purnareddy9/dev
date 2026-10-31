@@ -1,0 +1,108 @@
+// ==============================================================
+// Production Declarative Jenkinsfile with Dynamic Kubernetes Pod
+// ==============================================================
+pipeline {
+    agent {
+        kubernetes {
+            yamlFile '02-jenkins-enterprise/pipeline-templates/k8s-pod-agent.yaml'
+            defaultContainer 'maven'
+        }
+    }
+
+    options {
+        timeout(time: 45, unit: 'MINUTES')
+        buildDiscarder(logRotator(numToKeepStr: '25'))
+        disableConcurrentBuilds()
+        ansiColor('xterm')
+    }
+
+    environment {
+        REGISTRY = '123456789012.dkr.ecr.us-east-1.amazonaws.com'
+        APP_NAME = 'billing-service'
+        IMAGE_TAG = "v${BUILD_NUMBER}-${GIT_COMMIT.take(7)}"
+        SONAR_HOST = 'https://sonarqube.internal.corp'
+    }
+
+    stages {
+        stage('Unit Test & Code Quality') {
+            steps {
+                container('maven') {
+                    echo "Compiling and running unit tests..."
+                    sh 'mvn clean verify -B'
+                }
+            }
+        }
+
+        stage('Parallel Static Analysis') {
+            parallel {
+                stage('SonarQube Quality Gate') {
+                    steps {
+                        container('maven') {
+                            withSonarQubeEnv('Enterprise-SonarQube') {
+                                sh 'mvn sonar:sonar -Dsonar.projectKey=${APP_NAME}'
+                            }
+                            timeout(time: 5, unit: 'MINUTES') {
+                                waitForQualityGate abortPipeline: true
+                            }
+                        }
+                    }
+                }
+                stage('OWASP Dependency-Check') {
+                    steps {
+                        container('maven') {
+                            sh 'mvn dependency-check:check'
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Daemonless Container Build (Kaniko)') {
+            steps {
+                container('kaniko') {
+                    echo "Building container image without Docker daemon..."
+                    sh """
+                        /kaniko/executor \
+                            --context=dir://. \
+                            --dockerfile=Dockerfile \
+                            --destination=${REGISTRY}/${APP_NAME}:${IMAGE_TAG} \
+                            --cache=true \
+                            --cache-repo=${REGISTRY}/${APP_NAME}-cache
+                    """
+                }
+            }
+        }
+
+        stage('Security Vulnerability Gate') {
+            steps {
+                container('trivy') {
+                    echo "Scanning built container image for CRITICAL CVEs..."
+                    sh "trivy image --exit-code 1 --severity CRITICAL ${REGISTRY}/${APP_NAME}:${IMAGE_TAG}"
+                }
+            }
+        }
+
+        stage('Update GitOps Manifests') {
+            when {
+                branch 'main'
+            }
+            steps {
+                echo "Updating deployment image tag to ${IMAGE_TAG} in GitOps repo..."
+                // Real GitOps push or PR step
+            }
+        }
+    }
+
+    post {
+        always {
+            junit allowEmptyResults: true, testResults: '**/target/surefire-reports/*.xml'
+            cleanWs deleteDirs: true, notFailBuild: true
+        }
+        success {
+            echo "Pipeline passed successfully! Artifact published: ${IMAGE_TAG}"
+        }
+        failure {
+            echo "Pipeline failed! Dispatching alert to PagerDuty / Slack..."
+        }
+    }
+}

@@ -1,0 +1,48 @@
+// ==============================================================
+// Production Scripted Jenkinsfile (Complex Conditional Workflow)
+// Demonstrates Groovy try-catch, dynamic stages, and node locks
+// ==============================================================
+node('k8s-agent') {
+    def appName = 'analytics-engine'
+    def imageTag = "sha-${env.GIT_COMMIT ? env.GIT_COMMIT.take(8) : 'local'}"
+
+    try {
+        stage('Checkout') {
+            checkout scm
+        }
+
+        stage('Dynamic Matrix Build') {
+            def environments = ['qa', 'staging']
+            def tasks = [:]
+
+            for (int i = 0; i < environments.size(); i++) {
+                def envName = environments[i]
+                tasks["Deploy to ${envName}"] = {
+                    node('k8s-agent') {
+                        echo "Running automated integration suite against: ${envName}"
+                        sh "echo 'Testing environment ${envName}'"
+                    }
+                }
+            }
+            parallel tasks
+        }
+
+        stage('Conditional Production Promotion') {
+            if (env.BRANCH_NAME == 'main') {
+                timeout(time: 1, unit: 'HOURS') {
+                    input message: "Approve deployment of ${imageTag} to Production?", ok: "Deploy"
+                }
+                echo "Promoting ${imageTag} to Production cluster..."
+            } else {
+                echo "Non-main branch build: skipping production promotion."
+            }
+        }
+
+    } catch (Exception e) {
+        currentBuild.result = 'FAILURE'
+        echo "Pipeline crashed with error: ${e.getMessage()}"
+        throw e
+    } finally {
+        step([$class: 'WsCleanup'])
+    }
+}
