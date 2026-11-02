@@ -20,7 +20,16 @@
 
 ---
 
-## 📈 2. Tracked Enterprise & Infrastructure Stocks
+---
+
+## 🧭 2. Daily Pre-Market & Post-Market Institutional Intelligence
+- 📅 **[November 2, 2026: Institutional Order Flow & Macro Day-Trader Analysis](./daily-pulse/2026-11-02-day-trader-intelligence.md)**
+  - *FII Net Buying Surge (+₹3,600 Cr)* | *US Election & Geopolitical Standoff (Iran / Qatar)*
+  - *Gold/Silver Crash Breakdown (Binance .33B Hack Liquidation & Central Bank Sales)*
+  - *Day Trader Pre/Post-Market Rules & Risk Management (Nithin Kamath Naked Option Warning)*
+  - *Corporate Earnings Scorecards: Delhivery, Ramkrishna Forgings, Equitas SFB, Subex, Syrma SGS*
+
+## 📈 3. Tracked Enterprise & Infrastructure Stocks
 
 | Ticker | Company Name | Live Price | 24h Change | RSI (14) | Direct Reports |
 | :--- | :--- | :--- | :--- | :--- | :--- |
