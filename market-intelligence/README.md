@@ -14,8 +14,8 @@
 | **NIFTY IT** (`^CNXIT`) | **32,442.50 INR** | **+0.79%** (📈) | `🟢 BULLISH` | Indian Technology & Software Enterprise Sector |
 | **NIFTY 500** (`^CRSLDX`) | **22,241.40 INR** | **+2.33%** (📈) | `🟢 BULLISH` | Indian Broad Market (Top 500 Across Large/Mid/Small-Cap) |
 | **BANK NIFTY** (`^NSEBANK`) | **55,002.20 INR** | **+1.90%** (📈) | `🟢 BULLISH` | Indian Banking & Financial Services Sector |
-| **S&P 500** (`^GSPC`) | **7,602.05 USD** | **-0.97%** (📉) | `🔴 BEARISH` | US Large-Cap Market Benchmark |
-| **NASDAQ Composite** (`^IXIC`) | **25,476.49 USD** | **-2.65%** (📉) | `🔴 BEARISH` | Global Technology & Growth Benchmark |
+| **S&P 500** (`^GSPC`) | **7,598.89 USD** | **-1.01%** (📉) | `🔴 BEARISH` | US Large-Cap Market Benchmark |
+| **NASDAQ Composite** (`^IXIC`) | **25,461.44 USD** | **-2.71%** (📉) | `🔴 BEARISH` | Global Technology & Growth Benchmark |
 
 
 ---
