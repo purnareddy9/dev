@@ -88,12 +88,12 @@ class GeminiMarketAnalyst:
         )
 
         # Primary: Official Native Google Gemini REST Endpoint
-        # Priority order updated for latest Gemini generation API models
+        # Tries the latest flash generation models with automated fallback on high-demand spikes
         models_to_try = [
-            "gemini-3.5-flash-lite",
-            "gemini-3.8-flash",
             "gemini-flash-latest",
             "gemini-flash-lite-latest",
+            "gemini-3.5-flash-lite",
+            "gemini-3.8-flash",
             "gemini-2.5-pro"
         ]
         headers = {
@@ -122,7 +122,7 @@ class GeminiMarketAnalyst:
                     headers=headers,
                     method="POST"
                 )
-                with urllib.request.urlopen(req, timeout=25) as resp:
+                with urllib.request.urlopen(req, timeout=10) as resp:
                     data = json.loads(resp.read().decode("utf-8"))
                     candidates = data.get("candidates", [])
                     if candidates:
