@@ -49,23 +49,27 @@ sequenceDiagram
 
 ## 🚀 Running Your First AI Agent on Windows
 
-You can run this right now in PowerShell or Command Prompt:
+Both **Python** and **Node.js** versions are available:
 
-### 1. Run the Autonomous Deployment Agent
+### Option A: Running with Python (Recommended Standard)
+Using your local Windows Python 3.14:
+```powershell
+# 1. Run the Autonomous Python Deployment Agent
+& "C:\Users\Sri\AppData\Local\Programs\Python\Python314\python.exe" 06-local-ai-deploy-agent/agent.py
+
+# 2. Check service status via Python
+& "C:\Users\Sri\AppData\Local\Programs\Python\Python314\python.exe" 06-local-ai-deploy-agent/agent.py status
+
+# 3. Gracefully stop the application
+& "C:\Users\Sri\AppData\Local\Programs\Python\Python314\python.exe" 06-local-ai-deploy-agent/agent.py stop
+```
+
+---
+
+### Option B: Running with Node.js
 ```powershell
 node 06-local-ai-deploy-agent/agent.mjs
-```
-
-### 2. Verify Application Health Status
-```powershell
 node 06-local-ai-deploy-agent/agent.mjs status
-```
-Or open in your browser:
-- Status & Health: [http://127.0.0.1:5050/health](http://127.0.0.1:5050/health)
-- Prometheus Metrics: [http://127.0.0.1:5050/metrics](http://127.0.0.1:5050/metrics)
-
-### 3. Gracefully Terminate the Application
-```powershell
 node 06-local-ai-deploy-agent/agent.mjs stop
 ```
 

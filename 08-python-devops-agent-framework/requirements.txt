@@ -1,0 +1,21 @@
+# ==============================================================
+# Enterprise Python DevOps AI Agent Dependencies
+# ==============================================================
+
+# 1. Kubernetes & Cloud Tooling
+kubernetes>=29.0.0
+boto3>=1.34.0
+PyGithub>=2.2.0
+requests>=2.31.0
+
+# 2. Data Validation & Schemas
+pydantic>=2.6.0
+
+# 3. Agent Framework & LLM Connectivity
+langgraph>=0.0.30
+langchain-core>=0.1.30
+httpx>=0.27.0
+
+# 4. CLI & Logging
+rich>=13.7.0
+python-dotenv>=1.0.1
