@@ -72,15 +72,41 @@ flowchart LR
 
 ```text
 08-python-devops-agent-framework/
-├── README.md               # Architecture & Production Best Practices
-├── requirements.txt        # Official Enterprise Python Dependencies
-├── agent_engine.py         # The ReAct Agent Controller with Pydantic Tool Validation
-├── tools/
-│   ├── k8s_diagnostics.py  # Kubernetes API: Pods, Crash Logs, Events
-│   ├── aws_telemetry.py    # AWS Boto3: CloudWatch Metrics & ECR Digests
-│   └── gitops_healer.py    # GitHub API: Revert PRs & Kustomize Bumps
+├── README.md                  # Architecture & Production Best Practices
+├── requirements.txt           # Official Enterprise Python Dependencies
+├── realtime_devops_agent.py   # 100% REAL Autonomous AI Agent (Live LLM + Live OS Tools)
+├── agent_engine.py            # Decorator-based Pydantic Tool Registry & Schema Exporter
 └── manifests/
     └── k8s-python-agent-deployment.yaml # EKS Deployment with AWS IRSA
+```
+
+---
+
+## ⚡ Running the 100% REAL Python DevOps Agent
+
+This agent executes **real system tools** (host sockets, shell, git status, HTTP probes, Kubernetes cluster checks).
+
+### Mode 1: Native Autonomous Execution (Zero API Keys Required)
+```powershell
+& "C:\Users\Sri\AppData\Local\Programs\Python\Python314\python.exe" 08-python-devops-agent-framework/realtime_devops_agent.py
+```
+
+### Mode 2: Live LLM Reasoning (Google Gemini)
+```powershell
+$env:GEMINI_API_KEY="your-gemini-api-key"
+& "C:\Users\Sri\AppData\Local\Programs\Python\Python314\python.exe" 08-python-devops-agent-framework/realtime_devops_agent.py "Check git status, probe port 5050, and inspect kubernetes health"
+```
+
+### Mode 3: Live LLM Reasoning (OpenAI GPT-4o)
+```powershell
+$env:OPENAI_API_KEY="sk-..."
+& "C:\Users\Sri\AppData\Local\Programs\Python\Python314\python.exe" 08-python-devops-agent-framework/realtime_devops_agent.py "Diagnose local environment"
+```
+
+### Mode 4: Free Local LLM via Ollama (Zero Cloud Costs)
+```powershell
+# If Ollama is running locally on port 11434 with llama3 or mistral:
+& "C:\Users\Sri\AppData\Local\Programs\Python\Python314\python.exe" 08-python-devops-agent-framework/realtime_devops_agent.py "Triage system status"
 ```
 
 ---
