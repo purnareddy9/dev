@@ -99,4 +99,7 @@ sequenceDiagram
 3. [`cicd-runner-agents/jenkins-k8s-pod-agent.yaml`](./cicd-runner-agents/jenkins-k8s-pod-agent.yaml): Kubernetes multi-container dynamic pod agent definition for Jenkins.
 4. [`ai-devops-agents/architecture.md`](./ai-devops-agents/architecture.md): Architectural design for SRE AI agents, security guardrails, read-only vs write boundaries, and MCP integration.
 5. [`ai-devops-agents/k8s_incident_triage_agent.py`](./ai-devops-agents/k8s_incident_triage_agent.py): Full working Python AI Agent implementing the ReAct pattern with live Kubernetes API tool-calling for automated root-cause analysis.
-6. [`interview-scenarios.md`](./interview-scenarios.md): High-bar Senior / Principal DevOps interview scenarios on runner fleet scaling and AI agent safety.
+6. [`activity-based-agents/README.md`](./activity-based-agents/README.md): **The 5-Step Engineering Blueprint to build agents for specific DevOps activities**.
+7. [`activity-based-agents/ci_pipeline_healer_agent.py`](./activity-based-agents/ci_pipeline_healer_agent.py): Autonomous CI/CD pipeline failure log parser and auto-PR healer.
+8. [`activity-based-agents/terraform_cost_security_agent.py`](./activity-based-agents/terraform_cost_security_agent.py): Terraform IaC security auditing (CIS AWS) and FinOps cost leak detector.
+9. [`interview-scenarios.md`](./interview-scenarios.md): High-bar Senior / Principal DevOps interview scenarios on runner fleet scaling and AI agent safety.
