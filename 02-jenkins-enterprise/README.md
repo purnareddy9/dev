@@ -21,27 +21,27 @@ In high-scale enterprise environments, **Jenkins Controller runs strictly as an 
 
 ```mermaid
 flowchart TD
-    subgraph K8s_Cluster["Kubernetes Cluster (EKS / GKE)"]
+    subgraph K8s_Cluster["Kubernetes Cluster: EKS / GKE"]
         subgraph Master_Namespace["Namespace: jenkins-core"]
-            Controller[Jenkins Controller / Master\n- Orchestrator Only\n- JCasC Configured\n- Zero Builds on Master]
-            PVC[(EBS GP3 / EFS\nPVC: JENKINS_HOME)]
+            Controller["Jenkins Controller / Master<br/>- Orchestrator Only<br/>- JCasC Configured<br/>- Zero Builds on Master"]
+            PVC[("EBS GP3 / EFS<br/>PVC: JENKINS_HOME")]
             Controller --- PVC
         end
 
         subgraph Worker_Namespace["Namespace: jenkins-agents"]
-            Pod1[Agent Pod 1: Microservice A]
-            Pod2[Agent Pod 2: Microservice B]
+            Pod1["Agent Pod 1: Microservice A"]
+            Pod2["Agent Pod 2: Microservice B"]
             
             subgraph Pod_Detail["Inside Agent Pod 1 (Multi-Container)"]
-                Jnlp[Inbound JNLP Agent Container\nCommunication with Master]
-                Mvn[Maven 3.9 Container\nCompile & Test]
-                Docker[Kaniko / BuildKit Container\nDaemonless Container Build]
-                Sonar[SonarQube Scanner Container\nCode Quality Gate]
+                Jnlp["Inbound JNLP Agent Container<br/>Communication with Master"]
+                Mvn["Maven 3.9 Container<br/>Compile & Test"]
+                Docker["Kaniko / BuildKit Container<br/>Daemonless Container Build"]
+                Sonar["SonarQube Scanner Container<br/>Code Quality Gate"]
             end
         end
 
-        Controller -->|Kubernetes Plugin API| Pod1
-        Controller -->|Kubernetes Plugin API| Pod2
+        Controller -->|"Kubernetes Plugin API"| Pod1
+        Controller -->|"Kubernetes Plugin API"| Pod2
         Pod1 -.-> Pod_Detail
     end
 ```

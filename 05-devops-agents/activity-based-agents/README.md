@@ -9,14 +9,14 @@
 
 ```mermaid
 flowchart TD
-    Hub[DevOps Activity Agent System]
+    Hub["DevOps Activity Agent System"]
 
-    Hub --> Act1[1. CI/CD Pipeline Healing\nParses failed build logs, fixes code/dockerfile, submits PR]
-    Hub --> Act2[2. Kubernetes Incident Triage\nResponds to alerts, diagnoses CrashLoop/OOM, identifies root cause]
-    Hub --> Act3[3. Terraform IaC Auditing\nScans plans for CIS security flaws & idle cloud cost leaks]
-    Hub --> Act4[4. GitOps Release Manager\nManages image tag bumps, monitors canary metrics, triggers rollbacks]
-    Hub --> Act5[5. Cloud Cost & Rightsizing\nIdentifies overprovisioned CPU/RAM & idle NAT gateways]
-    Hub --> Act6[6. Secret & Security Compliance\nDetects leaked tokens, alerts on expired SSL/TLS certificates]
+    Hub --> Act1["1. CI/CD Pipeline Healing<br/>Parses failed build logs, fixes code/dockerfile, submits PR"]
+    Hub --> Act2["2. Kubernetes Incident Triage<br/>Responds to alerts, diagnoses CrashLoop/OOM, identifies root cause"]
+    Hub --> Act3["3. Terraform IaC Auditing<br/>Scans plans for CIS security flaws & idle cloud cost leaks"]
+    Hub --> Act4["4. GitOps Release Manager<br/>Manages image tag bumps, monitors canary metrics, triggers rollbacks"]
+    Hub --> Act5["5. Cloud Cost & Rightsizing<br/>Identifies overprovisioned CPU/RAM & idle NAT gateways"]
+    Hub --> Act6["6. Secret & Security Compliance<br/>Detects leaked tokens, alerts on expired SSL/TLS certificates"]
 ```
 
 ---
@@ -28,41 +28,41 @@ Regardless of whether you are building an agent for CI failure diagnosis, Kubern
 ```mermaid
 flowchart LR
     subgraph S1["1. Event Trigger"]
-        E1[GitHub Webhook\nworkflow_run.completed]
-        E2[AlertManager\nseverity: critical]
-        E3[Slack Bot\n/diagnose <service>]
+        E1["GitHub Webhook: workflow_run.completed"]
+        E2["AlertManager: severity: critical"]
+        E3["Slack Bot: /diagnose service"]
     end
 
     subgraph S2["2. Perception & Tool Calling"]
-        T1[Kubernetes API / Kubectl]
-        T2[GitHub / GitLab REST API]
-        T3[AWS Boto3 / CloudWatch]
-        T4[Prometheus PromQL]
+        T1["Kubernetes API / Kubectl"]
+        T2["GitHub / GitLab REST API"]
+        T3["AWS Boto3 / CloudWatch"]
+        T4["Prometheus PromQL"]
     end
 
     subgraph S3["3. Cognitive Engine (LLM)"]
-        ReAct[ReAct Loop / LangGraph State]
-        Reason[Evaluate Hypothesis & Extract RCA]
+        ReAct["ReAct Loop / LangGraph State"]
+        Reason["Evaluate Hypothesis & Extract RCA"]
     end
 
     subgraph S4["4. Safety Guardrails"]
-        Gate{Mutating Action?}
-        ReadOnly[Autonomous Run]
-        HumanGate[Slack Interactive Approval]
+        Gate{"Is Action Mutating?"}
+        ReadOnly["Autonomous Run"]
+        HumanGate["Slack Interactive Approval"]
     end
 
     subgraph S5["5. Action & Resolution"]
-        Out1[Submit Git PR with Fix]
-        Out2[Trigger ArgoCD Rollback]
-        Out3[Post Incident Report to Slack]
+        Out1["Submit Git PR with Fix"]
+        Out2["Trigger ArgoCD Rollback"]
+        Out3["Post Incident Report to Slack"]
     end
 
     S1 --> S2
     S2 --> S3
     S3 --> S4
-    Gate -->|No (Read-Only)| ReadOnly
-    Gate -->|Yes (Write/Mutate)| HumanGate
-    HumanGate -->|Approved| S5
+    Gate -->|"No (Read-Only)"| ReadOnly
+    Gate -->|"Yes (Write/Mutate)"| HumanGate
+    HumanGate -->|"Approved"| S5
     ReadOnly --> S5
 ```
 

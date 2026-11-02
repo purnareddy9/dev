@@ -20,24 +20,24 @@ For enterprise workloads handling compliance (HIPAA, SOC2, PCI-DSS) or heavy com
 ```mermaid
 flowchart TD
     subgraph GitHub_Cloud["GitHub Enterprise Cloud"]
-        Webhook[Repository Webhook / Job Queue]
+        Webhook["Repository Webhook / Job Queue"]
     end
 
     subgraph VPC["Corporate AWS VPC / Private Subnet"]
         subgraph EKS["EKS Cluster: Runner Namespace"]
-            ARC[Actions Runner Controller Operator]
-            Autoscaler[HorizontalRunnerAutoscaler / HRA]
+            ARC["Actions Runner Controller Operator"]
+            Autoscaler["HorizontalRunnerAutoscaler (HRA)"]
             
-            Webhook -->|GitHub App Auth / Long Polling| ARC
+            Webhook -->|"GitHub App Auth / Long Polling"| ARC
             ARC --> Autoscaler
-            Autoscaler -->|Scale Up on demand| Pod1[Ephemeral Runner Pod 1]
-            Autoscaler -->|Scale Up on demand| Pod2[Ephemeral Runner Pod 2]
-            Autoscaler -->|Scale Down to 0 when idle| Pod3[Ephemeral Runner Pod N]
+            Autoscaler -->|"Scale Up on demand"| Pod1["Ephemeral Runner Pod 1"]
+            Autoscaler -->|"Scale Up on demand"| Pod2["Ephemeral Runner Pod 2"]
+            Autoscaler -->|"Scale Down to 0 when idle"| Pod3["Ephemeral Runner Pod N"]
         end
         
-        Pod1 -->|Private VPC Endpoint| InternalDB[(Internal Dev DB)]
-        Pod1 -->|Private VPC Endpoint| S3Cache[(S3 / Private Cache)]
-        Pod1 -->|VPC Peering / Transit Gateway| OnPrem[(On-Premises Data Center)]
+        Pod1 -->|"Private VPC Endpoint"| InternalDB[("Internal Dev DB")]
+        Pod1 -->|"Private VPC Endpoint"| S3Cache[("S3 / Private Cache")]
+        Pod1 -->|"VPC Peering / Transit Gateway"| OnPrem[("On-Premises Data Center")]
     end
 ```
 

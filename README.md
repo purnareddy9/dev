@@ -33,38 +33,38 @@
 ```mermaid
 flowchart TB
     subgraph SCM["1. Source Control & Developer Experience"]
-        Dev[Developers / Feature Branches] -->|PR with Semantic Commits| SCM_Repo[GitHub / GitLab Monorepo / Polyrepo]
-        SCM_Repo -->|Webhook / Event Trigger| CI_Engine
+        Dev["Developers / Feature Branches"] -->|"PR with Semantic Commits"| SCM_Repo["GitHub / GitLab Monorepo / Polyrepo"]
+        SCM_Repo -->|"Webhook / Event Trigger"| CI_Engine
     end
 
     subgraph CI_Engine["2. Continuous Integration & Supply Chain Security"]
         direction TB
-        GHA[GitHub Actions ARC Runners] 
-        JNK[Jenkins on EKS Dynamic Pods]
+        GHA["GitHub Actions ARC Runners"] 
+        JNK["Jenkins on EKS Dynamic Pods"]
         
-        GHA & JNK --> Quality[Unit Tests & Matrix Builds]
-        Quality --> SAST[SonarQube & Snyk / Trivy]
-        SAST --> Build[BuildKit Multi-Platform Container Build]
-        Build --> Sign[Cosign Image Signing & SBOM Syft]
-        Sign --> Registry[(Enterprise OCI Registry: ECR / GHCR / Harbor)]
+        GHA & JNK --> Quality["Unit Tests & Matrix Builds"]
+        Quality --> SAST["SonarQube & Snyk / Trivy"]
+        SAST --> Build["BuildKit Multi-Platform Container Build"]
+        Build --> Sign["Cosign Image Signing & SBOM Syft"]
+        Sign --> Registry[("Enterprise OCI Registry: ECR / GHCR / Harbor")]
     end
 
     subgraph GitOps_Sync["3. GitOps Control Plane (ArgoCD)"]
         direction TB
-        GitOpsRepo[(GitOps Repo: Kustomize / Helm)]
-        Registry -.->|New Image Tag PR / Image Updater| GitOpsRepo
-        ArgoServer[ArgoCD Controller & Repo Server]
-        ArgoServer -->|Continuous Reconciliation Loop| GitOpsRepo
-        ArgoServer -->|Sync Waves & Health Checks| K8sCluster
+        GitOpsRepo[("GitOps Repo: Kustomize / Helm")]
+        Registry -.->|"New Image Tag PR / Image Updater"| GitOpsRepo
+        ArgoServer["ArgoCD Controller & Repo Server"]
+        ArgoServer -->|"Continuous Reconciliation Loop"| GitOpsRepo
+        ArgoServer -->|"Sync Waves & Health Checks"| K8sCluster
     end
 
     subgraph Delivery["4. Progressive Delivery & Runtime"]
         direction TB
-        K8sCluster[Multi-Region Kubernetes Clusters]
-        Rollout[Argo Rollouts: Canary / Blue-Green]
-        Analysis[Prometheus / Datadog Metric Analysis]
+        K8sCluster["Multi-Region Kubernetes Clusters"]
+        Rollout["Argo Rollouts: Canary / Blue-Green"]
+        Analysis["Prometheus / Datadog Metric Analysis"]
         Rollout --> Analysis
-        Analysis -->|Auto-Promote or Rollback| Rollout
+        Analysis -->|"Auto-Promote or Rollback"| Rollout
     end
 ```
 

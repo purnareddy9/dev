@@ -17,14 +17,14 @@
 
 ```mermaid
 flowchart LR
-    subgraph Push_Model["Traditional Push CD (Jenkins / GitLab CI)"]
-        CI_Push[CI Server] -->|Requires Root Kubeconfig & Direct Network Access| K8s_Direct[Production Cluster]
+    subgraph Push_Model["Traditional Push CD: Jenkins / GitLab CI"]
+        CI_Push["CI Server"] -->|"Requires Root Kubeconfig & Direct Network Access"| K8s_Direct["Production Cluster"]
     end
 
-    subgraph Pull_Model["Modern GitOps Pull CD (ArgoCD)"]
-        Git_Repo[(Git Single Source of Truth)]
-        Argo_Agent[ArgoCD In-Cluster Controller] -->|Pulls Manifests\nZero Inbound Firewall Ports| Git_Repo
-        Argo_Agent -->|Applies Desired State\nDetects & Reverts Drift| K8s_Local[Production Cluster]
+    subgraph Pull_Model["Modern GitOps Pull CD: ArgoCD"]
+        Git_Repo[("Git Single Source of Truth")]
+        Argo_Agent["ArgoCD In-Cluster Controller"] -->|"Pulls Manifests<br/>Zero Inbound Firewall Ports"| Git_Repo
+        Argo_Agent -->|"Applies Desired State<br/>Detects & Reverts Drift"| K8s_Local["Production Cluster"]
     end
 ```
 
@@ -44,20 +44,20 @@ flowchart LR
 ```mermaid
 flowchart TD
     subgraph Control_Plane["ArgoCD Architecture"]
-        API[ArgoCD API Server\n- Authentication: Dex / OIDC / SSO\n- RBAC Enforcement]
-        UI[Web UI & CLI] --> API
+        API["ArgoCD API Server<br/>- Authentication: Dex / OIDC / SSO<br/>- RBAC Enforcement"]
+        UI["Web UI & CLI"] --> API
         
-        Repo[Repo Server\n- Clones Git repositories\n- Generates raw YAML from Helm/Kustomize]
+        Repo["Repo Server<br/>- Clones Git repositories<br/>- Generates raw YAML from Helm/Kustomize"]
         
-        Redis[(Redis Cache\nStores parsed manifests & cluster state)]
+        Redis[("Redis Cache<br/>Stores parsed manifests & cluster state")]
         
-        Controller[Application Controller\n- Primary Reconciliation Engine\n- Watches K8s API via Informers\n- Compares Live State vs Desired State]
+        Controller["Application Controller<br/>- Primary Reconciliation Engine<br/>- Watches K8s API via Informers<br/>- Compares Live State vs Desired State"]
     end
 
-    Git[(Git Repo: Helm / Kustomize)] <-->|Poll / Webhook| Repo
+    Git[("Git Repo: Helm / Kustomize")] <-->|"Poll / Webhook"| Repo
     Repo <--> Redis
     Controller <--> Redis
-    Controller -->|Continuous Reconciliation| K8s[Target Kubernetes Clusters]
+    Controller -->|"Continuous Reconciliation"| K8s["Target Kubernetes Clusters"]
 ```
 
 1. **API Server**: Exposes gRPC/REST endpoints for UI, CLI, and webhooks. Handles SSO (Okta, Azure AD, GitHub) via Dex.
@@ -124,22 +124,22 @@ Standard Kubernetes `RollingUpdate` lacks metric-driven traffic analysis and aut
 
 ```mermaid
 flowchart LR
-    Vault[(AWS Secrets Manager / HashiCorp Vault)]
+    Vault[("AWS Secrets Manager / HashiCorp Vault")]
     
     subgraph K8s["Kubernetes Cluster"]
-        ESO[External Secrets Operator Controller]
-        SecretStore[SecretStore CRD\nAuth via IAM OIDC / K8s SA]
-        ExtSecret[ExternalSecret CRD\n(Committed safely in Git)]
-        NativeSecret[Native K8s Secret\n(Ephemeral in RAM / etcd)]
-        AppPod[Application Pod]
+        ESO["External Secrets Operator Controller"]
+        SecretStore["SecretStore CRD<br/>Auth via IAM OIDC / K8s SA"]
+        ExtSecret["ExternalSecret CRD<br/>(Committed safely in Git)"]
+        NativeSecret["Native K8s Secret<br/>(Ephemeral in RAM / etcd)"]
+        AppPod["Application Pod"]
     end
 
-    Git[(GitOps Repo)] -->|Safely commits| ExtSecret
+    Git[("GitOps Repo")] -->|"Safely commits"| ExtSecret
     ExtSecret --> ESO
     ESO --> SecretStore
-    SecretStore -->|Pulls credentials dynamically| Vault
-    ESO -->|Creates / Updates| NativeSecret
-    NativeSecret -->|Mounted as volume / env| AppPod
+    SecretStore -->|"Pulls credentials dynamically"| Vault
+    ESO -->|"Creates / Updates"| NativeSecret
+    NativeSecret -->|"Mounted as volume / env"| AppPod
 ```
 
 1. **ExternalSecret CRD** is checked into Git. It contains only pointers (e.g. `secretKey: /production/database/password`).

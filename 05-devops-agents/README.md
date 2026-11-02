@@ -19,20 +19,20 @@ When engineering leaders talk about "building agents for DevOps", they are opera
 
 ```mermaid
 flowchart TD
-    Agent[DevOps Agent Ecosystem]
+    Agent["DevOps Agent Ecosystem"]
     
     subgraph Pillar1["Pillar 1: CI/CD Execution Runners (Platform Compute)"]
-        ARC[GitHub Actions Runner Controller - ARC]
-        JNK_Agents[Jenkins Dynamic Kubernetes Pod Agents]
-        Custom_Img[Hardened Container Images with Toolchains]
-        Ephemeral[Ephemeral & Scale-to-Zero Compute via Karpenter]
+        ARC["GitHub Actions Runner Controller (ARC)"]
+        JNK_Agents["Jenkins Dynamic Kubernetes Pod Agents"]
+        Custom_Img["Hardened Container Images with Toolchains"]
+        Ephemeral["Ephemeral & Scale-to-Zero Compute via Karpenter"]
     end
 
     subgraph Pillar2["Pillar 2: AI Autonomous DevOps Agents (Cognitive Automation)"]
-        ReAct[ReAct Reasoning Loop: Observe -> Orient -> Decide -> Act]
-        Tools[Tool Calling: Kubectl, Prometheus, ArgoCD, Git API]
-        SRE_Agent[Automated Incident Triage: CrashLoopBackOff & 5xx]
-        PR_Agent[Automated Pipeline Healer & GitOps Revert Agent]
+        ReAct["ReAct Reasoning Loop: Observe -> Orient -> Decide -> Act"]
+        Tools["Tool Calling: Kubectl, Prometheus, ArgoCD, Git API"]
+        SRE_Agent["Automated Incident Triage: CrashLoopBackOff & 5xx"]
+        PR_Agent["Automated Pipeline Healer & GitOps Revert Agent"]
     end
 
     Agent --> Pillar1

@@ -18,43 +18,43 @@
 ```mermaid
 flowchart TB
     subgraph SCM["1. Distributed Developer Repositories"]
-        R1[Frontend Monorepo\nReact / Next.js]
-        R2[Backend Polyrepo\nGo / Java / Python / Node]
+        R1["Frontend Monorepo: React / Next.js"]
+        R2["Backend Polyrepo: Go / Java / Python / Node"]
     end
 
-    subgraph CI_Mesh["2. Autoscaling CI Layer (EKS + Karpenter + ARC)"]
-        ARC_Pool[Ephemeral GitHub Actions Runners\n- No Static Secrets (AWS OIDC)\n- Docker BuildKit Cache\n- Isolated Namespaces]
+    subgraph CI_Mesh["2. Autoscaling CI Layer: EKS + Karpenter + ARC"]
+        ARC_Pool["Ephemeral GitHub Actions Runners<br/>- No Static Secrets (AWS OIDC)<br/>- Docker BuildKit Cache<br/>- Isolated Namespaces"]
         
-        Gate1[Security Quality Gate\n- SonarQube SAST\n- Trivy / Snyk Container Scan\n- Syft SBOM Generation\n- Cosign Keyless Signing]
+        Gate1["Security Quality Gate<br/>- SonarQube SAST<br/>- Trivy / Snyk Container Scan<br/>- Syft SBOM Generation<br/>- Cosign Keyless Signing"]
     end
 
     subgraph OCI["3. Secure Artifact Store"]
-        ECR[(Amazon ECR Multi-Region Replicated\nImmutable Tagging & KMS Encryption)]
+        ECR[("Amazon ECR Multi-Region Replicated<br/>Immutable Tagging & KMS Encryption")]
     end
 
-    subgraph GitOps_Hub["4. GitOps Central Control Plane (Management Cluster)"]
-        GitOps_Repo[(GitOps Git Repository\n- Kustomize Overlays\n- ApplicationSets\n- Branch Protections)]
+    subgraph GitOps_Hub["4. GitOps Central Control Plane: Management Cluster"]
+        GitOps_Repo[("GitOps Git Repository<br/>- Kustomize Overlays<br/>- ApplicationSets<br/>- Branch Protections")]
         
-        Argo_Control[Central ArgoCD Control Plane\n- Dynamic Cluster Generators\n- Prometheus Analysis\n- Sync Wave Orchestration]
+        Argo_Control["Central ArgoCD Control Plane<br/>- Dynamic Cluster Generators<br/>- Prometheus Analysis<br/>- Sync Wave Orchestration"]
     end
 
     subgraph Production_Regions["5. Multi-Region Runtime Workloads"]
         subgraph Region_Primary["AWS us-east-1 (Primary)"]
-            EKS_US[EKS Cluster US\n- Argo Rollouts Canary\n- External Secrets Operator\n- Istio Service Mesh]
+            EKS_US["EKS Cluster US<br/>- Argo Rollouts Canary<br/>- External Secrets Operator<br/>- Istio Service Mesh"]
         end
 
         subgraph Region_Secondary["AWS eu-west-1 (Secondary / DR)"]
-            EKS_EU[EKS Cluster EU\n- Argo Rollouts Canary\n- External Secrets Operator\n- Istio Service Mesh]
+            EKS_EU["EKS Cluster EU<br/>- Argo Rollouts Canary<br/>- External Secrets Operator<br/>- Istio Service Mesh"]
         end
     end
 
-    SCM -->|Push Event| ARC_Pool
+    SCM -->|"Push Event"| ARC_Pool
     ARC_Pool --> Gate1
-    Gate1 -->|Signed Container| ECR
-    Gate1 -->|Automated PR / Image Update| GitOps_Repo
+    Gate1 -->|"Signed Container"| ECR
+    Gate1 -->|"Automated PR / Image Update"| GitOps_Repo
     GitOps_Repo --> Argo_Control
-    Argo_Control -->|Reconcile State| EKS_US
-    Argo_Control -->|Reconcile State| EKS_EU
+    Argo_Control -->|"Reconcile State"| EKS_US
+    Argo_Control -->|"Reconcile State"| EKS_EU
 ```
 
 ---

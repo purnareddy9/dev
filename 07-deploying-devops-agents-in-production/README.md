@@ -18,12 +18,12 @@ An AI Agent is simply a standard backend service or worker process. What makes i
 
 ```mermaid
 flowchart LR
-    Dev[Agent Code\nPython / TS / Go] --> Docker[Multi-Stage Dockerfile]
-    Docker --> Registry[(Container Registry\nECR / Harbor / GHCR)]
+    Dev["Agent Code<br/>Python / TS / Go"] --> Docker["Multi-Stage Dockerfile"]
+    Docker --> Registry[("Container Registry<br/>ECR / Harbor / GHCR")]
     
-    Registry --> Topo1[1. EKS / GKE Pod\n(In-Cluster Deployment)]
-    Registry --> Topo2[2. AWS Lambda / Cloud Run\n(Serverless Webhook Worker)]
-    Registry --> Topo3[3. EC2 / Linux VM\n(systemd Background Service)]
+    Registry --> Topo1["1. EKS / GKE Pod<br/>(In-Cluster Deployment)"]
+    Registry --> Topo2["2. AWS Lambda / Cloud Run<br/>(Serverless Webhook Worker)"]
+    Registry --> Topo3["3. EC2 / Linux VM<br/>(systemd Background Service)"]
 ```
 
 ---
@@ -35,24 +35,24 @@ The agent runs as a containerized microservice directly inside your Kubernetes p
 
 ```mermaid
 flowchart TD
-    subgraph EKS["Kubernetes Cluster (EKS / GKE)"]
+    subgraph EKS["Kubernetes Cluster: EKS / GKE"]
         subgraph Namespace["Namespace: platform-agents"]
-            AgentPod[DevOps AI Agent Pod\n- ReAct Cognitive Loop\n- FastAPI / Slack Bolt Server]
-            SA[ServiceAccount with AWS IRSA\narn:aws:iam::...:role/DevOpsAgentRole]
+            AgentPod["DevOps AI Agent Pod<br/>- ReAct Cognitive Loop<br/>- FastAPI / Slack Bolt Server"]
+            SA["ServiceAccount with AWS IRSA<br/>arn:aws:iam::...:role/DevOpsAgentRole"]
             AgentPod --- SA
         end
 
-        K8sAPI[Kubernetes API Server\nhttps://kubernetes.default.svc]
-        Prometheus[Prometheus Monitoring\nhttp://prometheus-k8s.monitoring.svc:9090]
-        ArgoCD[ArgoCD API\nhttp://argocd-server.argocd.svc:80]
+        K8sAPI["Kubernetes API Server<br/>https://kubernetes.default.svc"]
+        Prometheus["Prometheus Monitoring<br/>http://prometheus-k8s.monitoring.svc:9090"]
+        ArgoCD["ArgoCD API<br/>http://argocd-server.argocd.svc:80"]
         
-        AgentPod <-->|In-Cluster TLS (Zero Egress Cost)| K8sAPI
-        AgentPod <-->|In-Cluster DNS| Prometheus
-        AgentPod <-->|In-Cluster DNS| ArgoCD
+        AgentPod <-->|"In-Cluster TLS (Zero Egress Cost)"| K8sAPI
+        AgentPod <-->|"In-Cluster DNS"| Prometheus
+        AgentPod <-->|"In-Cluster DNS"| ArgoCD
     end
 
-    Slack[Slack / Microsoft Teams] <-->|WebSocket Mode (Zero Inbound Open Ports)| AgentPod
-    AlertManager[AlertManager Webhooks] -->|Cluster Ingress / Internal Service| AgentPod
+    Slack["Slack / Microsoft Teams"] <-->|"WebSocket Mode (Zero Inbound Open Ports)"| AgentPod
+    AlertManager["AlertManager Webhooks"] -->|"Cluster Ingress / Internal Service"| AgentPod
 ```
 
 #### Why 80% of Enterprise Platform Teams Choose In-Cluster:

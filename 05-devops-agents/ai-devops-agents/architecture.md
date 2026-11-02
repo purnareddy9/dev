@@ -18,39 +18,39 @@ An **AI DevOps Agent** has:
 ```mermaid
 flowchart TD
     subgraph Trigger["1. Observation Input"]
-        Alert[PagerDuty Alert / Slack Alert / K8s Event]
+        Alert["PagerDuty Alert / Slack Alert / K8s Event"]
     end
 
-    subgraph AgentCore["2. Agent Cognitive Engine (LLM)"]
-        State[(Agent State & Working Memory)]
-        Prompt[System Prompt & SRE Diagnostic Heuristics]
-        Router[Tool Call Parser / Function Selector]
+    subgraph AgentCore["2. Agent Cognitive Engine: LLM"]
+        State[("Agent State & Working Memory")]
+        Prompt["System Prompt & SRE Diagnostic Heuristics"]
+        Router["Tool Call Parser / Function Selector"]
         
         State --> Router
         Prompt --> Router
     end
 
-    subgraph ToolBelt["3. Sandboxed DevOps Tools (MCP / Function Calling)"]
-        K8s_Tool["Kubectl / K8s Client\n(get_pod_status, get_logs, describe_node)"]
-        Prom_Tool["Prometheus Tool\n(query_promql_5xx, query_cpu_saturation)"]
-        Git_Tool["Git / GitHub API\n(get_recent_commits, compare_diff)"]
-        Argo_Tool["ArgoCD Client\n(get_app_diff, rollback_app)"]
+    subgraph ToolBelt["3. Sandboxed DevOps Tools: MCP / Function Calling"]
+        K8s_Tool["Kubectl / K8s Client<br/>(get_pod_status, get_logs, describe_node)"]
+        Prom_Tool["Prometheus Tool<br/>(query_promql_5xx, query_cpu_saturation)"]
+        Git_Tool["Git / GitHub API<br/>(get_recent_commits, compare_diff)"]
+        Argo_Tool["ArgoCD Client<br/>(get_app_diff, rollback_app)"]
     end
 
     subgraph HumanLoop["4. Safe Action Execution"]
-        Approval{Is Action Destructive?\ne.g. Rollback or Git Revert PR}
-        AutoRun[Execute Diagnostic Step]
-        SlackAsk[Ask SRE for Slack 1-Click Approval]
-        ProdAction[Apply GitOps Revert / Trigger Rollback]
+        Approval{"Is Action Destructive?<br/>e.g. Rollback or Git Revert PR"}
+        AutoRun["Execute Diagnostic Step"]
+        SlackAsk["Ask SRE for Slack 1-Click Approval"]
+        ProdAction["Apply GitOps Revert / Trigger Rollback"]
     end
 
     Trigger --> State
-    Router -->|Selects Tool| ToolBelt
-    ToolBelt -->|Returns Telemetry Data| State
-    Router -->|Hypothesis Proven| Approval
-    Approval -->|Read-Only| AutoRun
-    Approval -->|Mutating / Write| SlackAsk
-    SlackAsk -->|SRE Approves| ProdAction
+    Router -->|"Selects Tool"| ToolBelt
+    ToolBelt -->|"Returns Telemetry Data"| State
+    Router -->|"Hypothesis Proven"| Approval
+    Approval -->|"Read-Only"| AutoRun
+    Approval -->|"Mutating / Write"| SlackAsk
+    SlackAsk -->|"SRE Approves"| ProdAction
 ```
 
 ---
