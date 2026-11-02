@@ -1,0 +1,41 @@
+name: Real-Time AI Market & Cloud Provider Analyst Agent
+
+on:
+  workflow_dispatch:
+    inputs:
+      ticker:
+        description: 'Stock Ticker Symbol to Analyze (e.g. NVDA, GOOGL, MSFT, AAPL, AMZN)'
+        required: true
+        default: 'NVDA'
+  # Runs automatically at 9:30 AM EST (Market Open) Monday through Friday
+  schedule:
+    - cron: '30 14 * * 1-5'
+
+jobs:
+  run-ai-analyst-agent:
+    name: Execute Real-Time AI Market Agent
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout Repository Code
+        uses: actions/checkout@v4
+
+      - name: Setup Python 3.12 Runtime
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Run Real-Time AI Market Intelligence Agent
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          python 09-github-actions-ai-agent/market_agent.py "${{ github.event.inputs.ticker || 'NVDA' }}"
+
+      - name: Archive Analysis Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: market-analysis-${{ github.event.inputs.ticker || 'NVDA' }}
+          path: |
+            09-github-actions-ai-agent/*.py
