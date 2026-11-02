@@ -1,0 +1,113 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: platform-agents
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: devops-ai-agent-sa
+  namespace: platform-agents
+  annotations:
+    # AWS IAM Roles for Service Accounts (IRSA) - Keyless temporary STS auth
+    eks.amazonaws.com/role-arn: arn:aws:iam::123456789012:role/DevOpsAgentECRCloudWatchRole
+---
+# Strictly Scoped Read-Only Diagnostic ClusterRole (Zero Mutation Permissions)
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: devops-agent-diagnostic-role
+rules:
+  # Pods, Services, Endpoints, Namespaces, Nodes (Inspect cluster health)
+  - apiGroups: [""]
+    resources: ["pods", "pods/log", "services", "endpoints", "events", "namespaces", "nodes"]
+    verbs: ["get", "list", "watch"]
+  # Deployments, ReplicaSets, StatefulSets, DaemonSets
+  - apiGroups: ["apps"]
+    resources: ["deployments", "replicasets", "statefulsets", "daemonsets"]
+    verbs: ["get", "list", "watch"]
+  # ArgoCD Applications (Read-only status to check GitOps drift)
+  - apiGroups: ["argoproj.io"]
+    resources: ["applications", "applicationsets", "rollouts"]
+    verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: devops-agent-diagnostic-binding
+subjects:
+  - kind: ServiceAccount
+    name: devops-ai-agent-sa
+    namespace: platform-agents
+roleRef:
+  kind: ClusterRole
+  name: devops-agent-diagnostic-role
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: devops-ai-agent
+  namespace: platform-agents
+  labels:
+    app.kubernetes.io/name: devops-ai-agent
+    app.kubernetes.io/tier: platform-automation
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: devops-ai-agent
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: devops-ai-agent
+    spec:
+      serviceAccountName: devops-ai-agent-sa
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        fsGroup: 10001
+      containers:
+        - name: agent
+          image: 123456789012.dkr.ecr.us-east-1.amazonaws.com/platform/devops-ai-agent:v1.2.0
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: ENVIRONMENT
+              value: "production"
+            - name: LLM_MODEL
+              value: "gpt-4o"
+            - name: SLACK_BOT_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: agent-secrets
+                  key: SLACK_BOT_TOKEN
+            - name: SLACK_APP_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: agent-secrets
+                  key: SLACK_APP_TOKEN
+            - name: OPENAI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: agent-secrets
+                  key: OPENAI_API_KEY
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "512Mi"
+            limits:
+              cpu: "2000m"
+              memory: "2Gi"
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10

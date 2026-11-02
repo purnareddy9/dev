@@ -1,0 +1,32 @@
+# ==============================================================
+# Production Ultra-Compact Go DevOps Agent Dockerfile
+# Runtime: FROM scratch | ~18MB Total Image Size | Zero OS Footprint
+# ==============================================================
+
+# Stage 1: Compile Static Binary
+FROM golang:1.22-alpine AS builder
+WORKDIR /src
+
+RUN apk add --no-cache ca-certificates git
+
+COPY go.mod go.sum ./
+RUN go mod download
+
+COPY . .
+
+# Static linking without glibc (CGO_ENABLED=0)
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build \
+    -ldflags="-w -s -extldflags '-static'" \
+    -o /bin/devops-agent ./cmd/agent
+
+# Stage 2: Pure Blank Container
+FROM scratch
+
+# Root SSL certificates for outbound HTTPS calls to K8s API & LLM endpoints
+COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+COPY --from=builder /bin/devops-agent /devops-agent
+
+USER 10001:10001
+EXPOSE 8080
+
+ENTRYPOINT ["/devops-agent"]

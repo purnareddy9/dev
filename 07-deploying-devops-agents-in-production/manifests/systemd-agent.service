@@ -1,0 +1,46 @@
+# ==============================================================
+# /etc/systemd/system/devops-agent.service
+# Production Linux Systemd Service for Standalone Agent on VM
+# ==============================================================
+
+[Unit]
+Description=Enterprise DevOps AI Agent Service
+After=network.target network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=devops-agent
+Group=devops-agent
+WorkingDirectory=/opt/devops-agent
+
+# Environment configuration
+EnvironmentFile=/etc/devops-agent/agent.env
+
+# Execution command (Python or Node.js or Go binary)
+ExecStart=/opt/devops-agent/venv/bin/python /opt/devops-agent/main.py
+
+# Auto-Restart policies
+Restart=always
+RestartSec=5s
+
+# Security sandboxing
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+ReadOnlyPaths=/opt/devops-agent
+ReadWritePaths=/var/log/devops-agent /opt/devops-agent/cache
+PrivateTmp=true
+
+# Resource Limits
+LimitNOFILE=65536
+MemoryMax=2G
+CPUQuota=200%
+
+# Logging to Journald
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=devops-agent
+
+[Install]
+WantedBy=multi-user.target
