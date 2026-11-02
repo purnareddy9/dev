@@ -14,8 +14,8 @@
 | **NIFTY IT** (`^CNXIT`) | **32,442.50 INR** | **+0.79%** (📈) | `🟢 BULLISH` | Indian Technology & Software Enterprise Sector |
 | **NIFTY 500** (`^CRSLDX`) | **22,241.40 INR** | **+2.33%** (📈) | `🟢 BULLISH` | Indian Broad Market (Top 500 Across Large/Mid/Small-Cap) |
 | **BANK NIFTY** (`^NSEBANK`) | **55,002.20 INR** | **+1.90%** (📈) | `🟢 BULLISH` | Indian Banking & Financial Services Sector |
-| **S&P 500** (`^GSPC`) | **7,594.39 USD** | **-1.07%** (📉) | `🔴 BEARISH` | US Large-Cap Market Benchmark |
-| **NASDAQ Composite** (`^IXIC`) | **25,440.80 USD** | **-2.78%** (📉) | `🔴 BEARISH` | Global Technology & Growth Benchmark |
+| **S&P 500** (`^GSPC`) | **7,597.69 USD** | **-1.03%** (📉) | `🔴 BEARISH` | US Large-Cap Market Benchmark |
+| **NASDAQ Composite** (`^IXIC`) | **25,457.78 USD** | **-2.72%** (📉) | `🔴 BEARISH` | Global Technology & Growth Benchmark |
 
 
 ---
@@ -26,7 +26,8 @@
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | **[NVDA](./stocks/NVDA/README.md)** | NVDA | View | +0.00% | N/A | [Latest](./stocks/NVDA/latest.md) • [News](./stocks/NVDA/news.md) • [History](./stocks/NVDA/history/) |
 | **[PERSISTENT](./stocks/PERSISTENT/README.md)** | PERSISTENT | View | +0.00% | N/A | [Latest](./stocks/PERSISTENT/latest.md) • [News](./stocks/PERSISTENT/news.md) • [History](./stocks/PERSISTENT/history/) |
-| **[TRENT](./stocks/TRENT/README.md)** | Trent Limited | 3046.4 INR | -35.10% | 61.86 | [Latest](./stocks/TRENT/latest.md) • [News](./stocks/TRENT/news.md) • [History](./stocks/TRENT/history/) |
+| **[PVP](./stocks/PVP/README.md)** | Evervie Health Limited | 45.19 INR | +32.56% | 42.93 | [Latest](./stocks/PVP/latest.md) • [News](./stocks/PVP/news.md) • [History](./stocks/PVP/history/) |
+| **[TRENT](./stocks/TRENT/README.md)** | TRENT | View | +0.00% | N/A | [Latest](./stocks/TRENT/latest.md) • [News](./stocks/TRENT/news.md) • [History](./stocks/TRENT/history/) |
 
 ---
 
