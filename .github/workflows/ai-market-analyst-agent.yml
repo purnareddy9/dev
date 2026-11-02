@@ -11,6 +11,9 @@ on:
   schedule:
     - cron: '30 14 * * 1-5'
 
+permissions:
+  contents: write
+
 jobs:
   run-ai-analyst-agent:
     name: Execute Real-Time AI Market Agent
@@ -20,6 +23,9 @@ jobs:
     steps:
       - name: Checkout Repository Code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Python 3.12 Runtime
         uses: actions/setup-python@v5
@@ -38,11 +44,27 @@ jobs:
           echo "=========================================================="
           cat 09-github-actions-ai-agent/market_report.md
 
-      - name: Archive Analysis Report
+      - name: Commit and Push Market Intelligence to GitHub
+        run: |
+          echo "📦 Staging generated market intelligence files..."
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add market-intelligence/
+          if git diff --staged --quiet; then
+            echo "ℹ️ No market intelligence changes to commit."
+          else
+            git commit -m "chore(market-agent): autonomous intelligence update for ${{ github.event.inputs.ticker || 'NVDA' }} [$(date +'%Y-%m-%d')]"
+            git pull --rebase origin main
+            git push origin main
+            echo "🚀 Successfully pushed updated market reports and historical archives to GitHub repository!"
+          fi
+
+      - name: Archive Analysis Artifacts
         uses: actions/upload-artifact@v4
         if: always()
         with:
           name: market-analysis-${{ github.event.inputs.ticker || 'NVDA' }}
           path: |
+            market-intelligence/
             09-github-actions-ai-agent/market_report.md
             09-github-actions-ai-agent/*.py
