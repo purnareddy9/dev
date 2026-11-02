@@ -62,12 +62,16 @@ class GeminiMarketAnalyst:
     """Connects to Google Gemini API to analyze market trends and generate investment thesis."""
 
     def __init__(self):
-        self.api_key = (os.getenv("GEMINI_API_KEY") or "").strip()
+        raw_key = os.getenv("GEMINI_API_KEY") or ""
+        self.api_key = raw_key.strip().strip('"').strip("'")
 
     def analyze_market_snapshot(self, ticker_data: Dict[str, Any]) -> str:
         """Prompts Gemini with live market metrics for quantitative and fundamental analysis."""
         if not self.api_key:
+            print("ℹ️ GEMINI_API_KEY secret not detected. Using algorithmic quantitative engine.", flush=True)
             return self._fallback_quantitative_analysis(ticker_data)
+
+        print(f"🔑 GEMINI_API_KEY detected (length: {len(self.api_key)} chars). Invoking Google Gemini AI...", flush=True)
 
         prompt = (
             f"You are a Senior Quantitative Equity Analyst and SRE FinOps Agent.\n"
@@ -86,6 +90,7 @@ class GeminiMarketAnalyst:
         # Primary: Official Native Google Gemini REST Endpoint
         models_to_try = ["gemini-1.5-flash", "gemini-2.0-flash", "gemini-1.5-pro"]
         for model in models_to_try:
+            print(f"🤖 Querying Google Gemini ({model})...", flush=True)
             native_url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={self.api_key}"
             native_payload = {
                 "contents": [
@@ -111,13 +116,15 @@ class GeminiMarketAnalyst:
                     if candidates:
                         parts = candidates[0].get("content", {}).get("parts", [])
                         if parts and "text" in parts[0]:
+                            print(f"✨ Successfully generated AI analysis with model '{model}'!", flush=True)
                             return parts[0]["text"]
             except urllib.error.HTTPError as e:
                 err_body = e.read().decode("utf-8", errors="replace")
-                print(f"[DEBUG] Gemini model {model} HTTP {e.code}: {err_body[:200]}")
+                print(f"⚠️ Gemini model {model} returned HTTP {e.code}: {err_body[:200]}", flush=True)
             except Exception as e:
-                print(f"[DEBUG] Gemini model {model} error: {e}")
+                print(f"⚠️ Gemini model {model} request failed: {e}", flush=True)
 
+        print("⚠️ All Gemini model queries exhausted. Falling back to algorithmic quantitative engine.", flush=True)
         # Fallback to algorithmic quantitative analysis if all endpoints fail
         return self._fallback_quantitative_analysis(ticker_data)
 
@@ -137,7 +144,7 @@ class GeminiMarketAnalyst:
 
 
 def generate_github_step_summary(ticker_data: Dict[str, Any], ai_analysis: str):
-    """Outputs a rich Markdown dashboard into GitHub Actions $GITHUB_STEP_SUMMARY."""
+    """Outputs a rich Markdown dashboard into GitHub Actions $GITHUB_STEP_SUMMARY and local file."""
     change_emoji = "📈" if ticker_data["change_percent"] >= 0 else "📉"
     
     summary_md = f"""
@@ -162,7 +169,13 @@ def generate_github_step_summary(ticker_data: Dict[str, Any], ai_analysis: str):
 *Report generated autonomously by **GitHub Actions Real-Time AI Agent**.*
 """
 
-    print(summary_md)
+    # Force immediate unbuffered flush to stdout
+    print(summary_md, flush=True)
+
+    # Save to local file so shell steps can read it directly
+    report_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "market_report.md")
+    with open(report_file, "w", encoding="utf-8") as f:
+        f.write(summary_md)
 
     # If running inside GitHub Actions, write directly to GITHUB_STEP_SUMMARY
     summary_path = os.getenv("GITHUB_STEP_SUMMARY")
@@ -172,16 +185,18 @@ def generate_github_step_summary(ticker_data: Dict[str, Any], ai_analysis: str):
 
 
 def main():
-    ticker = sys.argv[1] if len(sys.argv) > 1 else "NVDA"
-    print(f"📡 Querying live real-time market data for '{ticker}'...")
+    ticker = sys.argv[1] if len(sys.argv) > 1 and sys.argv[1].strip() else "NVDA"
+    print(f"📡 Querying live real-time market data for '{ticker}'...", flush=True)
     
     try:
         data = MarketDataFetcher.get_live_ticker_data(ticker)
+        print(f"✅ Data fetched: ${data['current_price']} ({data['change_percent']:+0.2f}%)", flush=True)
         analyst = GeminiMarketAnalyst()
         analysis = analyst.analyze_market_snapshot(data)
         generate_github_step_summary(data, analysis)
+        print("🎉 Agent execution finished successfully!", flush=True)
     except Exception as e:
-        print(f"❌ Error during market agent execution: {e}")
+        print(f"❌ Error during market agent execution: {e}", flush=True)
         sys.exit(1)
 
 

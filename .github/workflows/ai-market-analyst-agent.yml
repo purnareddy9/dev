@@ -29,8 +29,14 @@ jobs:
       - name: Run Real-Time AI Market Intelligence Agent
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          PYTHONUNBUFFERED: "1"
         run: |
-          python 09-github-actions-ai-agent/market_agent.py "${{ github.event.inputs.ticker || 'NVDA' }}"
+          echo "🚀 Executing AI Agent for ticker: ${{ github.event.inputs.ticker || 'NVDA' }}"
+          python -u 09-github-actions-ai-agent/market_agent.py "${{ github.event.inputs.ticker || 'NVDA' }}"
+          echo "=========================================================="
+          echo "📄 GENERATED REPORT OUTPUT:"
+          echo "=========================================================="
+          cat 09-github-actions-ai-agent/market_report.md
 
       - name: Archive Analysis Report
         uses: actions/upload-artifact@v4
@@ -38,4 +44,5 @@ jobs:
         with:
           name: market-analysis-${{ github.event.inputs.ticker || 'NVDA' }}
           path: |
+            09-github-actions-ai-agent/market_report.md
             09-github-actions-ai-agent/*.py
