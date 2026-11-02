@@ -1,14 +1,18 @@
 #!/usr/bin/env python3
 """
 ==============================================================================
-Autonomous Real-Time AI Stock & Cloud Infrastructure Market Intelligence Agent
+Autonomous Real-Time AI Market & Indices Intelligence Agent
 Engineered for GitHub Actions, Autonomous Cloud CI/CD & Local Workstations
 ==============================================================================
-Pulls real-time 1-year historical market quotes, calculates quantitative
-technical indicators (20/50/200 SMA, RSI 14, Golden/Death Cross), fetches live
-breaking news, and synthesizes institutional-grade investment & FinOps reports
-using Google Gemini 3.8 Flash (with intelligent multi-tier fallback).
-Autonomously generates date-wise historical archives and commits back to GitHub.
+- Provides real-time market summaries on major domestic & global indices:
+  NIFTY 50, SENSEX, NIFTY IT, NIFTY 500, BANK NIFTY, S&P 500, NASDAQ.
+- Features intelligent symbol resolution: auto-resolves Indian NSE/BSE tickers
+  (e.g., 'PERSISTENT' -> 'PERSISTENT.NS', 'TCS' -> 'TCS.NS', 'INFY' -> 'INFY.NS')
+  and global tickers without 404 errors.
+- Calculates 20/50/200-day SMAs, Wilder's RSI (14), Golden/Death Crosses.
+- Renders GitHub-native Mermaid price & moving average charts.
+- Powered by Google Gemini 3.8 Flash (with resilient fallback).
+- Autonomously generates date-wise historical archives and commits back to GitHub.
 ==============================================================================
 """
 
@@ -17,6 +21,7 @@ import sys
 import json
 import time
 import urllib.request
+import urllib.parse
 import urllib.error
 from typing import Dict, Any, List
 
@@ -48,7 +53,7 @@ def calculate_rsi(prices: List[float], period: int = 14) -> float:
 
 
 def render_gauge_bar(value: float, min_val: float, max_val: float, width: int = 20) -> str:
-    """Renders a clean text-based progress bar for markdown displays."""
+    """Renders a clean text progress bar for markdown displays."""
     if max_val <= min_val:
         return "[" + "░" * width + "]"
     ratio = max(0.0, min(1.0, (value - min_val) / (max_val - min_val)))
@@ -57,18 +62,139 @@ def render_gauge_bar(value: float, min_val: float, max_val: float, width: int = 
 
 
 class MarketDataFetcher:
-    """Fetches live market metrics, 1-year historical price series, and news."""
+    """Fetches real-time market indices, stock quotes, historical technicals, and news."""
 
-    @staticmethod
-    def get_live_ticker_data(symbol: str) -> Dict[str, Any]:
-        """Queries 1-year daily chart data and calculates SMAs, RSI, and momentum."""
-        clean_symbol = symbol.strip().upper()
-        url = f"https://query1.finance.yahoo.com/v8/finance/chart/{clean_symbol}?interval=1d&range=1y"
-        headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
+    HEADERS = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
 
-        req = urllib.request.Request(url, headers=headers)
-        with urllib.request.urlopen(req, timeout=12) as resp:
-            data = json.loads(resp.read().decode("utf-8"))
+    @classmethod
+    def resolve_symbol(cls, raw_symbol: str) -> Dict[str, str]:
+        """
+        Smart resolution for tickers:
+        - Resolves index aliases (NIFTY 50, SENSEX, NIFTY IT, etc.)
+        - Auto-discovers Indian NSE/BSE suffixes (e.g. 'PERSISTENT' -> 'PERSISTENT.NS')
+        - Prevents 404 errors for non-US equities.
+        """
+        clean = raw_symbol.strip().upper()
+
+        index_aliases = {
+            "NIFTY": "^NSEI",
+            "NIFTY 50": "^NSEI",
+            "NIFTY50": "^NSEI",
+            "SENSEX": "^BSESN",
+            "BSE": "^BSESN",
+            "NIFTY IT": "^CNXIT",
+            "NIFTYIT": "^CNXIT",
+            "NIFTY 500": "^CRSLDX",
+            "NIFTY500": "^CRSLDX",
+            "BANK NIFTY": "^NSEBANK",
+            "BANKNIFTY": "^NSEBANK",
+            "NIFTY BANK": "^NSEBANK",
+            "SP500": "^GSPC",
+            "S&P 500": "^GSPC",
+            "NASDAQ": "^IXIC",
+            "DOW": "^DJI"
+        }
+
+        if clean in index_aliases:
+            return {"query_symbol": index_aliases[clean], "clean_symbol": clean, "is_index": True}
+
+        # If already has exchange extension (e.g., PERSISTENT.NS, NVDA) or index prefix (^)
+        if "." in clean or clean.startswith("^"):
+            return {"query_symbol": clean, "clean_symbol": clean.split(".")[0], "is_index": False}
+
+        # Query Yahoo search API to find matching real symbol
+        search_url = f"https://query1.finance.yahoo.com/v1/finance/search?q={urllib.parse.quote(clean)}&quotesCount=5"
+        try:
+            req = urllib.request.Request(search_url, headers=cls.HEADERS)
+            with urllib.request.urlopen(req, timeout=6) as resp:
+                data = json.loads(resp.read().decode("utf-8"))
+                quotes = data.get("quotes", [])
+                if quotes:
+                    # Prefer NSE (.NS) for Indian tickers
+                    for q in quotes:
+                        q_sym = q.get("symbol", "")
+                        if q_sym.endswith(".NS"):
+                            print(f"🔍 Resolved '{clean}' to Indian NSE symbol '{q_sym}' via Yahoo Finance Search.", flush=True)
+                            return {"query_symbol": q_sym, "clean_symbol": clean, "is_index": False}
+                    # Else return the top matching equity symbol
+                    top_sym = quotes[0].get("symbol", clean)
+                    print(f"🔍 Resolved '{clean}' to '{top_sym}' via Yahoo Finance Search.", flush=True)
+                    return {"query_symbol": top_sym, "clean_symbol": clean, "is_index": False}
+        except Exception as e:
+            print(f"⚠️ Yahoo search resolver error: {e}", flush=True)
+
+        return {"query_symbol": clean, "clean_symbol": clean, "is_index": False}
+
+    @classmethod
+    def get_indices_pulse(cls) -> List[Dict[str, Any]]:
+        """Queries live market metrics for major domestic and international indices."""
+        indices_to_track = [
+            ("NIFTY 50", "^NSEI", "Indian Benchmark (Top 50 Blue-Chip Equities)"),
+            ("SENSEX", "^BSESN", "BSE Benchmark (Top 30 Established Companies)"),
+            ("NIFTY IT", "^CNXIT", "Indian Technology & Software Enterprise Sector"),
+            ("NIFTY 500", "^CRSLDX", "Indian Broad Market (Top 500 Across Large/Mid/Small-Cap)"),
+            ("BANK NIFTY", "^NSEBANK", "Indian Banking & Financial Services Sector"),
+            ("S&P 500", "^GSPC", "US Large-Cap Market Benchmark"),
+            ("NASDAQ Composite", "^IXIC", "Global Technology & Growth Benchmark")
+        ]
+
+        results = []
+        for name, symbol, description in indices_to_track:
+            try:
+                url = f"https://query1.finance.yahoo.com/v8/finance/chart/{symbol}?interval=1d&range=5d"
+                req = urllib.request.Request(url, headers=cls.HEADERS)
+                with urllib.request.urlopen(req, timeout=6) as resp:
+                    data = json.loads(resp.read().decode("utf-8"))
+                    res = data["chart"]["result"][0]
+                    meta = res["meta"]
+                    price = meta.get("regularMarketPrice", 0.0)
+                    prev_close = meta.get("chartPreviousClose", price)
+                    change_pct = round(((price - prev_close) / prev_close) * 100, 2) if prev_close else 0.0
+                    currency = meta.get("currency", "PTS")
+
+                    results.append({
+                        "name": name,
+                        "symbol": symbol,
+                        "description": description,
+                        "price": price,
+                        "previous_close": prev_close,
+                        "change_percent": change_pct,
+                        "currency": currency,
+                        "status": "🟢 BULLISH" if change_pct >= 0 else "🔴 BEARISH"
+                    })
+            except Exception as e:
+                print(f"⚠️ Index query skipped for {name} ({symbol}): {e}", flush=True)
+
+        return results
+
+    @classmethod
+    def get_live_ticker_data(cls, symbol_info: Dict[str, str]) -> Dict[str, Any]:
+        """Queries 1-year historical chart data and calculates technical indicators."""
+        query_sym = symbol_info["query_symbol"]
+        clean_sym = symbol_info["clean_symbol"]
+
+        # If direct fetch fails with 404 and no extension, retry with .NS
+        attempts = [query_sym]
+        if "." not in query_sym and not query_sym.startswith("^"):
+            attempts.append(f"{query_sym}.NS")
+            attempts.append(f"{query_sym}.BO")
+
+        last_err = None
+        data = None
+
+        for sym in attempts:
+            url = f"https://query1.finance.yahoo.com/v8/finance/chart/{sym}?interval=1d&range=1y"
+            try:
+                req = urllib.request.Request(url, headers=cls.HEADERS)
+                with urllib.request.urlopen(req, timeout=12) as resp:
+                    data = json.loads(resp.read().decode("utf-8"))
+                    query_sym = sym
+                    break
+            except Exception as e:
+                last_err = e
+
+        if not data or not data.get("chart", {}).get("result"):
+            raise ValueError(f"Unable to retrieve market chart data for '{clean_sym}' (tried: {attempts}): {last_err}")
 
         result = data["chart"]["result"][0]
         meta = result["meta"]
@@ -86,19 +212,16 @@ class MarketDataFetcher:
         sma_200 = round(sum(closes[-200:]) / min(200, len(closes)), 2) if closes else current_price
         rsi_14 = calculate_rsi(closes)
 
-        # Distances from Moving Averages
         diff_sma20 = round(((current_price - sma_20) / sma_20) * 100, 2) if sma_20 else 0.0
         diff_sma50 = round(((current_price - sma_50) / sma_50) * 100, 2) if sma_50 else 0.0
         diff_sma200 = round(((current_price - sma_200) / sma_200) * 100, 2) if sma_200 else 0.0
 
         cross_status = "Golden Cross 🌟 (50 SMA > 200 SMA)" if sma_50 >= sma_200 else "Death Cross ⚠️ (50 SMA < 200 SMA)"
 
-        # 52-Week Range Percentile
         high_52 = meta.get("fiftyTwoWeekHigh", max(closes) if closes else current_price)
         low_52 = meta.get("fiftyTwoWeekLow", min(closes) if closes else current_price)
         range_percentile = round(((current_price - low_52) / (high_52 - low_52)) * 100, 1) if (high_52 > low_52) else 50.0
 
-        # Recent 10-day series for chart rendering
         recent_10_closes = closes[-10:] if len(closes) >= 10 else closes
         recent_10_timestamps = timestamps[-len(recent_10_closes):]
         recent_10_dates = [time.strftime("%m-%d", time.gmtime(t)) for t in recent_10_timestamps]
@@ -108,8 +231,9 @@ class MarketDataFetcher:
         timestamp_str = time.strftime("%Y-%m-%d %H:%M:%S UTC", time.gmtime(market_time))
 
         return {
-            "symbol": clean_symbol,
-            "company_name": meta.get("longName") or meta.get("shortName") or clean_symbol,
+            "symbol": query_sym,
+            "folder_symbol": clean_sym,
+            "company_name": meta.get("longName") or meta.get("shortName") or clean_sym,
             "currency": meta.get("currency", "USD"),
             "current_price": current_price,
             "previous_close": previous_close,
@@ -134,16 +258,15 @@ class MarketDataFetcher:
             "timestamp": timestamp_str
         }
 
-    @staticmethod
-    def get_live_news(symbol: str) -> List[Dict[str, str]]:
+    @classmethod
+    def get_live_news(cls, symbol: str) -> List[Dict[str, str]]:
         """Queries latest top breaking news articles for the stock ticker."""
-        clean_symbol = symbol.strip().upper()
-        url = f"https://query1.finance.yahoo.com/v1/finance/search?q={clean_symbol}&quotesCount=1&newsCount=6"
-        headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
+        clean = symbol.split(".")[0].strip()
+        url = f"https://query1.finance.yahoo.com/v1/finance/search?q={urllib.parse.quote(clean)}&quotesCount=1&newsCount=6"
 
-        req = urllib.request.Request(url, headers=headers)
         articles = []
         try:
+            req = urllib.request.Request(url, headers=cls.HEADERS)
             with urllib.request.urlopen(req, timeout=8) as resp:
                 data = json.loads(resp.read().decode("utf-8"))
                 for item in data.get("news", [])[:6]:
@@ -151,7 +274,7 @@ class MarketDataFetcher:
                     articles.append({
                         "title": item.get("title", "Market Update"),
                         "publisher": item.get("publisher", "Financial News"),
-                        "link": item.get("link", f"https://finance.yahoo.com/quote/{clean_symbol}"),
+                        "link": item.get("link", f"https://finance.yahoo.com/quote/{symbol}"),
                         "time_str": time.strftime("%Y-%m-%d %H:%M UTC", time.gmtime(pub_time))
                     })
         except Exception as e:
@@ -161,26 +284,28 @@ class MarketDataFetcher:
 
 
 class GeminiMarketAnalyst:
-    """Connects to Google Gemini API (prioritizing Gemini 3.8 Flash) with resilient multi-tier fallback."""
+    """Invokes Google Gemini 3.8 Flash (with resilient fallback) to synthesize institutional reports."""
 
     def __init__(self):
         raw_key = os.getenv("GEMINI_API_KEY") or ""
         self.api_key = raw_key.strip().strip('"').strip("'")
 
-    def analyze_market_snapshot(self, ticker_data: Dict[str, Any], news: List[Dict[str, str]]) -> str:
-        """Prompts Gemini with quantitative indicators and breaking news for deep institutional analysis."""
+    def analyze_market_snapshot(self, ticker_data: Dict[str, Any], indices: List[Dict[str, Any]], news: List[Dict[str, str]]) -> str:
+        """Prompts Gemini with macro indices context, quantitative technicals, and news."""
         if not self.api_key:
             print("ℹ️ GEMINI_API_KEY secret not detected. Using algorithmic quantitative engine.", flush=True)
-            return self._fallback_quantitative_analysis(ticker_data, news)
+            return self._fallback_quantitative_analysis(ticker_data, indices)
 
         print(f"🔑 GEMINI_API_KEY detected (length: {len(self.api_key)} chars). Invoking Google Gemini AI...", flush=True)
 
+        indices_summary = "\n".join([f"- {idx['name']} ({idx['symbol']}): {idx['price']} {idx['currency']} ({idx['change_percent']:+0.2f}%) [{idx['status']}]" for idx in indices])
         news_text = "\n".join([f"- [{a['publisher']}] {a['title']} ({a['time_str']})" for a in news]) if news else "No live headlines retrieved."
 
         prompt = (
-            f"You are a Senior Quantitative Equity Analyst and Cloud Infrastructure SRE FinOps Agent.\n"
+            f"You are a Senior Quantitative Equity Strategist and Cloud Infrastructure SRE FinOps Agent.\n"
             f"Perform an institutional-grade research synthesis for {ticker_data['company_name']} ({ticker_data['symbol']}):\n\n"
-            f"### LIVE TECHNICAL & QUANTITATIVE DATA:\n"
+            f"### 🌐 GLOBAL & DOMESTIC INDICES CONTEXT:\n{indices_summary}\n\n"
+            f"### 📈 LIVE TECHNICAL & VALUATION DATA FOR {ticker_data['symbol']}:\n"
             f"- Current Price: ${ticker_data['current_price']} {ticker_data['currency']}\n"
             f"- 24h Change: {ticker_data['change_percent']:+0.2f}%\n"
             f"- 20-Day SMA: ${ticker_data['sma_20']} (Price diff: {ticker_data['diff_sma20']:+0.2f}%)\n"
@@ -189,33 +314,31 @@ class GeminiMarketAnalyst:
             f"- Moving Average Alignment: {ticker_data['cross_status']}\n"
             f"- 14-Period RSI: {ticker_data['rsi_14']} / 100\n"
             f"- 52-Week Range: ${ticker_data['52_week_low']} to ${ticker_data['52_week_high']} (Current percentile: {ticker_data['range_percentile']}%)\n\n"
-            f"### RECENT NEWS HEADLINES:\n{news_text}\n\n"
+            f"### 📰 BREAKING NEWS HEADLINES:\n{news_text}\n\n"
             f"### INSTRUCTIONS FOR YOUR ANALYSIS:\n"
             f"Output professional, structured GitHub Markdown with the following exact sections:\n\n"
             f"### 1. 🎯 Executive Recommendation & Rating\n"
-            f"- **Verdict**: **BUY**, **HOLD**, or **REDUCE / SELL** (Pick one with strong conviction)\n"
+            f"- **Verdict**: **BUY**, **HOLD**, or **REDUCE / SELL** (Pick one with high conviction)\n"
             f"- **Conviction Score**: (1 to 10 Scale)\n"
-            f"- **Target Price Range**: (Near-term 3-month and 12-month targets)\n"
-            f"- **Executive Thesis**: 2 concise paragraphs summarizing fundamental and technical rationale.\n\n"
+            f"- **Target Price Range**: (Near-term 3-month and 12-month targets in {ticker_data['currency']})\n"
+            f"- **Executive Thesis**: Concise paragraphs explaining fundamental, technical, and macroeconomic reasons.\n\n"
             f"### 2. 📊 Quantitative Valuation & Financial Fundamentals\n"
-            f"Synthesize estimated valuation metrics:\n"
-            f"- **Trailing & Forward P/E**\n"
+            f"- **Trailing & Forward P/E multiples**\n"
             f"- **Price-to-Sales (P/S) & Return on Equity (ROE)**\n"
-            f"- **Profit Margins & Revenue Trajectory**\n"
-            f"- **Valuation Assessment**: (Overvalued / Fair Value / Undervalued)\n\n"
+            f"- **Operating & Profit Margins / Revenue Growth Trends**\n"
+            f"- **Valuation Assessment**: (Undervalued / Fair Value / Overvalued)\n\n"
             f"### 3. 📈 Technical Trend & Moving Average Synthesis\n"
-            f"- Detail the interaction between the current price and the 20, 50, and 200-day SMAs.\n"
-            f"- Analyze the RSI ({ticker_data['rsi_14']}) level (Oversold, Bullish Divergence, or Distribution).\n"
-            f"- Highlight key support and resistance floors.\n\n"
-            f"### 4. ☁️ Platform SRE & Cloud FinOps Impact\n"
-            f"- Analyze the infrastructure and cloud budget implications (especially if this is an AI, compute, or hyperscaler provider like NVDA, MSFT, GOOGL, AMZN, ORCL).\n"
-            f"- Provide concrete FinOps recommendations for engineering teams (e.g. spot instances, GPU reservation strategies, CUD hedging, cluster right-sizing).\n\n"
+            f"- Detailed interaction with the 20, 50, and 200-day SMAs.\n"
+            f"- Evaluation of RSI ({ticker_data['rsi_14']}) momentum.\n"
+            f"- Identification of immediate support floor and major overhead resistance ceiling.\n\n"
+            f"### 4. ☁️ Enterprise SRE & Cloud FinOps Impact\n"
+            f"- Analyze infrastructure, digital transformation, and compute budget implications (whether this company is an IT service provider, hyperscaler, or silicon designer).\n"
+            f"- Concrete FinOps recommendations for IT/engineering leadership (e.g. cloud optimization, software delivery velocity, workload scheduling).\n\n"
             f"### 5. ⚖️ Catalysts & Key Risks\n"
             f"- **Top 3 Bull Catalysts**\n"
             f"- **Top 3 Bear Risks**"
         )
 
-        # Multi-tier resilient fallback prioritizing Gemini 3.8 Flash
         models_to_try = [
             "gemini-3.8-flash",
             "gemini-flash-latest",
@@ -232,14 +355,8 @@ class GeminiMarketAnalyst:
             print(f"🤖 Querying Google Gemini ({model})...", flush=True)
             native_url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={self.api_key}"
             native_payload = {
-                "contents": [
-                    {
-                        "parts": [{"text": prompt}]
-                    }
-                ],
-                "generationConfig": {
-                    "temperature": 0.2
-                }
+                "contents": [{"parts": [{"text": prompt}]}],
+                "generationConfig": {"temperature": 0.2}
             }
 
             try:
@@ -265,9 +382,9 @@ class GeminiMarketAnalyst:
                 print(f"⚠️ Gemini model {model} request failed: {e}", flush=True)
 
         print("⚠️ All Gemini model queries exhausted. Falling back to algorithmic quantitative engine.", flush=True)
-        return self._fallback_quantitative_analysis(ticker_data, news)
+        return self._fallback_quantitative_analysis(ticker_data, indices)
 
-    def _fallback_quantitative_analysis(self, data: Dict[str, Any], news: List[Dict[str, str]]) -> str:
+    def _fallback_quantitative_analysis(self, data: Dict[str, Any], indices: List[Dict[str, Any]]) -> str:
         """Deterministic quantitative and technical report if GEMINI_API_KEY is unavailable."""
         trend = "BULLISH 🟢" if data["change_percent"] > 0 else "BEARISH 🔴"
         rsi_zone = "Oversold (Accumulation Zone)" if data["rsi_14"] < 35 else ("Overbought (Take Profit Zone)" if data["rsi_14"] > 70 else "Neutral Momentum")
@@ -277,14 +394,14 @@ class GeminiMarketAnalyst:
 ### 1. 🎯 Executive Recommendation & Rating
 - **Verdict**: **{verdict}**
 - **Trend Momentum**: **{trend}** ({data['change_percent']:+0.2f}% today)
-- **Technical Posture**: Currently trading at `${data['current_price']}` vs 200-SMA `${data['sma_200']}` ({data['diff_sma200']:+0.2f}%).
+- **Technical Posture**: Currently trading at `{data['current_price']} {data['currency']}` vs 200-SMA `{data['sma_200']}` ({data['diff_sma200']:+0.2f}%).
 - **RSI Condition**: **{data['rsi_14']}** — {rsi_zone}.
 
 ### 2. 📊 Quantitative Valuation & Financial Fundamentals
-- **52-Week Range**: `${data['52_week_low']}` – `${data['52_week_high']}` (Trading at {data['range_percentile']}% of annual bandwidth).
-- **20-Day SMA**: `${data['sma_20']}` ({data['diff_sma20']:+0.2f}% relative distance).
-- **50-Day SMA**: `${data['sma_50']}` ({data['diff_sma50']:+0.2f}% relative distance).
-- **200-Day SMA**: `${data['sma_200']}` ({data['diff_sma200']:+0.2f}% relative distance).
+- **52-Week Range**: `{data['52_week_low']}` – `{data['52_week_high']}` (Trading at {data['range_percentile']}% of annual bandwidth).
+- **20-Day SMA**: `{data['sma_20']}` ({data['diff_sma20']:+0.2f}% relative distance).
+- **50-Day SMA**: `{data['sma_50']}` ({data['diff_sma50']:+0.2f}% relative distance).
+- **200-Day SMA**: `{data['sma_200']}` ({data['diff_sma200']:+0.2f}% relative distance).
 - **Moving Average Cross**: {data['cross_status']}.
 
 ### 3. 📈 Technical Trend & Moving Average Synthesis
@@ -292,17 +409,37 @@ class GeminiMarketAnalyst:
 - Short-term 20-day SMA tracking indicates ongoing momentum shift; a sustained close above the 50-day average is required to confirm trend reversal.
 
 ### 4. ☁️ Platform SRE & Cloud FinOps Impact
-- For engineering organizations leveraging this vendor's infrastructure, current market fluctuations warrant strict compute right-sizing.
-- Review commitments for GPU instances (e.g. H100/B200 clusters) and prioritize Spot or savings-plan capacity over on-demand rates.
+- For enterprise organizations leveraging this vendor or IT provider, market fluctuations warrant strict compute and IT budget right-sizing.
+- Optimize application workloads and verify that operational service-level agreements (SLAs) are supported by cost-effective resource commitments.
 
 ### 5. ⚖️ Catalysts & Key Risks
-- **Bull Catalysts**: Rebound from 200-day SMA support; enterprise AI capital expenditure expansion; stabilizing cloud margins.
-- **Bear Risks**: Prolonged tech sector rotation; macro monetary headwinds; supply chain lead time variations.
+- **Bull Catalysts**: Rebound from key moving average support; broadening digital transformation investments; stabilizing operating margins.
+- **Bear Risks**: Prolonged tech sector consolidation; macro monetary shifts; changing enterprise IT spending priorities.
 """
 
 
 class ReportGenerator:
-    """Renders formatted GitHub Markdown reports, Mermaid charts, and directory archives."""
+    """Renders formatted GitHub Markdown reports, Mermaid charts, indices dashboards, and directory archives."""
+
+    @staticmethod
+    def render_indices_table(indices: List[Dict[str, Any]]) -> str:
+        """Renders the executive market indices pulse table."""
+        if not indices:
+            return "_No live index data available._"
+
+        rows = []
+        for idx in indices:
+            icon = "📈" if idx["change_percent"] >= 0 else "📉"
+            rows.append(
+                f"| **{idx['name']}** (`{idx['symbol']}`) | **{idx['price']:,.2f} {idx['currency']}** | "
+                f"**{idx['change_percent']:+0.2f}%** ({icon}) | `{idx['status']}` | {idx['description']} |"
+            )
+
+        return f"""
+| Index Benchmark | Live Level | 24h Change | Market Posture | Benchmark Sector Coverage |
+| :--- | :--- | :--- | :--- | :--- |
+{chr(10).join(rows)}
+"""
 
     @staticmethod
     def render_mermaid_price_chart(data: Dict[str, Any]) -> str:
@@ -314,9 +451,9 @@ class ReportGenerator:
 
         return f"""```mermaid
 xychart-beta
-    title "{data['symbol']} 10-Day Closing Price Trajectory"
+    title "{data['folder_symbol']} 10-Day Closing Price Trajectory"
     x-axis {dates_json}
-    y-axis "Close Price ($USD)" {min_p} --> {max_p}
+    y-axis "Close ({data['currency']})" {min_p} --> {max_p}
     line {closes_json}
 ```"""
 
@@ -329,18 +466,19 @@ xychart-beta
 
         return f"""```mermaid
 xychart-beta
-    title "{data['symbol']} Price vs Key Moving Averages (20 / 50 / 200 SMA)"
+    title "{data['folder_symbol']} Price vs Key Moving Averages (20 / 50 / 200 SMA)"
     x-axis ["Current", "SMA 20", "SMA 50", "SMA 200"]
-    y-axis "Price ($USD)" {min_p} --> {max_p}
+    y-axis "Price ({data['currency']})" {min_p} --> {max_p}
     bar {json.dumps(vals)}
 ```"""
 
     @classmethod
-    def generate_full_report_markdown(cls, data: Dict[str, Any], ai_analysis: str, news: List[Dict[str, str]]) -> str:
+    def generate_full_report_markdown(cls, data: Dict[str, Any], indices: List[Dict[str, Any]], ai_analysis: str, news: List[Dict[str, str]]) -> str:
         """Compiles the complete detailed intelligence report."""
         change_emoji = "📈" if data["change_percent"] >= 0 else "📉"
         rsi_gauge = render_gauge_bar(data["rsi_14"], 0, 100, 20)
         range_gauge = render_gauge_bar(data["range_percentile"], 0, 100, 20)
+        indices_table = cls.render_indices_table(indices)
         price_chart = cls.render_mermaid_price_chart(data)
         ma_chart = cls.render_mermaid_ma_chart(data)
 
@@ -355,29 +493,36 @@ xychart-beta
 {news_rows}
 """
 
-        return f"""# {change_emoji} Real-Time AI Stock & Cloud Infrastructure Intelligence: {data['symbol']}
-> **{data['company_name']}** | Analysis generated autonomously on `{data['timestamp']}`
+        return f"""# {change_emoji} Real-Time Market & Cloud Infrastructure Intelligence: {data['folder_symbol']}
+> **{data['company_name']}** (`{data['symbol']}`) | Analysis generated autonomously on `{data['timestamp']}`
 
 ---
 
-## 📌 Executive Market Dashboard
+## 🌐 1. Global & Domestic Market Indices Pulse
+> *Real-time macro benchmark posture across Indian & global equity markets:*
+
+{indices_table}
+
+---
+
+## 📌 2. Stock Executive Dashboard: {data['folder_symbol']}
 
 | Metric | Live Value | 24h Context / Technical Status |
 | :--- | :--- | :--- |
-| **Current Live Price** | **${data['current_price']} {data['currency']}** | **{data['change_percent']:+0.2f}%** ({change_emoji}) |
-| **Day High / Low** | ${data['day_high']} / ${data['day_low']} | Intraday spread |
-| **Previous Close** | ${data['previous_close']} | Reference baseline |
-| **20-Day SMA** | **${data['sma_20']}** | Price diff: `{data['diff_sma20']:+0.2f}%` |
-| **50-Day SMA** | **${data['sma_50']}** | Price diff: `{data['diff_sma50']:+0.2f}%` |
-| **200-Day SMA** | **${data['sma_200']}** | Price diff: `{data['diff_sma200']:+0.2f}%` |
+| **Current Live Price** | **{data['current_price']:,} {data['currency']}** | **{data['change_percent']:+0.2f}%** ({change_emoji}) |
+| **Day High / Low** | {data['day_high']} / {data['day_low']} {data['currency']} | Intraday spread |
+| **Previous Close** | {data['previous_close']} {data['currency']} | Reference baseline |
+| **20-Day SMA** | **{data['sma_20']} {data['currency']}** | Price diff: `{data['diff_sma20']:+0.2f}%` |
+| **50-Day SMA** | **{data['sma_50']} {data['currency']}** | Price diff: `{data['diff_sma50']:+0.2f}%` |
+| **200-Day SMA** | **{data['sma_200']} {data['currency']}** | Price diff: `{data['diff_sma200']:+0.2f}%` |
 | **Moving Average Cross** | `{data['cross_status']}` | Structural macro alignment |
 | **RSI (14-Period)** | **{data['rsi_14']} / 100** | `{rsi_gauge}` |
-| **52-Week Range** | ${data['52_week_low']} – ${data['52_week_high']} | `{range_gauge}` ({data['range_percentile']}%) |
+| **52-Week Range** | {data['52_week_low']} – {data['52_week_high']} {data['currency']} | `{range_gauge}` ({data['range_percentile']}%) |
 | **Trading Volume** | {data['volume']:,} | Regular session shares |
 
 ---
 
-## 📊 Technical Trend Visualizations (GitHub Native Charts)
+## 📊 3. Technical Trend Visualizations (GitHub Native Charts)
 
 ### 10-Day Closing Price Trajectory
 {price_chart}
@@ -387,7 +532,7 @@ xychart-beta
 
 ---
 
-## 🤖 AI Deep Cognitive Research & FinOps Intelligence
+## 🤖 4. AI Deep Cognitive Research & FinOps Intelligence
 
 {ai_analysis}
 
@@ -409,7 +554,7 @@ xychart-beta
             for a in news
         ]) if news else "_No recent breaking news found for this ticker._"
 
-        return f"""# 📰 Live News & Financial Catalyst Feed: {data['symbol']} ({data['company_name']})
+        return f"""# 📰 Live News & Financial Catalyst Feed: {data['folder_symbol']} ({data['company_name']})
 > *Last updated: `{data['timestamp']}`*
 
 {items}
@@ -419,20 +564,19 @@ xychart-beta
 """
 
 
-def save_reports_and_sync_portfolio(ticker_data: Dict[str, Any], full_report_md: str, news_md: str):
+def save_reports_and_sync_portfolio(ticker_data: Dict[str, Any], indices: List[Dict[str, Any]], full_report_md: str, news_md: str):
     """Saves stock reports into structured directories and updates portfolio index."""
-    symbol = ticker_data["symbol"]
+    folder_sym = ticker_data["folder_symbol"]
     date_str = ticker_data["date"]
 
-    # Base directory for market intelligence
     workspace_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     base_dir = os.path.join(workspace_root, "market-intelligence")
-    stock_dir = os.path.join(base_dir, "stocks", symbol)
+    stock_dir = os.path.join(base_dir, "stocks", folder_sym)
     history_dir = os.path.join(stock_dir, "history")
 
     os.makedirs(history_dir, exist_ok=True)
 
-    # 1. Save README.md in stock folder (browsable on GitHub)
+    # 1. Save README.md in stock folder
     readme_path = os.path.join(stock_dir, "README.md")
     with open(readme_path, "w", encoding="utf-8") as f:
         f.write(full_report_md)
@@ -452,49 +596,57 @@ def save_reports_and_sync_portfolio(ticker_data: Dict[str, Any], full_report_md:
     with open(news_path, "w", encoding="utf-8") as f:
         f.write(news_md)
 
-    # 5. Save local market_report.md for console cat
+    # 5. Save local market_report.md for workflow console cat
     local_report = os.path.join(os.path.dirname(os.path.abspath(__file__)), "market_report.md")
     with open(local_report, "w", encoding="utf-8") as f:
         f.write(full_report_md)
 
-    # 6. Update master portfolio README.md
+    # 6. Update master portfolio README.md with indices pulse
     portfolio_readme = os.path.join(base_dir, "README.md")
-    update_portfolio_index(portfolio_readme, ticker_data)
+    update_portfolio_index(portfolio_readme, ticker_data, indices)
 
     print(f"📁 Reports saved successfully in:\n  - {readme_path}\n  - {history_path}\n  - {news_path}", flush=True)
 
 
-def update_portfolio_index(portfolio_path: str, latest_data: Dict[str, Any]):
-    """Maintains master market-intelligence/README.md cataloging all tracked stocks."""
+def update_portfolio_index(portfolio_path: str, latest_data: Dict[str, Any], indices: List[Dict[str, Any]]):
+    """Maintains master market-intelligence/README.md cataloging indices and all tracked stocks."""
     stocks_dir = os.path.join(os.path.dirname(portfolio_path), "stocks")
     os.makedirs(stocks_dir, exist_ok=True)
 
     tracked_symbols = sorted([d for d in os.listdir(stocks_dir) if os.path.isdir(os.path.join(stocks_dir, d))])
-    if latest_data["symbol"] not in tracked_symbols:
-        tracked_symbols.append(latest_data["symbol"])
+    if latest_data["folder_symbol"] not in tracked_symbols:
+        tracked_symbols.append(latest_data["folder_symbol"])
+
+    indices_table = ReportGenerator.render_indices_table(indices)
 
     rows = []
     for sym in tracked_symbols:
-        sym_readme = os.path.join(stocks_dir, sym, "README.md")
-        if sym == latest_data["symbol"]:
+        if sym == latest_data["folder_symbol"]:
             d = latest_data
         else:
-            d = {"symbol": sym, "company_name": sym, "current_price": "View", "change_percent": 0.0, "rsi_14": "N/A", "date": "Tracked"}
+            d = {"folder_symbol": sym, "company_name": sym, "current_price": "View", "currency": "", "change_percent": 0.0, "rsi_14": "N/A"}
 
         change_badge = f"{d.get('change_percent', 0.0):+0.2f}%" if isinstance(d.get("change_percent"), (int, float)) else "N/A"
+        price_str = f"{d.get('current_price')} {d.get('currency', '')}".strip()
         rows.append(
             f"| **[{sym}](./stocks/{sym}/README.md)** | {d.get('company_name', sym)} | "
-            f"${d.get('current_price')} | {change_badge} | {d.get('rsi_14')} | "
+            f"{price_str} | {change_badge} | {d.get('rsi_14')} | "
             f"[Latest](./stocks/{sym}/latest.md) • [News](./stocks/{sym}/news.md) • [History](./stocks/{sym}/history/) |"
         )
 
-    portfolio_content = f"""# 🌐 Autonomous Cloud & SRE Market Intelligence Hub
+    portfolio_content = f"""# 🌐 Autonomous Cloud & Market Intelligence Hub
 > **Real-Time Financial & Cloud Infrastructure Analytics Engine**
 > Autonomously updated on every market session via GitHub Actions and Google Gemini 3.8 Flash.
 
 ---
 
-## 📈 Tracked Enterprise & Infrastructure Stocks
+## 🌍 1. Global & Domestic Market Indices Pulse
+
+{indices_table}
+
+---
+
+## 📈 2. Tracked Enterprise & Infrastructure Stocks
 
 | Ticker | Company Name | Live Price | 24h Change | RSI (14) | Direct Reports |
 | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -524,31 +676,46 @@ market-intelligence/
 
 
 def main():
-    ticker = sys.argv[1] if len(sys.argv) > 1 and sys.argv[1].strip() else "NVDA"
-    print(f"📡 Querying 1-year historical data & technicals for '{ticker}'...", flush=True)
+    raw_ticker = sys.argv[1] if len(sys.argv) > 1 and sys.argv[1].strip() else "NVDA"
+    print(f"🚀 Initializing Autonomous AI Market Agent for input: '{raw_ticker}'...", flush=True)
 
     try:
-        data = MarketDataFetcher.get_live_ticker_data(ticker)
-        print(f"✅ Data fetched: {data['company_name']} (${data['current_price']}) | SMA20: ${data['sma_20']} | SMA50: ${data['sma_50']} | SMA200: ${data['sma_200']} | RSI: {data['rsi_14']}", flush=True)
+        # Step 1: Query Domestic and Global Indices
+        print("🌐 Step 1: Fetching Market Indices Pulse (Nifty 50, Sensex, Nifty IT, Nifty 500, Bank Nifty, S&P 500, Nasdaq)...", flush=True)
+        indices = MarketDataFetcher.get_indices_pulse()
+        for idx in indices:
+            print(f"  📊 {idx['name']}: {idx['price']} {idx['currency']} ({idx['change_percent']:+0.2f}%)", flush=True)
 
-        print(f"📰 Querying live breaking news for '{ticker}'...", flush=True)
-        news = MarketDataFetcher.get_live_news(ticker)
+        # Step 2: Resolve Ticker (smart NSE/BSE and global mapping)
+        print(f"🔍 Step 2: Resolving symbol for '{raw_ticker}'...", flush=True)
+        symbol_info = MarketDataFetcher.resolve_symbol(raw_ticker)
+        print(f"✅ Symbol resolved: Query as '{symbol_info['query_symbol']}' (Folder: '{symbol_info['clean_symbol']}')", flush=True)
+
+        # Step 3: Fetch 1-year historical chart data and technical indicators
+        print(f"📡 Step 3: Fetching 1-year historical chart & indicators for '{symbol_info['query_symbol']}'...", flush=True)
+        data = MarketDataFetcher.get_live_ticker_data(symbol_info)
+        print(f"✅ Data fetched: {data['company_name']} ({data['current_price']} {data['currency']}) | SMA20: {data['sma_20']} | SMA50: {data['sma_50']} | SMA200: {data['sma_200']} | RSI: {data['rsi_14']}", flush=True)
+
+        # Step 4: Fetch live breaking news
+        print(f"📰 Step 4: Fetching live breaking news for '{data['folder_symbol']}'...", flush=True)
+        news = MarketDataFetcher.get_live_news(data["symbol"])
         print(f"✅ Found {len(news)} live news headlines.", flush=True)
 
+        # Step 5: Synthesize AI research report with Gemini 3.8 Flash
+        print("🤖 Step 5: Invoking Google Gemini AI for cognitive synthesis...", flush=True)
         analyst = GeminiMarketAnalyst()
-        ai_analysis = analyst.analyze_market_snapshot(data, news)
+        ai_analysis = analyst.analyze_market_snapshot(data, indices, news)
 
-        # Generate reports
-        full_report_md = ReportGenerator.generate_full_report_markdown(data, ai_analysis, news)
+        # Step 6: Generate reports & save
+        print("📁 Step 6: Compiling Markdown dashboards and updating repository records...", flush=True)
+        full_report_md = ReportGenerator.generate_full_report_markdown(data, indices, ai_analysis, news)
         news_md = ReportGenerator.generate_news_markdown(data, news)
+        save_reports_and_sync_portfolio(data, indices, full_report_md, news_md)
 
-        # Save date-wise, latest, news, and update portfolio
-        save_reports_and_sync_portfolio(data, full_report_md, news_md)
-
-        # Output to console
+        # Print output for runner console
         print(full_report_md, flush=True)
 
-        # Write to GitHub Step Summary if running in GitHub Actions
+        # Step Summary for GitHub Actions Web UI
         step_summary_path = os.getenv("GITHUB_STEP_SUMMARY")
         if step_summary_path:
             with open(step_summary_path, "a", encoding="utf-8") as f:
