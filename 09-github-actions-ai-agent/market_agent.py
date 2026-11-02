@@ -88,7 +88,19 @@ class GeminiMarketAnalyst:
         )
 
         # Primary: Official Native Google Gemini REST Endpoint
-        models_to_try = ["gemini-1.5-flash", "gemini-2.0-flash", "gemini-1.5-pro"]
+        # Priority order updated for latest Gemini generation API models
+        models_to_try = [
+            "gemini-3.5-flash-lite",
+            "gemini-3.8-flash",
+            "gemini-flash-latest",
+            "gemini-flash-lite-latest",
+            "gemini-2.5-pro"
+        ]
+        headers = {
+            "Content-Type": "application/json",
+            "X-goog-api-key": self.api_key
+        }
+
         for model in models_to_try:
             print(f"🤖 Querying Google Gemini ({model})...", flush=True)
             native_url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={self.api_key}"
@@ -107,7 +119,7 @@ class GeminiMarketAnalyst:
                 req = urllib.request.Request(
                     native_url,
                     data=json.dumps(native_payload).encode("utf-8"),
-                    headers={"Content-Type": "application/json"},
+                    headers=headers,
                     method="POST"
                 )
                 with urllib.request.urlopen(req, timeout=25) as resp:
@@ -115,9 +127,10 @@ class GeminiMarketAnalyst:
                     candidates = data.get("candidates", [])
                     if candidates:
                         parts = candidates[0].get("content", {}).get("parts", [])
-                        if parts and "text" in parts[0]:
+                        texts = [p.get("text", "") for p in parts if "text" in p and p.get("text")]
+                        if texts:
                             print(f"✨ Successfully generated AI analysis with model '{model}'!", flush=True)
-                            return parts[0]["text"]
+                            return "\n\n".join(texts)
             except urllib.error.HTTPError as e:
                 err_body = e.read().decode("utf-8", errors="replace")
                 print(f"⚠️ Gemini model {model} returned HTTP {e.code}: {err_body[:200]}", flush=True)

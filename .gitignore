@@ -7,6 +7,8 @@ __pycache__/
 env/
 venv/
 .venv/
+market_report.md
+09-github-actions-ai-agent/market_report.md
 
 # Node.js
 node_modules/
