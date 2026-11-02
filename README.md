@@ -20,6 +20,14 @@
 
 ---
 
+## 🤖 Animated DevOps Agent Execution: Runners & AI Incident Loops
+
+<p align="center">
+  <img src="./assets/agent-architecture-animation.svg" alt="DevOps Agent Architecture Animation" width="100%" />
+</p>
+
+---
+
 ## 🏛️ Comprehensive Architecture Blueprint
 
 ```mermaid
@@ -71,6 +79,7 @@ flowchart TB
 | [**02. Jenkins Enterprise**](./02-jenkins-enterprise/README.md) | JCasC (Config-as-Code), Dynamic K8s Pod Agents, Enterprise Shared Libraries, Declarative vs Scripted, Performance & GC Tuning | [Declarative Jenkinsfile](./02-jenkins-enterprise/pipeline-templates/Jenkinsfile.declarative), [Scripted Jenkinsfile](./02-jenkins-enterprise/pipeline-templates/Jenkinsfile.scripted), [K8s Pod Agent](./02-jenkins-enterprise/pipeline-templates/k8s-pod-agent.yaml), [Shared Library](./02-jenkins-enterprise/pipeline-templates/shared-library-deploy.groovy) | [Senior Jenkins Scenarios](./02-jenkins-enterprise/interview-scenarios.md) |
 | [**03. GitOps & ArgoCD**](./03-gitops-and-argocd/README.md) | Declarative K8s Delivery, ApplicationSets (Cluster/Matrix), Sync Waves, Pre/Post Hooks, Argo Rollouts (Canary), Secrets Management (External Secrets Operator) | [Application CRD](./03-gitops-and-argocd/manifests/argocd-application.yaml), [ApplicationSet Matrix](./03-gitops-and-argocd/manifests/applicationset-matrix.yaml), [Canary Rollout](./03-gitops-and-argocd/manifests/argo-rollout-canary.yaml), [External Secrets](./03-gitops-and-argocd/manifests/external-secrets-vault.yaml) | [Senior GitOps Scenarios](./03-gitops-and-argocd/interview-scenarios.md) |
 | [**04. End-to-End System Designs**](./04-end-to-end-production-designs/README.md) | Zero-Trust 500+ Microservice Multi-Region Pipeline Architecture, Disaster Recovery, SLSA Level 3 Compliance | System Diagrams & Production Failure Case Studies | [Incident Response Scenarios](./04-end-to-end-production-designs/production-incident-scenarios.md) |
+| [**05. Building DevOps Agents**](./05-devops-agents/README.md) | **Pillar 1**: Custom Hardened CI Runners (ARC & Jenkins Pods)<br>**Pillar 2**: Autonomous AI SRE Agents (ReAct Loop, Tool Calling, K8s Triage) | [Hardened Runner Dockerfile](./05-devops-agents/cicd-runner-agents/Dockerfile.hardened-runner), [ARC ScaleSet](./05-devops-agents/cicd-runner-agents/arc-runner-scaleset.yaml), [AI SRE Agent Python](./05-devops-agents/ai-devops-agents/k8s_incident_triage_agent.py) | [Senior Agent Scenarios](./05-devops-agents/interview-scenarios.md) |
 
 ---
 

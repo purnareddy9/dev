@@ -1,0 +1,75 @@
+apiVersion: actions.github.com/v1alpha1
+kind: AutoscalingRunnerSet
+metadata:
+  name: enterprise-k8s-runners
+  namespace: arc-runners
+spec:
+  githubConfigUrl: "https://github.com/purnareddy9"
+  githubConfigSecret: arc-github-app-secret
+  minRunners: 0   # Scale down to 0 when no CI jobs are running (saves cloud costs)
+  maxRunners: 50  # Cap runner burst to protect cluster capacity
+  template:
+    spec:
+      securityContext:
+        fsGroup: 1001
+      initContainers:
+        - name: init-dind-externals
+          image: ghcr.io/actions/actions-runner:latest
+          command: ["cp", "-r", "-u", "/home/runner/externals/.", "/home/runner/tmpDir/"]
+          volumeMounts:
+            - name: dind-externals
+              mountPath: /home/runner/tmpDir
+      containers:
+        # Main Runner Container: executes the workflow steps
+        - name: runner
+          image: 123456789012.dkr.ecr.us-east-1.amazonaws.com/devops/hardened-runner:v1.0.0
+          command: ["/home/runner/run.sh"]
+          env:
+            - name: DOCKER_HOST
+              value: tcp://localhost:2376
+            - name: DOCKER_TLS_VERIFY
+              value: "1"
+            - name: DOCKER_CERT_PATH
+              value: /certs/client
+          resources:
+            requests:
+              cpu: "1"
+              memory: "2Gi"
+            limits:
+              cpu: "4"
+              memory: "8Gi"
+          volumeMounts:
+            - name: dind-certs
+              mountPath: /certs/client
+              readOnly: true
+            - name: runner-workspace
+              mountPath: /home/runner/_work
+
+        # Sidecar Container: Docker-in-Docker daemon for container builds
+        - name: dind
+          image: docker:26.0.0-dind
+          securityContext:
+            privileged: true  # DinD requires privileged flag only inside the isolated dind container
+          env:
+            - name: DOCKER_TLS_CERTDIR
+              value: /certs
+          resources:
+            requests:
+              cpu: "1"
+              memory: "2Gi"
+            limits:
+              cpu: "4"
+              memory: "8Gi"
+          volumeMounts:
+            - name: dind-certs
+              mountPath: /certs
+            - name: runner-workspace
+              mountPath: /home/runner/_work
+
+      volumes:
+        - name: runner-workspace
+          emptyDir: {}
+        - name: dind-certs
+          emptyDir: {}
+        - name: dind-externals
+          emptyDir: {}
