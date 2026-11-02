@@ -62,10 +62,7 @@ class GeminiMarketAnalyst:
     """Connects to Google Gemini API to analyze market trends and generate investment thesis."""
 
     def __init__(self):
-        self.api_key = os.getenv("GEMINI_API_KEY")
-        # Standard OpenAI-compatible Google Gemini Gateway endpoint
-        self.endpoint = "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions"
-        self.model = "gemini-1.5-flash"
+        self.api_key = (os.getenv("GEMINI_API_KEY") or "").strip()
 
     def analyze_market_snapshot(self, ticker_data: Dict[str, Any]) -> str:
         """Prompts Gemini with live market metrics for quantitative and fundamental analysis."""
@@ -86,28 +83,43 @@ class GeminiMarketAnalyst:
             f"4. **Executive Verdict** (Buy / Hold / Reduce rating with clear rationale)"
         )
 
-        headers = {
-            "Content-Type": "application/json",
-            "Authorization": f"Bearer {self.api_key}"
-        }
+        # Primary: Official Native Google Gemini REST Endpoint
+        models_to_try = ["gemini-1.5-flash", "gemini-2.0-flash", "gemini-1.5-pro"]
+        for model in models_to_try:
+            native_url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={self.api_key}"
+            native_payload = {
+                "contents": [
+                    {
+                        "parts": [{"text": prompt}]
+                    }
+                ],
+                "generationConfig": {
+                    "temperature": 0.2
+                }
+            }
 
-        payload = {
-            "model": self.model,
-            "messages": [
-                {"role": "system", "content": "You are a professional financial and cloud market intelligence agent. Output structured Markdown."},
-                {"role": "user", "content": prompt}
-            ],
-            "temperature": 0.2
-        }
+            try:
+                req = urllib.request.Request(
+                    native_url,
+                    data=json.dumps(native_payload).encode("utf-8"),
+                    headers={"Content-Type": "application/json"},
+                    method="POST"
+                )
+                with urllib.request.urlopen(req, timeout=25) as resp:
+                    data = json.loads(resp.read().decode("utf-8"))
+                    candidates = data.get("candidates", [])
+                    if candidates:
+                        parts = candidates[0].get("content", {}).get("parts", [])
+                        if parts and "text" in parts[0]:
+                            return parts[0]["text"]
+            except urllib.error.HTTPError as e:
+                err_body = e.read().decode("utf-8", errors="replace")
+                print(f"[DEBUG] Gemini model {model} HTTP {e.code}: {err_body[:200]}")
+            except Exception as e:
+                print(f"[DEBUG] Gemini model {model} error: {e}")
 
-        try:
-            req = urllib.request.Request(self.endpoint, data=json.dumps(payload).encode("utf-8"), headers=headers)
-            with urllib.request.urlopen(req, timeout=25) as resp:
-                data = json.loads(resp.read().decode("utf-8"))
-                return data["choices"][0]["message"]["content"]
-        except Exception as e:
-            print(f"[WARN] Gemini API call failed: {e}. Falling back to quantitative engine.")
-            return self._fallback_quantitative_analysis(ticker_data)
+        # Fallback to algorithmic quantitative analysis if all endpoints fail
+        return self._fallback_quantitative_analysis(ticker_data)
 
     def _fallback_quantitative_analysis(self, data: Dict[str, Any]) -> str:
         """Deterministic quantitative analysis if GEMINI_API_KEY is not set."""
