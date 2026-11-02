@@ -30,6 +30,21 @@ if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 
 
+def clean_markdown_fences(text: str) -> str:
+    """Strips outer markdown code fences (```markdown ... ```) so GitHub renders rich native formatting."""
+    cleaned = text.strip()
+    if cleaned.startswith("```"):
+        lines = cleaned.splitlines()
+        if lines and lines[0].startswith("```"):
+            lines = lines[1:]
+        if lines and lines[-1].strip().startswith("```"):
+            lines = lines[:-1]
+        cleaned = "\n".join(lines).strip()
+    while cleaned.startswith("`"):
+        cleaned = cleaned[1:]
+    return cleaned.strip()
+
+
 def calculate_rsi(prices: List[float], period: int = 14) -> float:
     """Calculates Wilder's 14-period Relative Strength Index (RSI)."""
     if len(prices) < period + 1:
@@ -676,7 +691,7 @@ market-intelligence/
 
 
 def main():
-    raw_ticker = sys.argv[1] if len(sys.argv) > 1 and sys.argv[1].strip() else "NVDA"
+    raw_ticker = sys.argv[1] if len(sys.argv) > 1 and sys.argv[1].strip() else "PERSISTENT"
     print(f"🚀 Initializing Autonomous AI Market Agent for input: '{raw_ticker}'...", flush=True)
 
     try:
@@ -705,6 +720,7 @@ def main():
         print("🤖 Step 5: Invoking Google Gemini AI for cognitive synthesis...", flush=True)
         analyst = GeminiMarketAnalyst()
         ai_analysis = analyst.analyze_market_snapshot(data, indices, news)
+        ai_analysis = clean_markdown_fences(ai_analysis)
 
         # Step 6: Generate reports & save
         print("📁 Step 6: Compiling Markdown dashboards and updating repository records...", flush=True)

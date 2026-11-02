@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       ticker:
-        description: 'Stock Ticker Symbol to Analyze (e.g. NVDA, GOOGL, MSFT, AAPL, AMZN)'
+        description: 'Stock Ticker Symbol to Analyze (e.g. PERSISTENT, TCS, INFY, NVDA, GOOGL)'
         required: true
-        default: 'NVDA'
+        default: 'PERSISTENT'
   # Runs automatically at 9:30 AM EST (Market Open) Monday through Friday
   schedule:
     - cron: '30 14 * * 1-5'
@@ -37,8 +37,8 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           PYTHONUNBUFFERED: "1"
         run: |
-          echo "🚀 Executing AI Agent for ticker: ${{ github.event.inputs.ticker || 'NVDA' }}"
-          python -u 09-github-actions-ai-agent/market_agent.py "${{ github.event.inputs.ticker || 'NVDA' }}"
+          echo "🚀 Executing AI Agent for ticker: ${{ github.event.inputs.ticker || 'PERSISTENT' }}"
+          python -u 09-github-actions-ai-agent/market_agent.py "${{ github.event.inputs.ticker || 'PERSISTENT' }}"
           echo "=========================================================="
           echo "📄 GENERATED REPORT OUTPUT:"
           echo "=========================================================="
@@ -53,7 +53,7 @@ jobs:
           if git diff --staged --quiet; then
             echo "ℹ️ No market intelligence changes to commit."
           else
-            git commit -m "chore(market-agent): autonomous intelligence update for ${{ github.event.inputs.ticker || 'NVDA' }} [$(date +'%Y-%m-%d')]"
+            git commit -m "chore(market-agent): autonomous intelligence update for ${{ github.event.inputs.ticker || 'PERSISTENT' }} [$(date +'%Y-%m-%d')]"
             git pull --rebase origin main
             git push origin main
             echo "🚀 Successfully pushed updated market reports and historical archives to GitHub repository!"
@@ -63,7 +63,7 @@ jobs:
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: market-analysis-${{ github.event.inputs.ticker || 'NVDA' }}
+          name: market-analysis-${{ github.event.inputs.ticker || 'PERSISTENT' }}
           path: |
             market-intelligence/
             09-github-actions-ai-agent/market_report.md
