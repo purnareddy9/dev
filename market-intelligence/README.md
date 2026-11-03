@@ -9,11 +9,11 @@
 
 | Index Benchmark | Live Level | 24h Change | Market Posture | Benchmark Sector Coverage |
 | :--- | :--- | :--- | :--- | :--- |
-| **NIFTY 50** (`^NSEI`) | **23,698.60 INR** | **+4.40%** (📈) | `🟢 BULLISH` | Indian Benchmark (Top 50 Blue-Chip Equities) |
-| **SENSEX** (`^BSESN`) | **76,687.19 INR** | **+4.70%** (📈) | `🟢 BULLISH` | BSE Benchmark (Top 30 Established Companies) |
-| **NIFTY IT** (`^CNXIT`) | **32,373.30 INR** | **+2.60%** (📈) | `🟢 BULLISH` | Indian Technology & Software Enterprise Sector |
-| **NIFTY 500** (`^CRSLDX`) | **22,434.40 INR** | **+3.25%** (📈) | `🟢 BULLISH` | Indian Broad Market (Top 500 Across Large/Mid/Small-Cap) |
-| **BANK NIFTY** (`^NSEBANK`) | **55,345.30 INR** | **+1.99%** (📈) | `🟢 BULLISH` | Indian Banking & Financial Services Sector |
+| **NIFTY 50** (`^NSEI`) | **23,810.85 INR** | **+4.90%** (📈) | `🟢 BULLISH` | Indian Benchmark (Top 50 Blue-Chip Equities) |
+| **SENSEX** (`^BSESN`) | **76,917.85 INR** | **+5.01%** (📈) | `🟢 BULLISH` | BSE Benchmark (Top 30 Established Companies) |
+| **NIFTY IT** (`^CNXIT`) | **32,551.60 INR** | **+3.16%** (📈) | `🟢 BULLISH` | Indian Technology & Software Enterprise Sector |
+| **NIFTY 500** (`^CRSLDX`) | **22,520.35 INR** | **+3.65%** (📈) | `🟢 BULLISH` | Indian Broad Market (Top 500 Across Large/Mid/Small-Cap) |
+| **BANK NIFTY** (`^NSEBANK`) | **55,540.05 INR** | **+2.35%** (📈) | `🟢 BULLISH` | Indian Banking & Financial Services Sector |
 | **S&P 500** (`^GSPC`) | **7,541.40 USD** | **-1.76%** (📉) | `🔴 BEARISH` | US Large-Cap Market Benchmark |
 | **NASDAQ Composite** (`^IXIC`) | **25,164.36 USD** | **-3.84%** (📉) | `🔴 BEARISH` | Global Technology & Growth Benchmark |
 
@@ -26,8 +26,9 @@
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | **[BSOFT](./stocks/BSOFT/README.md)** | BSOFT | View | +0.00% | N/A | [Latest](./stocks/BSOFT/latest.md) • [News](./stocks/BSOFT/news.md) • [History](./stocks/BSOFT/history/) |
 | **[COFORGE](./stocks/COFORGE/README.md)** | COFORGE | View | +0.00% | N/A | [Latest](./stocks/COFORGE/latest.md) • [News](./stocks/COFORGE/news.md) • [History](./stocks/COFORGE/history/) |
+| **[GOLDBEES](./stocks/GOLDBEES/README.md)** | Nippon India ETF Gold BeES | 112.69 INR | +12.63% | 26.23 | [Latest](./stocks/GOLDBEES/latest.md) • [News](./stocks/GOLDBEES/news.md) • [History](./stocks/GOLDBEES/history/) |
 | **[NVDA](./stocks/NVDA/README.md)** | NVDA | View | +0.00% | N/A | [Latest](./stocks/NVDA/latest.md) • [News](./stocks/NVDA/news.md) • [History](./stocks/NVDA/history/) |
-| **[PERSISTENT](./stocks/PERSISTENT/README.md)** | Persistent Systems Limited | 6066.5 INR | +2.28% | 65.96 | [Latest](./stocks/PERSISTENT/latest.md) • [News](./stocks/PERSISTENT/news.md) • [History](./stocks/PERSISTENT/history/) |
+| **[PERSISTENT](./stocks/PERSISTENT/README.md)** | PERSISTENT | View | +0.00% | N/A | [Latest](./stocks/PERSISTENT/latest.md) • [News](./stocks/PERSISTENT/news.md) • [History](./stocks/PERSISTENT/history/) |
 | **[PVP](./stocks/PVP/README.md)** | PVP | View | +0.00% | N/A | [Latest](./stocks/PVP/latest.md) • [News](./stocks/PVP/news.md) • [History](./stocks/PVP/history/) |
 | **[TRENT](./stocks/TRENT/README.md)** | TRENT | View | +0.00% | N/A | [Latest](./stocks/TRENT/latest.md) • [News](./stocks/TRENT/news.md) • [History](./stocks/TRENT/history/) |
 
