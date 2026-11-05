@@ -385,8 +385,10 @@ class MarketDataFetcher:
 
         cross_status = "Golden Cross 🌟 (50 SMA > 200 SMA)" if sma_50 >= sma_200 else "Death Cross ⚠️ (50 SMA < 200 SMA)"
 
-        high_52 = meta.get("fiftyTwoWeekHigh", max(closes) if closes else current_price)
-        low_52 = meta.get("fiftyTwoWeekLow", min(closes) if closes else current_price)
+        # 52-week window covers ~250 trading sessions (excluding weekends and market holidays)
+        year_closes = closes[-250:] if len(closes) >= 250 else closes
+        high_52 = meta.get("fiftyTwoWeekHigh", max(year_closes) if year_closes else current_price)
+        low_52 = meta.get("fiftyTwoWeekLow", min(year_closes) if year_closes else current_price)
         range_percentile = round(((current_price - low_52) / (high_52 - low_52)) * 100, 1) if (high_52 > low_52) else 50.0
 
         recent_10_closes = closes[-10:] if len(closes) >= 10 else closes
