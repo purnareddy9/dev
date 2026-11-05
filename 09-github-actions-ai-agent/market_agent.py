@@ -76,6 +76,19 @@ def calculate_rsi(prices: List[float], period: int = 14) -> float:
     return round(100.0 - (100.0 / (1.0 + rs)), 2)
 
 
+def calculate_ema(prices: List[float], period: int) -> float:
+    """Calculates Exponential Moving Average (EMA) matching TradingView PineScript ta.ema()."""
+    if not prices:
+        return 0.0
+    if len(prices) < period:
+        return round(prices[-1], 2)
+    k = 2.0 / (period + 1)
+    ema = sum(prices[:period]) / period
+    for p in prices[period:]:
+        ema = (p * k) + (ema * (1.0 - k))
+    return round(ema, 2)
+
+
 def render_gauge_bar(value: float, min_val: float, max_val: float, width: int = 20) -> str:
     """Renders a clean text progress bar for markdown displays."""
     if max_val <= min_val:
@@ -317,7 +330,7 @@ class MarketDataFetcher:
 
         for sym in attempts:
             try:
-                data = cls.fetch_yahoo_json(f"/v8/finance/chart/{urllib.parse.quote(sym)}?interval=1d&range=1y")
+                data = cls.fetch_yahoo_json(f"/v8/finance/chart/{urllib.parse.quote(sym)}?interval=1d&range=5y")
                 if data and data.get("chart", {}).get("result"):
                     query_sym = sym
                     break
@@ -356,11 +369,19 @@ class MarketDataFetcher:
         sma_20 = round(sum(closes[-20:]) / min(20, len(closes)), 2) if closes else current_price
         sma_50 = round(sum(closes[-50:]) / min(50, len(closes)), 2) if closes else current_price
         sma_200 = round(sum(closes[-200:]) / min(200, len(closes)), 2) if closes else current_price
+
+        ema_20 = calculate_ema(closes, 20)
+        ema_50 = calculate_ema(closes, 50)
+        ema_200 = calculate_ema(closes, 200)
         rsi_14 = calculate_rsi(closes)
 
         diff_sma20 = round(((current_price - sma_20) / sma_20) * 100, 2) if sma_20 else 0.0
         diff_sma50 = round(((current_price - sma_50) / sma_50) * 100, 2) if sma_50 else 0.0
         diff_sma200 = round(((current_price - sma_200) / sma_200) * 100, 2) if sma_200 else 0.0
+
+        diff_ema20 = round(((current_price - ema_20) / ema_20) * 100, 2) if ema_20 else 0.0
+        diff_ema50 = round(((current_price - ema_50) / ema_50) * 100, 2) if ema_50 else 0.0
+        diff_ema200 = round(((current_price - ema_200) / ema_200) * 100, 2) if ema_200 else 0.0
 
         cross_status = "Golden Cross 🌟 (50 SMA > 200 SMA)" if sma_50 >= sma_200 else "Death Cross ⚠️ (50 SMA < 200 SMA)"
 
@@ -393,9 +414,15 @@ class MarketDataFetcher:
             "sma_20": sma_20,
             "sma_50": sma_50,
             "sma_200": sma_200,
+            "ema_20": ema_20,
+            "ema_50": ema_50,
+            "ema_200": ema_200,
             "diff_sma20": diff_sma20,
             "diff_sma50": diff_sma50,
             "diff_sma200": diff_sma200,
+            "diff_ema20": diff_ema20,
+            "diff_ema50": diff_ema50,
+            "diff_ema200": diff_ema200,
             "cross_status": cross_status,
             "rsi_14": rsi_14,
             "recent_10_closes": recent_10_closes,
@@ -557,9 +584,9 @@ class GeminiMarketAnalyst:
 
 ### 2. 📊 Quantitative Valuation & Financial Fundamentals
 - **52-Week Range**: `{data['52_week_low']}` – `{data['52_week_high']}` (Trading at {data['range_percentile']}% of annual bandwidth).
-- **20-Day SMA**: `{data['sma_20']}` ({data['diff_sma20']:+0.2f}% relative distance).
-- **50-Day SMA**: `{data['sma_50']}` ({data['diff_sma50']:+0.2f}% relative distance).
-- **200-Day SMA**: `{data['sma_200']}` ({data['diff_sma200']:+0.2f}% relative distance).
+- **20-Day Trend**: SMA `{data['sma_20']}` ({data['diff_sma20']:+0.2f}%) | EMA `{data['ema_20']}` ({data['diff_ema20']:+0.2f}%).
+- **50-Day Trend**: SMA `{data['sma_50']}` ({data['diff_sma50']:+0.2f}%) | EMA `{data['ema_50']}` ({data['diff_ema50']:+0.2f}%).
+- **200-Day Trend**: SMA `{data['sma_200']}` ({data['diff_sma200']:+0.2f}%) | EMA `{data['ema_200']}` ({data['diff_ema200']:+0.2f}%).
 - **Moving Average Cross**: {data['cross_status']}.
 
 ### 3. 📈 Technical Trend & Moving Average Synthesis
@@ -670,15 +697,20 @@ xychart-beta
 
     @staticmethod
     def render_mermaid_ma_chart(data: Dict[str, Any]) -> str:
-        """Renders GitHub-native Mermaid xychart-beta comparing Price vs 20/50/200 SMAs."""
-        vals = [data["current_price"], data["sma_20"], data["sma_50"], data["sma_200"]]
+        """Renders GitHub-native Mermaid xychart-beta comparing Price vs SMA & EMA."""
+        vals = [
+            data["current_price"],
+            data["sma_20"], data["ema_20"],
+            data["sma_50"], data["ema_50"],
+            data["sma_200"], data["ema_200"]
+        ]
         min_p = int(min(vals) * 0.95)
         max_p = int(max(vals) * 1.05)
 
         return f"""```mermaid
 xychart-beta
-    title "{data['folder_symbol']} Price vs Key Moving Averages (20 / 50 / 200 SMA)"
-    x-axis ["Current", "SMA 20", "SMA 50", "SMA 200"]
+    title "{data['folder_symbol']} Price vs Key Moving Averages (SMA vs EMA)"
+    x-axis ["Current", "SMA 20", "EMA 20", "SMA 50", "EMA 50", "SMA 200", "EMA 200"]
     y-axis "Price ({data['currency']})" {min_p} --> {max_p}
     bar {json.dumps(vals)}
 ```"""
@@ -741,9 +773,9 @@ xychart-beta
 | **Current Live Price** | **{data['current_price']:,} {data['currency']}** | **{data['change_percent']:+0.2f}%** ({change_emoji}) |
 | **Day High / Low** | {data['day_high']} / {data['day_low']} {data['currency']} | Intraday spread |
 | **Previous Close** | {data['previous_close']} {data['currency']} | Reference baseline |
-| **20-Day SMA** | **{data['sma_20']} {data['currency']}** | Price diff: `{data['diff_sma20']:+0.2f}%` |
-| **50-Day SMA** | **{data['sma_50']} {data['currency']}** | Price diff: `{data['diff_sma50']:+0.2f}%` |
-| **200-Day SMA** | **{data['sma_200']} {data['currency']}** | Price diff: `{data['diff_sma200']:+0.2f}%` |
+| **20-Day Trend (SMA / EMA)** | **SMA: {data['sma_20']}** &#124; **EMA: {data['ema_20']}** {data['currency']} | Diff: `{data['diff_sma20']:+0.2f}%` (SMA) / `{data['diff_ema20']:+0.2f}%` (EMA) |
+| **50-Day Trend (SMA / EMA)** | **SMA: {data['sma_50']}** &#124; **EMA: {data['ema_50']}** {data['currency']} | Diff: `{data['diff_sma50']:+0.2f}%` (SMA) / `{data['diff_ema50']:+0.2f}%` (EMA) |
+| **200-Day Trend (SMA / EMA)** | **SMA: {data['sma_200']}** &#124; **EMA: {data['ema_200']}** {data['currency']} | Diff: `{data['diff_sma200']:+0.2f}%` (SMA) / `{data['diff_ema200']:+0.2f}%` (EMA) |
 | **Moving Average Cross** | `{data['cross_status']}` | Structural macro alignment |
 | **RSI (14-Period)** | **{data['rsi_14']} / 100** | `{rsi_gauge}` |
 | **52-Week Range** | {data['52_week_low']} – {data['52_week_high']} {data['currency']} | `{range_gauge}` ({data['range_percentile']}%) |

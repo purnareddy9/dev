@@ -14,8 +14,8 @@
 | **NIFTY IT** (`^CNXIT`) | **32,837.85 INR** | **+2.42%** (📈) | `🟢 BULLISH` | Indian Technology & Software Enterprise Sector |
 | **NIFTY 500** (`^CRSLDX`) | **23,224.70 INR** | **+2.00%** (📈) | `🟢 BULLISH` | Indian Broad Market (Top 500 Across Large/Mid/Small-Cap) |
 | **BANK NIFTY** (`^NSEBANK`) | **57,773.65 INR** | **+3.33%** (📈) | `🟢 BULLISH` | Indian Banking & Financial Services Sector |
-| **S&P 500** (`^GSPC`) | **7,386.79 USD** | **-3.93%** (📉) | `🔴 BEARISH` | US Large-Cap Market Benchmark |
-| **NASDAQ Composite** (`^IXIC`) | **24,398.81 USD** | **-5.20%** (📉) | `🔴 BEARISH` | Global Technology & Growth Benchmark |
+| **S&P 500** (`^GSPC`) | **7,385.08 USD** | **-3.95%** (📉) | `🔴 BEARISH` | US Large-Cap Market Benchmark |
+| **NASDAQ Composite** (`^IXIC`) | **24,391.42 USD** | **-5.23%** (📉) | `🔴 BEARISH` | Global Technology & Growth Benchmark |
 
 
 ---
@@ -49,9 +49,9 @@ xychart-beta
 | **Current Live Price** | **6,109.5 INR** | **+0.73%** (📈) |
 | **Day High / Low** | 6209.0 / 6070.0 INR | Intraday spread |
 | **Previous Close** | 6065.0 INR | Reference baseline |
-| **20-Day SMA** | **5864.48 INR** | Price diff: `+4.18%` |
-| **50-Day SMA** | **5643.96 INR** | Price diff: `+8.25%` |
-| **200-Day SMA** | **5318.73 INR** | Price diff: `+14.87%` |
+| **20-Day Trend (SMA / EMA)** | **SMA: 5864.48** &#124; **EMA: 5863.21** INR | Diff: `+4.18%` (SMA) / `+4.20%` (EMA) |
+| **50-Day Trend (SMA / EMA)** | **SMA: 5643.96** &#124; **EMA: 5675.35** INR | Diff: `+8.25%` (SMA) / `+7.65%` (EMA) |
+| **200-Day Trend (SMA / EMA)** | **SMA: 5318.73** &#124; **EMA: 5450.29** INR | Diff: `+14.87%` (SMA) / `+12.09%` (EMA) |
 | **Moving Average Cross** | `Golden Cross 🌟 (50 SMA > 200 SMA)` | Structural macro alignment |
 | **RSI (14-Period)** | **66.41 / 100** | `[█████████████░░░░░░░]` |
 | **52-Week Range** | 4244.5 – 6599.0 INR | `[████████████████░░░░]` (79.2%) |
@@ -73,10 +73,10 @@ xychart-beta
 ### Current Price vs 20 / 50 / 200 Simple Moving Averages
 ```mermaid
 xychart-beta
-    title "PERSISTENT Price vs Key Moving Averages (20 / 50 / 200 SMA)"
-    x-axis ["Current", "SMA 20", "SMA 50", "SMA 200"]
+    title "PERSISTENT Price vs Key Moving Averages (SMA vs EMA)"
+    x-axis ["Current", "SMA 20", "EMA 20", "SMA 50", "EMA 50", "SMA 200", "EMA 200"]
     y-axis "Price (INR)" 5052 --> 6414
-    bar [6109.5, 5864.48, 5643.96, 5318.73]
+    bar [6109.5, 5864.48, 5863.21, 5643.96, 5675.35, 5318.73, 5450.29]
 ```
 
 ---
@@ -93,9 +93,9 @@ xychart-beta
 
 ### 2. 📊 Quantitative Valuation & Financial Fundamentals
 - **52-Week Range**: `4244.5` – `6599.0` (Trading at 79.2% of annual bandwidth).
-- **20-Day SMA**: `5864.48` (+4.18% relative distance).
-- **50-Day SMA**: `5643.96` (+8.25% relative distance).
-- **200-Day SMA**: `5318.73` (+14.87% relative distance).
+- **20-Day Trend**: SMA `5864.48` (+4.18%) | EMA `5863.21` (+4.20%).
+- **50-Day Trend**: SMA `5643.96` (+8.25%) | EMA `5675.35` (+7.65%).
+- **200-Day Trend**: SMA `5318.73` (+14.87%) | EMA `5450.29` (+12.09%).
 - **Moving Average Cross**: Golden Cross 🌟 (50 SMA > 200 SMA).
 
 ### 3. 📈 Technical Trend & Moving Average Synthesis
