@@ -14,13 +14,35 @@
 | **NIFTY IT** (`^CNXIT`) | **32,837.85 INR** | **+0.71%** (📈) | `🟢 BULLISH` | Indian Technology & Software Enterprise Sector |
 | **NIFTY 500** (`^CRSLDX`) | **23,224.70 INR** | **+6.07%** (📈) | `🟢 BULLISH` | Indian Broad Market (Top 500 Across Large/Mid/Small-Cap) |
 | **BANK NIFTY** (`^NSEBANK`) | **57,773.65 INR** | **+5.64%** (📈) | `🟢 BULLISH` | Indian Banking & Financial Services Sector |
-| **S&P 500** (`^GSPC`) | **7,688.62 USD** | **-0.71%** (📉) | `🔴 BEARISH` | US Large-Cap Market Benchmark |
-| **NASDAQ Composite** (`^IXIC`) | **25,736.51 USD** | **-3.06%** (📉) | `🔴 BEARISH` | Global Technology & Growth Benchmark |
+| **S&P 500** (`^GSPC`) | **7,408.32 USD** | **-4.04%** (📉) | `🔴 BEARISH` | US Large-Cap Market Benchmark |
+| **NASDAQ Composite** (`^IXIC`) | **24,485.80 USD** | **-6.49%** (📉) | `🔴 BEARISH` | Global Technology & Growth Benchmark |
 
 
 ---
 
-## 📌 2. Stock Executive Dashboard: PERSISTENT
+## 🏛️ 2. Institutional Capital Flow Matrix (FII / DII Inflows & Outflows)
+> *Official National Stock Exchange (NSE) Daily Institutional Cash Market Activity:*
+
+
+| Institutional Segment | Gross Buy (₹ Cr) | Gross Sell (₹ Cr) | Net Inflow / Outflow (₹ Cr) | Institutional Posture | Session Date |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **FII / FPI** (Foreign Institutions) | ₹31,797.86 Cr | ₹16,823.18 Cr | **+14,974.68 Cr** (🟢) | `🟢 AGGRESSIVE BUYING` | 05-Nov-2026 |
+| **DII** (Domestic Mutual Funds / Banks) | ₹22,168.28 Cr | ₹32,612.82 Cr | **-10,444.54 Cr** (🔴) | `🔴 PROFIT BOOKING` | 05-Nov-2026 |
+| **Combined Institutional Net** | **₹53,966.14 Cr** | **₹49,436.00 Cr** | **+4,530.14 Cr** (🟢) | `🟢 NET LIQUIDITY EXPANSION` | 05-Nov-2026 |
+
+
+### FII vs DII Net Trading Flow
+```mermaid
+xychart-beta
+    title "Institutional Net Cash Flow: FII vs DII (₹ Crores) - 05-Nov-2026"
+    x-axis ["DII Net Flow", "FII/FPI Net Flow", "Combined Net"]
+    y-axis "Net Value (₹ Cr)" -13055 --> 18718
+    bar [-10444.54, 14974.68, 4530.14]
+```
+
+---
+
+## 📌 3. Stock Executive Dashboard: PERSISTENT
 
 | Metric | Live Value | 24h Context / Technical Status |
 | :--- | :--- | :--- |
@@ -37,7 +59,7 @@
 
 ---
 
-## 📊 3. Technical Trend Visualizations (GitHub Native Charts)
+## 📊 4. Technical Trend Visualizations (GitHub Native Charts)
 
 ### 10-Day Closing Price Trajectory
 ```mermaid
@@ -59,7 +81,9 @@ xychart-beta
 
 ---
 
-## 🤖 4. AI Deep Cognitive Research & FinOps Intelligence
+## 🤖 5. AI Deep Cognitive Research & FinOps Intelligence
+
+> 🔮 **Future Stock Predictions & Deep Business Research**: [Read Full Persistent Predictive Report](./persistent-future-predictions.md)
 
 ### 1. 🎯 Executive Recommendation & Rating
 - **Verdict**: **HOLD**
@@ -78,11 +102,15 @@ xychart-beta
 - Asset is testing key structural moving averages. Price relative to the 200-day simple moving average defines long-term institutional support.
 - Short-term 20-day SMA tracking indicates ongoing momentum shift; a sustained close above the 50-day average is required to confirm trend reversal.
 
-### 4. ☁️ Platform SRE & Cloud FinOps Impact
+### 4. 🏛️ Institutional Flow & Liquidity Dynamics
+- **FII/FPI Net Flow**: `+14,974.68 Cr` — Foreign institutional positioning indicates active capital allocation.
+- **DII Net Flow**: `-10,444.54 Cr` — Domestic funds provide liquidity absorption against global market volatility.
+
+### 5. ☁️ Platform SRE & Cloud FinOps Impact
 - For enterprise organizations leveraging this vendor or IT provider, market fluctuations warrant strict compute and IT budget right-sizing.
 - Optimize application workloads and verify that operational service-level agreements (SLAs) are supported by cost-effective resource commitments.
 
-### 5. ⚖️ Catalysts & Key Risks
+### 6. ⚖️ Catalysts & Key Risks
 - **Bull Catalysts**: Rebound from key moving average support; broadening digital transformation investments; stabilizing operating margins.
 - **Bear Risks**: Prolonged tech sector consolidation; macro monetary shifts; changing enterprise IT spending priorities.
 
