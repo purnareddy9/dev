@@ -14,8 +14,8 @@
 | **NIFTY IT** (`^CNXIT`) | **32,837.85 INR** | **+0.71%** (📈) | `🟢 BULLISH` | Indian Technology & Software Enterprise Sector |
 | **NIFTY 500** (`^CRSLDX`) | **23,224.70 INR** | **+6.07%** (📈) | `🟢 BULLISH` | Indian Broad Market (Top 500 Across Large/Mid/Small-Cap) |
 | **BANK NIFTY** (`^NSEBANK`) | **57,773.65 INR** | **+5.64%** (📈) | `🟢 BULLISH` | Indian Banking & Financial Services Sector |
-| **S&P 500** (`^GSPC`) | **7,394.83 USD** | **-4.22%** (📉) | `🔴 BEARISH` | US Large-Cap Market Benchmark |
-| **NASDAQ Composite** (`^IXIC`) | **24,431.92 USD** | **-6.69%** (📉) | `🔴 BEARISH` | Global Technology & Growth Benchmark |
+| **S&P 500** (`^GSPC`) | **7,381.80 USD** | **-4.39%** (📉) | `🔴 BEARISH` | US Large-Cap Market Benchmark |
+| **NASDAQ Composite** (`^IXIC`) | **24,381.54 USD** | **-6.89%** (📉) | `🔴 BEARISH` | Global Technology & Growth Benchmark |
 
 
 ---
@@ -102,9 +102,10 @@ xychart-beta
 - Asset is testing key structural moving averages. Price relative to the 200-day simple moving average defines long-term institutional support.
 - Short-term 20-day SMA tracking indicates ongoing momentum shift; a sustained close above the 50-day average is required to confirm trend reversal.
 
-### 4. 🏛️ Institutional Flow & Liquidity Dynamics
+### 4. 🏛️ Institutional Flow, Short Covering & Liquidity Dynamics
 - **FII/FPI Net Flow**: `+14,974.68 Cr` — Foreign institutional positioning indicates active capital allocation.
 - **DII Net Flow**: `-10,444.54 Cr` — Domestic funds provide liquidity absorption against global market volatility.
+- **Short Covering vs Organic Accumulation**: Rapid upward price moves combined with heavy institutional turnover indicate trapped short sellers buying to cover positions. When open interest decreases as prices rise, rallies are driven by short covering rather than fresh long buildup; once forced buy orders exhaust, sustained continuation requires genuine institutional cash accumulation.
 
 ### 5. ☁️ Platform SRE & Cloud FinOps Impact
 - For enterprise organizations leveraging this vendor or IT provider, market fluctuations warrant strict compute and IT budget right-sizing.
