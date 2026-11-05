@@ -1,5 +1,5 @@
 # 📰 Live News & Financial Catalyst Feed: BSOFT (Birlasoft Limited)
-> *Last updated: `2026-11-03 05:29:52 UTC`*
+> *Last updated: `2026-11-05 09:59:57 UTC`*
 
 _No recent breaking news found for this ticker._
 

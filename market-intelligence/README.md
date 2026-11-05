@@ -14,8 +14,8 @@
 | **NIFTY IT** (`^CNXIT`) | **32,837.85 INR** | **+2.42%** (📈) | `🟢 BULLISH` | Indian Technology & Software Enterprise Sector |
 | **NIFTY 500** (`^CRSLDX`) | **23,224.70 INR** | **+2.00%** (📈) | `🟢 BULLISH` | Indian Broad Market (Top 500 Across Large/Mid/Small-Cap) |
 | **BANK NIFTY** (`^NSEBANK`) | **57,773.65 INR** | **+3.33%** (📈) | `🟢 BULLISH` | Indian Banking & Financial Services Sector |
-| **S&P 500** (`^GSPC`) | **7,394.48 USD** | **-3.83%** (📉) | `🔴 BEARISH` | US Large-Cap Market Benchmark |
-| **NASDAQ Composite** (`^IXIC`) | **24,425.73 USD** | **-5.09%** (📉) | `🔴 BEARISH` | Global Technology & Growth Benchmark |
+| **S&P 500** (`^GSPC`) | **7,390.86 USD** | **-3.87%** (📉) | `🔴 BEARISH` | US Large-Cap Market Benchmark |
+| **NASDAQ Composite** (`^IXIC`) | **24,415.43 USD** | **-5.13%** (📉) | `🔴 BEARISH` | Global Technology & Growth Benchmark |
 
 
 ---
@@ -57,10 +57,10 @@ xychart-beta
 
 | Ticker | Company Name | Live Price | 24h Change | RSI (14) | Direct Reports |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **[BSOFT](./stocks/BSOFT/README.md)** | BSOFT | View | +0.00% | N/A | [Latest](./stocks/BSOFT/latest.md) • [News](./stocks/BSOFT/news.md) • [History](./stocks/BSOFT/history/) |
+| **[BSOFT](./stocks/BSOFT/README.md)** | Birlasoft Limited | 330.3 INR | +3.46% | 60.56 | [Latest](./stocks/BSOFT/latest.md) • [News](./stocks/BSOFT/news.md) • [History](./stocks/BSOFT/history/) |
 | **[COFORGE](./stocks/COFORGE/README.md)** | COFORGE | View | +0.00% | N/A | [Latest](./stocks/COFORGE/latest.md) • [News](./stocks/COFORGE/news.md) • [History](./stocks/COFORGE/history/) |
 | **[GOLDBEES](./stocks/GOLDBEES/README.md)** | GOLDBEES | View | +0.00% | N/A | [Latest](./stocks/GOLDBEES/latest.md) • [News](./stocks/GOLDBEES/news.md) • [History](./stocks/GOLDBEES/history/) |
-| **[HDFC](./stocks/HDFC/README.md)** | HDFC Bank Limited | 760.0 INR | +3.16% | 68.33 | [Latest](./stocks/HDFC/latest.md) • [News](./stocks/HDFC/news.md) • [History](./stocks/HDFC/history/) |
+| **[HDFC](./stocks/HDFC/README.md)** | HDFC | View | +0.00% | N/A | [Latest](./stocks/HDFC/latest.md) • [News](./stocks/HDFC/news.md) • [History](./stocks/HDFC/history/) |
 | **[NVDA](./stocks/NVDA/README.md)** | NVDA | View | +0.00% | N/A | [Latest](./stocks/NVDA/latest.md) • [News](./stocks/NVDA/news.md) • [History](./stocks/NVDA/history/) |
 | **[PERSISTENT](./stocks/PERSISTENT/README.md)** | PERSISTENT | View | +0.00% | N/A | [Latest](./stocks/PERSISTENT/latest.md) • [News](./stocks/PERSISTENT/news.md) • [History](./stocks/PERSISTENT/history/) |
 | **[PVP](./stocks/PVP/README.md)** | PVP | View | +0.00% | N/A | [Latest](./stocks/PVP/latest.md) • [News](./stocks/PVP/news.md) • [History](./stocks/PVP/history/) |
