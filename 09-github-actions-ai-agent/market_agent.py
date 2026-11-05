@@ -196,8 +196,24 @@ class MarketDataFetcher:
                 res = data["chart"]["result"][0]
                 meta = res["meta"]
                 price = meta.get("regularMarketPrice", 0.0)
-                prev_close = meta.get("chartPreviousClose", price)
-                change_pct = round(((price - prev_close) / prev_close) * 100, 2) if prev_close else 0.0
+                quote = res.get("indicators", {}).get("quote", [{}])[0]
+                closes = [round(c, 2) for c in quote.get("close", []) if c is not None]
+
+                # True 1-day previous close (yesterday's session close)
+                if len(closes) >= 2:
+                    prev_close = closes[-2]
+                elif meta.get("fulldayChange") is not None:
+                    prev_close = round(price - meta["fulldayChange"], 2)
+                else:
+                    prev_close = meta.get("chartPreviousClose", price)
+
+                if meta.get("regularMarketChangePercent") is not None:
+                    change_pct = round(meta["regularMarketChangePercent"], 2)
+                elif prev_close:
+                    change_pct = round(((price - prev_close) / prev_close) * 100, 2)
+                else:
+                    change_pct = 0.0
+
                 currency = meta.get("currency", "PTS")
 
                 results.append({
@@ -318,8 +334,24 @@ class MarketDataFetcher:
         closes = [round(c, 2) for c in quote.get("close", []) if c is not None]
 
         current_price = meta.get("regularMarketPrice", closes[-1] if closes else 0.0)
-        previous_close = meta.get("chartPreviousClose", closes[-2] if len(closes) > 1 else current_price)
-        change_pct = round(((current_price - previous_close) / previous_close) * 100, 2) if previous_close else 0.0
+
+        # True 1-day previous close (yesterday's session close)
+        # Prefer closes[-2] from daily historical bars; fallback to price - fulldayChange
+        if len(closes) >= 2:
+            previous_close = closes[-2]
+        elif meta.get("fulldayChange") is not None:
+            previous_close = round(current_price - meta["fulldayChange"], 2)
+        elif meta.get("previousClose") is not None:
+            previous_close = meta["previousClose"]
+        else:
+            previous_close = meta.get("chartPreviousClose", current_price)
+
+        if meta.get("regularMarketChangePercent") is not None:
+            change_pct = round(meta["regularMarketChangePercent"], 2)
+        elif previous_close:
+            change_pct = round(((current_price - previous_close) / previous_close) * 100, 2)
+        else:
+            change_pct = 0.0
 
         sma_20 = round(sum(closes[-20:]) / min(20, len(closes)), 2) if closes else current_price
         sma_50 = round(sum(closes[-50:]) / min(50, len(closes)), 2) if closes else current_price

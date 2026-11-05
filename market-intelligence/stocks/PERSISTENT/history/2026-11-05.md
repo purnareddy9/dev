@@ -9,13 +9,13 @@
 
 | Index Benchmark | Live Level | 24h Change | Market Posture | Benchmark Sector Coverage |
 | :--- | :--- | :--- | :--- | :--- |
-| **NIFTY 50** (`^NSEI`) | **24,536.60 INR** | **+6.44%** (📈) | `🟢 BULLISH` | Indian Benchmark (Top 50 Blue-Chip Equities) |
-| **SENSEX** (`^BSESN`) | **79,310.01 INR** | **+6.51%** (📈) | `🟢 BULLISH` | BSE Benchmark (Top 30 Established Companies) |
-| **NIFTY IT** (`^CNXIT`) | **32,837.85 INR** | **+0.71%** (📈) | `🟢 BULLISH` | Indian Technology & Software Enterprise Sector |
-| **NIFTY 500** (`^CRSLDX`) | **23,224.70 INR** | **+6.07%** (📈) | `🟢 BULLISH` | Indian Broad Market (Top 500 Across Large/Mid/Small-Cap) |
-| **BANK NIFTY** (`^NSEBANK`) | **57,773.65 INR** | **+5.64%** (📈) | `🟢 BULLISH` | Indian Banking & Financial Services Sector |
-| **S&P 500** (`^GSPC`) | **7,372.99 USD** | **-4.50%** (📉) | `🔴 BEARISH` | US Large-Cap Market Benchmark |
-| **NASDAQ Composite** (`^IXIC`) | **24,353.93 USD** | **-6.99%** (📉) | `🔴 BEARISH` | Global Technology & Growth Benchmark |
+| **NIFTY 50** (`^NSEI`) | **24,536.60 INR** | **+2.40%** (📈) | `🟢 BULLISH` | Indian Benchmark (Top 50 Blue-Chip Equities) |
+| **SENSEX** (`^BSESN`) | **79,310.01 INR** | **+2.60%** (📈) | `🟢 BULLISH` | BSE Benchmark (Top 30 Established Companies) |
+| **NIFTY IT** (`^CNXIT`) | **32,837.85 INR** | **+2.42%** (📈) | `🟢 BULLISH` | Indian Technology & Software Enterprise Sector |
+| **NIFTY 500** (`^CRSLDX`) | **23,224.70 INR** | **+2.00%** (📈) | `🟢 BULLISH` | Indian Broad Market (Top 500 Across Large/Mid/Small-Cap) |
+| **BANK NIFTY** (`^NSEBANK`) | **57,773.65 INR** | **+3.33%** (📈) | `🟢 BULLISH` | Indian Banking & Financial Services Sector |
+| **S&P 500** (`^GSPC`) | **7,386.79 USD** | **-3.93%** (📉) | `🔴 BEARISH` | US Large-Cap Market Benchmark |
+| **NASDAQ Composite** (`^IXIC`) | **24,398.81 USD** | **-5.20%** (📉) | `🔴 BEARISH` | Global Technology & Growth Benchmark |
 
 
 ---
@@ -46,9 +46,9 @@ xychart-beta
 
 | Metric | Live Value | 24h Context / Technical Status |
 | :--- | :--- | :--- |
-| **Current Live Price** | **6,109.5 INR** | **+4.28%** (📈) |
+| **Current Live Price** | **6,109.5 INR** | **+0.73%** (📈) |
 | **Day High / Low** | 6209.0 / 6070.0 INR | Intraday spread |
-| **Previous Close** | 5858.5 INR | Reference baseline |
+| **Previous Close** | 6065.0 INR | Reference baseline |
 | **20-Day SMA** | **5864.48 INR** | Price diff: `+4.18%` |
 | **50-Day SMA** | **5643.96 INR** | Price diff: `+8.25%` |
 | **200-Day SMA** | **5318.73 INR** | Price diff: `+14.87%` |
@@ -87,7 +87,7 @@ xychart-beta
 
 ### 1. 🎯 Executive Recommendation & Rating
 - **Verdict**: **HOLD**
-- **Trend Momentum**: **BULLISH 🟢** (+4.28% today)
+- **Trend Momentum**: **BULLISH 🟢** (+0.73% today)
 - **Technical Posture**: Currently trading at `6109.5 INR` vs 200-SMA `5318.73` (+14.87%).
 - **RSI Condition**: **66.41** — Neutral Momentum.
 
