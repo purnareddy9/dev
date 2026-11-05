@@ -676,7 +676,9 @@ xychart-beta
 
         predictions_callout = ""
         if data.get("folder_symbol") == "PERSISTENT":
-            predictions_callout = "> 🔮 **Future Stock Predictions & Deep Business Research**: [Read Full Persistent Predictive Report](./persistent-future-predictions.md)\n\n"
+            repo_slug = os.getenv("GITHUB_REPOSITORY", "purnareddy9/dev")
+            pred_url = f"https://github.com/{repo_slug}/blob/main/market-intelligence/stocks/PERSISTENT/persistent-future-predictions.md"
+            predictions_callout = f"> 🔮 **Future Stock Predictions & Deep Business Research**: [Read Full Persistent Predictive Report]({pred_url})\n\n"
 
         return f"""# {change_emoji} Real-Time Market & Cloud Infrastructure Intelligence: {data['folder_symbol']}
 > **{data['company_name']}** (`{data['symbol']}`) | Analysis generated autonomously on `{data['timestamp']}`
