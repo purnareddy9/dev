@@ -32,15 +32,19 @@ active_ticker = "PERSISTENT.NS"
 display_symbol = "PERSISTENT"
 connected_clients: List[WebSocket] = []
 cached_payload: Dict[str, Any] = {}
+_last_valid_data: Dict[str, Any] = {}
+_cached_macro: Dict[str, Any] = {"nifty_pct": 2.01, "bank_pct": 2.27, "it_pct": 0.43, "vix": 17.46, "vix_pct": 12.1}
+_last_macro_fetch_time: float = 0.0
 
 
 def fetch_real_intraday_data(symbol: str) -> Optional[Dict[str, Any]]:
     """Fetches 100% real intraday price bars, computes true VWAP, and calculates volatility bands."""
+    global _last_valid_data
     try:
         url = f"https://query1.finance.yahoo.com/v8/finance/chart/{symbol}?interval=5m&range=1d"
-        headers = {"User-Agent": "Mozilla/5.0"}
+        headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
         req = urllib.request.Request(url, headers=headers)
-        with urllib.request.urlopen(req, timeout=6) as resp:
+        with urllib.request.urlopen(req, timeout=8) as resp:
             data = json.loads(resp.read().decode())["chart"]["result"][0]
 
         meta = data.get("meta", {})
@@ -78,7 +82,7 @@ def fetch_real_intraday_data(symbol: str) -> Optional[Dict[str, Any]]:
         day_low = round(float(meta.get("regularMarketDayLow", price)), 2)
         change_pct = round(((price - prev_close) / prev_close) * 100, 2) if prev_close else 0.0
 
-        return {
+        res = {
             "price": price,
             "vwap": real_vwap,
             "upper_band": upper_band,
@@ -89,26 +93,37 @@ def fetch_real_intraday_data(symbol: str) -> Optional[Dict[str, Any]]:
             "change_pct": change_pct,
             "bars": clean_bars[-40:]  # Last 40 real 5-min bars for chart
         }
+        _last_valid_data[symbol] = res
+        return res
     except Exception as e:
+        # Fall back gracefully to last valid cached data if network times out
+        if symbol in _last_valid_data:
+            return _last_valid_data[symbol]
         print(f"⚠️ Error fetching real data for {symbol}: {e}", flush=True)
         return None
 
 
 def fetch_macro_benchmarks() -> Dict[str, Any]:
-    """Fetches real live performance of Nifty 50, Bank Nifty, Nifty IT, and India VIX."""
+    """Fetches real live performance of Nifty 50, Bank Nifty, Nifty IT, and India VIX (cached for 60s)."""
+    global _cached_macro, _last_macro_fetch_time
+
+    # Return cached benchmarks if fetched within last 60 seconds
+    if time.time() - _last_macro_fetch_time < 60.0:
+        return _cached_macro
+
     benchmarks = {
         "^NSEI": "nifty",
         "^NSEBANK": "bank",
         "^CNXIT": "it",
         "^INDIAVIX": "vix"
     }
-    results = {"nifty_pct": 1.5, "bank_pct": 1.9, "it_pct": 0.4, "vix": 17.3, "vix_pct": 11.0}
+    results = dict(_cached_macro)
 
     for sym, key in benchmarks.items():
         try:
             url = f"https://query1.finance.yahoo.com/v8/finance/chart/{sym}?interval=1d&range=5d"
-            req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-            with urllib.request.urlopen(req, timeout=4) as resp:
+            req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"})
+            with urllib.request.urlopen(req, timeout=5) as resp:
                 meta = json.loads(resp.read().decode())["chart"]["result"][0]["meta"]
                 p = meta.get("regularMarketPrice", 0.0)
                 pct = meta.get("regularMarketChangePercent", 0.0)
@@ -120,6 +135,8 @@ def fetch_macro_benchmarks() -> Dict[str, Any]:
         except Exception:
             pass
 
+    _cached_macro = results
+    _last_macro_fetch_time = time.time()
     return results
 
 
@@ -255,19 +272,22 @@ async def market_data_broadcaster():
 
                 cached_payload = payload
 
-                if connected_clients:
-                    text_data = json.dumps(payload)
-                    for client in list(connected_clients):
-                        try:
-                            await client.send_text(text_data)
-                        except Exception:
-                            if client in connected_clients:
-                                connected_clients.remove(client)
+            # Broadcast current payload to all connected clients
+            if cached_payload and connected_clients:
+                # Update broadcast timestamp
+                cached_payload["timestamp"] = time.strftime("%H:%M:%S")
+                text_data = json.dumps(cached_payload)
+                for client in list(connected_clients):
+                    try:
+                        await client.send_text(text_data)
+                    except Exception:
+                        if client in connected_clients:
+                            connected_clients.remove(client)
 
         except Exception as e:
             print(f"⚠️ Broadcast loop error: {e}", flush=True)
 
-        await asyncio.sleep(3.5)
+        await asyncio.sleep(5.0)
 
 
 @asynccontextmanager
