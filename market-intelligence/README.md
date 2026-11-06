@@ -43,6 +43,10 @@ xychart-beta
 ---
 
 ## 🧭 3. Daily Pre-Market & Post-Market Institutional Intelligence
+- 🧭 **[Institutional Pre-Market 08:50 AM Framework & Trap Radar Blueprint](./frameworks/pre-market-intelligence-blueprint.md)**
+  - *The 6-Pillar 08:50 AM Diagnostic Sequence* | *Bear Trap vs. Bull Trap Detection*
+  - *Sector-by-Sector Opening Matrix (Banking 35% Weight vs IT)* | *Indian IT vs. US AI Capex Bubble Decoupling Moat*
+  - *The 3-Candle Morning Opening Rule (09:15–09:30 AM)* | *Automated Bracket & Trailing GTT Execution*
 - 📅 **[November 2, 2026: Institutional Order Flow & Macro Day-Trader Analysis](./daily-pulse/2026-11-02-day-trader-intelligence.md)**
   - *FII Net Buying Surge (+₹3,600 Cr)* | *US Election & Geopolitical Standoff (Iran / Qatar)*
   - *Institutional Masterclass: What is Short Covering & Short Squeeze Anatomy Explained*

@@ -7,8 +7,11 @@ on:
         description: 'Stock Ticker Symbol to Analyze (e.g. PERSISTENT, TCS, INFY, NVDA, GOOGL)'
         required: true
         default: 'PERSISTENT'
-  # Runs automatically at 9:30 AM EST (Market Open) Monday through Friday
+  # Runs automatically at:
+  # 1. 08:45 AM IST (03:15 UTC) - Pre-Market Trap & Global-to-Domestic Intelligence before Indian Market Open
+  # 2. 08:00 PM IST (14:30 UTC) - US Market Open Sentiment Check
   schedule:
+    - cron: '15 3 * * 1-5'
     - cron: '30 14 * * 1-5'
 
 permissions:

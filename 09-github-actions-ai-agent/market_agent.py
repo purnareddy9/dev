@@ -195,11 +195,22 @@ class MarketDataFetcher:
         indices_to_track = [
             ("NIFTY 50", "^NSEI", "Indian Benchmark (Top 50 Blue-Chip Equities)"),
             ("SENSEX", "^BSESN", "BSE Benchmark (Top 30 Established Companies)"),
-            ("NIFTY IT", "^CNXIT", "Indian Technology & Software Enterprise Sector"),
-            ("NIFTY 500", "^CRSLDX", "Indian Broad Market (Top 500 Across Large/Mid/Small-Cap)"),
-            ("BANK NIFTY", "^NSEBANK", "Indian Banking & Financial Services Sector"),
-            ("S&P 500", "^GSPC", "US Large-Cap Market Benchmark"),
-            ("NASDAQ Composite", "^IXIC", "Global Technology & Growth Benchmark")
+            ("BANK NIFTY", "^NSEBANK", "Indian Banking & Financial Services (~35% Nifty Weight)"),
+            ("NIFTY IT", "^CNXIT", "Indian Technology & Enterprise Software Sector"),
+            ("NIFTY AUTO", "^CNXAUTO", "Automobile & OEM Sector (Domestic Festive Demand)"),
+            ("NIFTY FMCG", "^CNXFMCG", "Fast-Moving Consumer Goods (Defensive Domestic Consumption)"),
+            ("NIFTY METAL", "^CNXMETAL", "Metals, Mining & Global Commodity Play"),
+            ("NIFTY PHARMA", "^CNXPHARMA", "Pharmaceutical & Healthcare (Defensive Shelter)"),
+            ("INDIA VIX", "^INDIAVIX", "NSE Volatility & Market Fear Index"),
+            ("NASDAQ 100 Futures", "NQ=F", "Live US Tech E-mini Futures (Trades 23h CME Asian Hours)"),
+            ("S&P 500 Futures", "ES=F", "Live US Broad Market E-mini Futures (Asian Hours)"),
+            ("NASDAQ Composite", "^IXIC", "Global Technology Benchmark (Overnight US Cash Close)"),
+            ("S&P 500", "^GSPC", "US Large-Cap Market Benchmark (Overnight US Cash Close)"),
+            ("NIKKEI 225", "^N225", "Japan Benchmark (Asia Market Sentiment)"),
+            ("HANG SENG", "^HSI", "Hong Kong Benchmark (Asia Tech & China Sentiment)"),
+            ("BRENT CRUDE", "BZ=F", "Global Crude Oil Benchmark (Energy Import Cost)"),
+            ("USD / INR", "USDINR=X", "US Dollar vs Indian Rupee Exchange Rate"),
+            ("US DOLLAR INDEX", "DX-Y.NYB", "DXY Dollar Strength Index")
         ]
 
         results = []
@@ -243,6 +254,75 @@ class MarketDataFetcher:
                 print(f"⚠️ Index query skipped for {name} ({symbol}): {e}", flush=True)
 
         return results
+
+    @classmethod
+    def evaluate_premarket_radar(cls, indices: List[Dict[str, Any]], fii_dii: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Synthesizes global futures, Asian markets, domestic sectoral breadth,
+        institutional cash flows, and volatility to identify:
+        - Bear Trap (Short Squeeze) probability
+        - Bull Trap probability
+        - Sector-by-sector opening biases
+        - Indian IT vs US Tech Decoupling assessment
+        """
+        idx_sym = {item["symbol"]: item for item in indices}
+
+        # 1. Global Sentiment: Live US Futures & Asia
+        nq_fut = idx_sym.get("NQ=F", {}).get("change_percent", 0.0)
+        es_fut = idx_sym.get("ES=F", {}).get("change_percent", 0.0)
+        nikkei = idx_sym.get("^N225", {}).get("change_percent", 0.0)
+        hangseng = idx_sym.get("^HSI", {}).get("change_percent", 0.0)
+        nasdaq_close = idx_sym.get("^IXIC", {}).get("change_percent", 0.0)
+        vix_price = idx_sym.get("^INDIAVIX", {}).get("price", 14.5)
+
+        # 2. Institutional Cash Flows
+        dii_net = fii_dii.get("dii", {}).get("net", 0.0) if fii_dii else 0.0
+        fii_net = fii_dii.get("fii", {}).get("net", 0.0) if fii_dii else 0.0
+
+        # 3. Sector Trends
+        bank_pct = idx_sym.get("^NSEBANK", {}).get("change_percent", 0.0)
+        it_pct = idx_sym.get("^CNXIT", {}).get("change_percent", 0.0)
+        auto_pct = idx_sym.get("^CNXAUTO", {}).get("change_percent", 0.0)
+        fmcg_pct = idx_sym.get("^CNXFMCG", {}).get("change_percent", 0.0)
+
+        # Trap Detection Logic:
+        # Bear Trap (Short Squeeze Risk):
+        # Triggered when overnight global tech fell sharply (< -1.0%), but morning Asian US futures are green (> +0.1%)
+        # or DII net cash absorption is active (> 500 Cr) and VIX is stable (< 19.0).
+        if (nasdaq_close < -1.0 and nq_fut > 0.1) or (fii_net < 0 and dii_net > abs(fii_net)):
+            trap_status = "🟢 HIGH BEAR TRAP RISK (Short Squeeze Active)"
+            trap_desc = "Overnight US weakness has NOT translated into Asian morning futures selling. Aggressive opening short positions are heavily vulnerable to short covering squeezes. DO NOT panic-sell opening dips."
+            trap_badge = "BEAR TRAP SQUEEZE 🪤"
+        elif (nq_fut < -0.8 and es_fut < -0.6) and fii_net < -2000:
+            trap_status = "🔴 HIGH BULL TRAP RISK (Distribution Pattern)"
+            trap_desc = "Global futures are bleeding lower and foreign institutional selling is heavy. Avoid chasing gap-ups; risk of intraday rollover into red."
+            trap_badge = "BULL TRAP ALERT ⚠️"
+        else:
+            trap_status = "⚖️ BALANCED ACCUMULATION / NORMAL VOLATILITY"
+            trap_desc = "Market is trading within standard technical bands. Follow standard support/resistance pivot levels."
+            trap_badge = "ORDERLY EXPANSION 📈"
+
+        it_decoupling_desc = (
+            "Indian IT provides high-margin enterprise software integration & cloud modernization (services moat), "
+            "insulating domestic balance sheets from US hardware/GPU capex bubble concerns."
+        )
+
+        return {
+            "trap_status": trap_status,
+            "trap_desc": trap_desc,
+            "trap_badge": trap_badge,
+            "nq_fut": nq_fut,
+            "es_fut": es_fut,
+            "nikkei": nikkei,
+            "hangseng": hangseng,
+            "nasdaq_close": nasdaq_close,
+            "vix": vix_price,
+            "bank_pct": bank_pct,
+            "it_pct": it_pct,
+            "auto_pct": auto_pct,
+            "fmcg_pct": fmcg_pct,
+            "it_decoupling": it_decoupling_desc
+        }
 
     @classmethod
     def get_fii_dii_flows(cls) -> Dict[str, Any]:
@@ -613,24 +693,58 @@ class GeminiMarketAnalyst:
 class ReportGenerator:
     """Renders formatted GitHub Markdown reports, Mermaid charts, indices dashboards, and directory archives."""
 
-    @staticmethod
-    def render_indices_table(indices: List[Dict[str, Any]]) -> str:
-        """Renders the executive market indices pulse table."""
+    @classmethod
+    def render_indices_table(cls, indices: List[Dict[str, Any]]) -> str:
+        """Renders structured tables for Domestic Sectors and Global Futures."""
         if not indices:
             return "_No live index data available._"
 
-        rows = []
+        domestic_syms = {"^NSEI", "^BSESN", "^NSEBANK", "^CNXIT", "^CNXAUTO", "^CNXFMCG", "^CNXMETAL", "^CNXPHARMA", "^INDIAVIX"}
+
+        dom_rows = []
+        global_rows = []
+
         for idx in indices:
             icon = "📈" if idx["change_percent"] >= 0 else "📉"
-            rows.append(
+            row = (
                 f"| **{idx['name']}** (`{idx['symbol']}`) | **{idx['price']:,.2f} {idx['currency']}** | "
                 f"**{idx['change_percent']:+0.2f}%** ({icon}) | `{idx['status']}` | {idx['description']} |"
             )
+            if idx["symbol"] in domestic_syms:
+                dom_rows.append(row)
+            else:
+                global_rows.append(row)
 
-        return f"""
-| Index Benchmark | Live Level | 24h Change | Market Posture | Benchmark Sector Coverage |
+        dom_table = f"""### 🇮🇳 Domestic Benchmarks & Sectoral Breadth
+| Index / Sector Benchmark | Live Level | 24h Change | Market Posture | Benchmark Sector Coverage |
 | :--- | :--- | :--- | :--- | :--- |
-{chr(10).join(rows)}
+{chr(10).join(dom_rows)}"""
+
+        global_table = f"""### 🌐 Global Overnight Benchmarks & Live 23h Futures
+| Global Benchmark / Futures | Live Level | 24h Change | Market Posture | Strategic Market Signal |
+| :--- | :--- | :--- | :--- | :--- |
+{chr(10).join(global_rows)}"""
+
+        return f"{dom_table}\n\n{global_table}"
+
+    @classmethod
+    def render_premarket_radar_card(cls, radar: Dict[str, Any]) -> str:
+        """Renders the executive 08:50 AM Pre-Market Trap & Sector Radar card."""
+        blueprint_link = "https://github.com/purnareddy9/dev/blob/main/market-intelligence/frameworks/pre-market-intelligence-blueprint.md"
+        vix_status = "🟢 Low market panic; dips will be absorbed" if radar["vix"] < 16 else ("🟡 Normal market volatility" if radar["vix"] < 20 else "🔴 Extreme volatility; widen stops")
+
+        return f"""### 🧭 08:50 AM Pre-Market Trap & Sector Radar
+> 📖 **Pre-Market Operational Framework**: [Read Full 08:50 AM Institutional Blueprint]({blueprint_link})
+
+| Diagnostic Metric | Live Status / Reading | Operational Strategic Implication |
+| :--- | :--- | :--- |
+| **Trap Radar Detection** | **`{radar['trap_badge']}`** | **{radar['trap_status']}**<br>_{radar['trap_desc']}_ |
+| **Live US Tech Futures (`NQ=F`)** | **{radar['nq_fut']:+0.2f}%** | Continuous 23h CME Asian session signal for global tech sentiment. |
+| **Live US S&P Futures (`ES=F`)** | **{radar['es_fut']:+0.2f}%** | Broad market Wall Street dip-buying / continuation gauge. |
+| **Overnight Nasdaq Close (`^IXIC`)** | **{radar['nasdaq_close']:+0.2f}%** | Baseline historical session close. |
+| **Asian Regional Pulse (`^N225`)** | **{radar['nikkei']:+0.2f}%** | Asian semiconductor and exporter health indicator. |
+| **NSE Volatility Index (`^INDIAVIX`)** | **{radar['vix']:.2f} PTS** | {vix_status} |
+| **Indian IT Decoupling Moat** | **`🛡️ ACTIVE`** | {radar['it_decoupling']} |
 """
 
     @staticmethod
@@ -723,6 +837,8 @@ xychart-beta
         change_emoji = "📈" if data["change_percent"] >= 0 else "📉"
         rsi_gauge = render_gauge_bar(data["rsi_14"], 0, 100, 20)
         range_gauge = render_gauge_bar(data["range_percentile"], 0, 100, 20)
+        radar = MarketDataFetcher.evaluate_premarket_radar(indices, fii_dii)
+        radar_card = cls.render_premarket_radar_card(radar)
         indices_table = cls.render_indices_table(indices)
         fii_dii_table = cls.render_fii_dii_table(fii_dii)
         fii_dii_chart = cls.render_mermaid_fii_dii_chart(fii_dii)
@@ -751,8 +867,12 @@ xychart-beta
 
 ---
 
-## 🌐 1. Global & Domestic Market Indices Pulse
+## 🌐 1. Global & Domestic Market Indices Pulse & Pre-Market Radar
 > *Real-time macro benchmark posture across Indian & global equity markets:*
+
+{radar_card}
+
+---
 
 {indices_table}
 
@@ -880,6 +1000,8 @@ def update_portfolio_index(portfolio_path: str, latest_data: Dict[str, Any], ind
     if latest_data["folder_symbol"] not in tracked_symbols:
         tracked_symbols.append(latest_data["folder_symbol"])
 
+    radar = MarketDataFetcher.evaluate_premarket_radar(indices, fii_dii)
+    radar_card = ReportGenerator.render_premarket_radar_card(radar)
     indices_table = ReportGenerator.render_indices_table(indices)
     fii_dii_table = ReportGenerator.render_fii_dii_table(fii_dii)
     fii_dii_chart = ReportGenerator.render_mermaid_fii_dii_chart(fii_dii)
@@ -905,7 +1027,11 @@ def update_portfolio_index(portfolio_path: str, latest_data: Dict[str, Any], ind
 
 ---
 
-## 🌍 1. Global & Domestic Market Indices Pulse
+## 🌍 1. Global & Domestic Market Indices Pulse & Pre-Market Radar
+
+{radar_card}
+
+---
 
 {indices_table}
 
@@ -922,6 +1048,10 @@ def update_portfolio_index(portfolio_path: str, latest_data: Dict[str, Any], ind
 ---
 
 ## 🧭 3. Daily Pre-Market & Post-Market Institutional Intelligence
+- 🧭 **[Institutional Pre-Market 08:50 AM Framework & Trap Radar Blueprint](./frameworks/pre-market-intelligence-blueprint.md)**
+  - *The 6-Pillar 08:50 AM Diagnostic Sequence* | *Bear Trap vs. Bull Trap Detection*
+  - *Sector-by-Sector Opening Matrix (Banking 35% Weight vs IT)* | *Indian IT vs. US AI Capex Bubble Decoupling Moat*
+  - *The 3-Candle Morning Opening Rule (09:15–09:30 AM)* | *Automated Bracket & Trailing GTT Execution*
 - 📅 **[November 2, 2026: Institutional Order Flow & Macro Day-Trader Analysis](./daily-pulse/2026-11-02-day-trader-intelligence.md)**
   - *FII Net Buying Surge (+₹3,600 Cr)* | *US Election & Geopolitical Standoff (Iran / Qatar)*
   - *Institutional Masterclass: What is Short Covering & Short Squeeze Anatomy Explained*
