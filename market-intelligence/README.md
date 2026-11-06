@@ -62,7 +62,7 @@ xychart-beta
 | **[GOLDBEES](./stocks/GOLDBEES/README.md)** | GOLDBEES | View | +0.00% | N/A | [Latest](./stocks/GOLDBEES/latest.md) • [News](./stocks/GOLDBEES/news.md) • [History](./stocks/GOLDBEES/history/) |
 | **[HDFC](./stocks/HDFC/README.md)** | HDFC | View | +0.00% | N/A | [Latest](./stocks/HDFC/latest.md) • [News](./stocks/HDFC/news.md) • [History](./stocks/HDFC/history/) |
 | **[NVDA](./stocks/NVDA/README.md)** | NVDA | View | +0.00% | N/A | [Latest](./stocks/NVDA/latest.md) • [News](./stocks/NVDA/news.md) • [History](./stocks/NVDA/history/) |
-| **[PERSISTENT](./stocks/PERSISTENT/README.md)** | Persistent Systems Limited | 6109.5 INR | +0.73% | 64.84 | [Latest](./stocks/PERSISTENT/latest.md) • [News](./stocks/PERSISTENT/news.md) • [History](./stocks/PERSISTENT/history/) |
+| **[PERSISTENT](./stocks/PERSISTENT/README.md)** | Persistent Systems Limited | 6109.5 INR | +0.73% | 66.41 | [Latest](./stocks/PERSISTENT/latest.md) • [News](./stocks/PERSISTENT/news.md) • [History](./stocks/PERSISTENT/history/) |
 | **[PVP](./stocks/PVP/README.md)** | PVP | View | +0.00% | N/A | [Latest](./stocks/PVP/latest.md) • [News](./stocks/PVP/news.md) • [History](./stocks/PVP/history/) |
 | **[TRENT](./stocks/TRENT/README.md)** | TRENT | View | +0.00% | N/A | [Latest](./stocks/TRENT/latest.md) • [News](./stocks/TRENT/news.md) • [History](./stocks/TRENT/history/) |
 
