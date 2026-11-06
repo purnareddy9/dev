@@ -140,21 +140,27 @@ def build_broker_instructions(symbol: str, data: Dict[str, Any], macro: Dict[str
     # Core Decision Logic based on 100% Real Data
     if price < vwap:
         # Stock is under water relative to institutional volume
+        breakout_trigger = round(vwap + (price * 0.002), 2)       # ~12-15 rupees above VWAP confirmation
+        target_1 = round(vwap + (price * 0.010), 2)              # ~1% above VWAP (₹6,200)
+        target_2 = round(max(data["day_high"], vwap + (price * 0.016)), 2)  # Day High (₹6,240)
+        stop_loss_val = round(min(data["day_low"], price * 0.992), 2)        # Below day's low (₹6,000)
+
         if vix_pct > 5.0 and sector_divergence < -1.0:
             action = "STAND ASIDE IN CASH - DO NOT ENTER"
             badge = "🔴 STAND ASIDE / AVOID"
             color = "#ff1744"
-            order_type = "NO ORDER (HOLD CASH)"
+            order_type = "NO BUY ORDER (HOLD CASH)"
             exact_instruction = (
                 f"DO NOT place any buy order for {symbol} right now. "
                 f"The stock closed at ₹{price:,.2f}, which is {abs(vwap_diff_pct):.2f}% BELOW institutional VWAP (₹{vwap:,.2f}). "
                 f"Institutional capital rotated into Banks (+{bank_pct:.2f}%) while IT lagged (+{it_pct:.2f}%), "
                 f"and India VIX jumped {vix_pct:+.1f}% to {vix:.2f}. "
-                f"Wait for the next trading session above ₹{data['day_low']:,.0f} support before entering."
+                f"• If you are in cash: DO NOT buy yet. Wait for a confirmed breakout above ₹{breakout_trigger:,.0f}. "
+                f"• If you are already holding shares: Look to exit on a bounce toward VWAP resistance (₹{vwap:,.0f})."
             )
-            trigger_entry = f"Wait for confirmation above ₹{vwap:,.0f}"
-            target = f"Target 1: ₹{vwap:,.0f} | Target 2: ₹{data['day_high']:,.0f}"
-            stop_loss = f"Strict Floor: Below ₹{data['day_low'] * 0.995:,.0f}"
+            trigger_entry = f"Breakout above ₹{breakout_trigger:,.0f}"
+            target = f"Target 1: ₹{target_1:,.0f} | Target 2: ₹{target_2:,.0f}"
+            stop_loss = f"Strict Floor: Below ₹{stop_loss_val:,.0f}"
             confidence = 88
         else:
             action = "SELL / TAKE PROFIT"
@@ -165,12 +171,15 @@ def build_broker_instructions(symbol: str, data: Dict[str, Any], macro: Dict[str
                 f"Place a Limit Sell order in your broker app at ₹{price:,.2f} – ₹{vwap:,.2f}. "
                 f"Price has fallen below VWAP, indicating institutional sellers are active."
             )
-            trigger_entry = f"₹{price:,.2f}"
-            target = f"₹{vwap:,.2f}"
-            stop_loss = f"₹{data['day_low']:,.2f}"
+            trigger_entry = f"Sell near ₹{vwap:,.2f}"
+            target = f"Downside Target: ₹{data['day_low']:,.0f}"
+            stop_loss = f"Stop-Loss: Above ₹{vwap * 1.005:,.0f}"
             confidence = 78
     else:
         # Price is above VWAP (Bullish Institutional Support)
+        target_1 = round(max(data["upper_band"], price * 1.010), 2)
+        target_2 = round(max(data["day_high"], price * 1.020), 2)
+        stop_loss_val = round(vwap * 0.995, 2)
         action = "BUY ON CONFIRMED PULLBACK"
         badge = "🟢 BUY SIGNAL"
         color = "#00e676"
@@ -180,9 +189,9 @@ def build_broker_instructions(symbol: str, data: Dict[str, Any], macro: Dict[str
             f"The stock is trading strong at ₹{price:,.2f} (+{vwap_diff_pct:.2f}% above VWAP). "
             f"Buyers are in control."
         )
-        trigger_entry = f"₹{vwap:,.2f} – ₹{price:,.2f}"
-        target = f"Target 1: ₹{data['upper_band']:,.0f} | Target 2: ₹{data['day_high']:,.0f}"
-        stop_loss = f"Stop-Loss: Below ₹{vwap * 0.995:,.0f}"
+        trigger_entry = f"Buy near ₹{vwap:,.2f} – ₹{price:,.2f}"
+        target = f"Target 1: ₹{target_1:,.0f} | Target 2: ₹{target_2:,.0f}"
+        stop_loss = f"Stop-Loss: Below ₹{stop_loss_val:,.0f}"
         confidence = 85
 
     return {
