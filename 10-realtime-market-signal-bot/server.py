@@ -201,13 +201,13 @@ def build_broker_instructions(symbol: str, data: Dict[str, Any], macro: Dict[str
 
 
 async def market_data_broadcaster():
-    """Polls real market data and broadcasts live updates to all clients every 4 seconds."""
+    """Polls real market data and broadcasts live updates to all clients every 3.5 seconds."""
     global cached_payload
 
     while True:
         try:
-            real_data = fetch_real_intraday_data(active_ticker)
-            macro = fetch_macro_benchmarks()
+            real_data = await asyncio.to_thread(fetch_real_intraday_data, active_ticker)
+            macro = await asyncio.to_thread(fetch_macro_benchmarks)
 
             if real_data:
                 instructions = build_broker_instructions(display_symbol, real_data, macro)
@@ -248,20 +248,17 @@ async def market_data_broadcaster():
 
                 if connected_clients:
                     text_data = json.dumps(payload)
-                    dead_clients = []
-                    for client in connected_clients:
+                    for client in list(connected_clients):
                         try:
                             await client.send_text(text_data)
                         except Exception:
-                            dead_clients.append(client)
-                    for dead in dead_clients:
-                        if dead in connected_clients:
-                            connected_clients.remove(dead)
+                            if client in connected_clients:
+                                connected_clients.remove(client)
 
         except Exception as e:
             print(f"⚠️ Broadcast loop error: {e}", flush=True)
 
-        await asyncio.sleep(4.0)
+        await asyncio.sleep(3.5)
 
 
 @asynccontextmanager
@@ -285,29 +282,69 @@ async def get_index():
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
     connected_clients.append(websocket)
-    # Immediately push cached real data on connect
     if cached_payload:
-        await websocket.send_text(json.dumps(cached_payload))
+        try:
+            await websocket.send_text(json.dumps(cached_payload))
+        except Exception:
+            pass
     try:
         while True:
             await websocket.receive_text()
-    except WebSocketDisconnect:
+    except (WebSocketDisconnect, Exception):
+        pass
+    finally:
         if websocket in connected_clients:
             connected_clients.remove(websocket)
 
 
 @app.get("/api/set-ticker")
 async def set_ticker(ticker: str):
-    global active_ticker, display_symbol
+    global active_ticker, display_symbol, cached_payload
     active_ticker = ticker
     display_symbol = ticker.split(".")[0].upper()
     print(f"🔄 Switched active real ticker to: {active_ticker}", flush=True)
 
-    # Immediately fetch fresh real data for this ticker
-    real_data = fetch_real_intraday_data(active_ticker)
-    macro = fetch_macro_benchmarks()
+    real_data = await asyncio.to_thread(fetch_real_intraday_data, active_ticker)
+    macro = await asyncio.to_thread(fetch_macro_benchmarks)
     if real_data:
         inst = build_broker_instructions(display_symbol, real_data, macro)
+        payload = {
+            "timestamp": time.strftime("%H:%M:%S"),
+            "ticker": display_symbol,
+            "symbol": active_ticker,
+            "mode": "100% REAL LIVE EXCHANGE FEED",
+            "price": real_data["price"],
+            "vwap": real_data["vwap"],
+            "upper_band": real_data["upper_band"],
+            "lower_band": real_data["lower_band"],
+            "day_high": real_data["day_high"],
+            "day_low": real_data["day_low"],
+            "prev_close": real_data["prev_close"],
+            "change_pct": real_data["change_pct"],
+            "bars": real_data["bars"],
+            "nifty_pct": macro["nifty_pct"],
+            "bank_pct": macro["bank_pct"],
+            "it_pct": macro["it_pct"],
+            "vix": macro["vix"],
+            "vix_pct": macro["vix_pct"],
+            "action": inst["action"],
+            "badge": inst["badge"],
+            "color": inst["color"],
+            "confidence": inst["confidence"],
+            "order_type": inst["order_type"],
+            "exact_instruction": inst["exact_instruction"],
+            "trigger_entry": inst["trigger_entry"],
+            "target": inst["target"],
+            "stop_loss": inst["stop_loss"],
+            "vwap_diff_pct": inst["vwap_diff_pct"],
+            "sector_divergence": inst["sector_divergence"]
+        }
+        cached_payload = payload
+        for client in list(connected_clients):
+            try:
+                await client.send_text(json.dumps(payload))
+            except Exception:
+                pass
         return {"status": "SUCCESS", "ticker": display_symbol, "price": real_data["price"], "action": inst["action"]}
     return {"status": "FETCH_FAILED", "ticker": display_symbol}
 
@@ -316,5 +353,6 @@ app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
 if __name__ == "__main__":
     import uvicorn
-    print("[*] Starting Real-Time Instruction Terminal on http://127.0.0.1:8000 ...", flush=True)
-    uvicorn.run("server:app", host="127.0.0.1", port=8000, reload=False, access_log=False)
+    port = int(os.getenv("PORT", "8080"))
+    print(f"[*] Starting Real-Time Instruction Terminal on http://127.0.0.1:{port} ...", flush=True)
+    uvicorn.run("server:app", host="127.0.0.1", port=port, reload=False, access_log=False)
