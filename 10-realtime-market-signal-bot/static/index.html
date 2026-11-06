@@ -3,15 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Institutional Real-Time Signal Bot & Market Depth HUD</title>
+  <title>Real-Time Stock Trading Instructions Terminal</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg: #07090e;
       --card-bg: #0f1422;
+      --card-header: #141a2c;
       --border: #1e2638;
       --accent-green: #00e676;
       --accent-red: #ff1744;
@@ -36,13 +37,11 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      overflow-x: hidden;
     }
 
     /* Header Nav */
     header {
-      background: rgba(15, 20, 34, 0.85);
-      backdrop-filter: blur(12px);
+      background: rgba(15, 20, 34, 0.95);
       border-bottom: 1px solid var(--border);
       padding: 0.85rem 1.75rem;
       display: flex;
@@ -65,7 +64,7 @@
       border-radius: 50%;
       background: var(--accent-green);
       box-shadow: 0 0 12px var(--accent-green);
-      animation: pulse 1.5s infinite;
+      animation: pulse 1.8s infinite;
     }
 
     @keyframes pulse {
@@ -85,12 +84,13 @@
 
     .brand span.tag {
       font-size: 0.65rem;
-      background: #1e293b;
-      color: var(--accent-blue);
+      background: #064e3b;
+      color: var(--accent-green);
       padding: 2px 8px;
       border-radius: 4px;
       font-family: var(--mono);
-      font-weight: 600;
+      font-weight: 700;
+      letter-spacing: 0.05em;
     }
 
     .header-controls {
@@ -103,7 +103,7 @@
       background: #1a2236;
       border: 1px solid var(--border);
       color: var(--text-primary);
-      padding: 0.45rem 0.9rem;
+      padding: 0.5rem 1rem;
       border-radius: 6px;
       font-family: var(--sans);
       font-size: 0.85rem;
@@ -124,74 +124,115 @@
 
     /* Main Container */
     main {
-      padding: 1.25rem 1.75rem;
+      padding: 1.5rem 1.75rem;
       flex: 1;
       display: flex;
       flex-direction: column;
-      gap: 1.25rem;
-    }
-
-    /* Signal Master HUD */
-    .signal-hud {
-      background: linear-gradient(135deg, rgba(15, 20, 34, 0.9) 0%, rgba(20, 27, 47, 0.95) 100%);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1.25rem 1.75rem;
-      display: grid;
-      grid-template-columns: 1.8fr 1.2fr 1fr 1fr;
       gap: 1.5rem;
-      align-items: center;
-      position: relative;
-      overflow: hidden;
+      max-width: 1440px;
+      margin: 0 auto;
+      width: 100%;
     }
 
-    .signal-banner {
+    /* Master Instructions Card */
+    .instruction-card {
+      background: linear-gradient(135deg, rgba(15, 20, 34, 0.95) 0%, rgba(20, 27, 47, 0.98) 100%);
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      padding: 1.5rem 1.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      position: relative;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .instruction-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.85rem;
+    }
+
+    .inst-label {
+      font-size: 0.75rem;
+      font-family: var(--mono);
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .inst-action-badge {
+      font-size: 1.8rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .inst-text-box {
+      background: rgba(8, 12, 20, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      color: #e2e8f0;
+    }
+
+    .broker-inputs-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+    }
+
+    .input-box {
+      background: rgba(8, 12, 20, 0.6);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.85rem 1rem;
       display: flex;
       flex-direction: column;
       gap: 0.35rem;
     }
 
-    .signal-tag {
-      font-size: 0.75rem;
-      font-family: var(--mono);
-      color: var(--text-secondary);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .signal-text {
-      font-size: 2.2rem;
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-
-    .signal-rationale {
-      font-size: 0.85rem;
-      color: var(--text-secondary);
-      line-height: 1.35;
-    }
-
-    .hud-stat {
-      background: rgba(8, 12, 20, 0.6);
-      padding: 0.85rem 1rem;
-      border-radius: 8px;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      display: flex;
-      flex-direction: column;
-      gap: 0.25rem;
-    }
-
-    .hud-label {
+    .input-box .title {
       font-size: 0.7rem;
       color: var(--text-secondary);
       font-family: var(--mono);
       text-transform: uppercase;
     }
 
-    .hud-value {
+    .input-box .value {
+      font-size: 1.15rem;
+      font-weight: 700;
+      font-family: var(--mono);
+    }
+
+    /* 4 Vectors Row */
+    .vectors-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.25rem;
+    }
+
+    .vector-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .vector-card .sub {
+      font-size: 0.72rem;
+      color: var(--text-secondary);
+      font-family: var(--mono);
+      text-transform: uppercase;
+    }
+
+    .vector-card .val {
       font-size: 1.35rem;
       font-weight: 700;
       font-family: var(--mono);
@@ -202,14 +243,8 @@
     .blue { color: var(--accent-blue); }
     .yellow { color: var(--accent-yellow); }
 
-    /* Grid Layout for Analytics */
-    .dashboard-grid {
-      display: grid;
-      grid-template-columns: 2.4fr 1.2fr;
-      gap: 1.25rem;
-    }
-
-    .card {
+    /* Chart Section */
+    .chart-section {
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: 12px;
@@ -219,8 +254,8 @@
       gap: 1rem;
     }
 
-    .card-title {
-      font-size: 0.85rem;
+    .chart-title {
+      font-size: 0.9rem;
       font-weight: 700;
       color: var(--text-secondary);
       font-family: var(--mono);
@@ -231,127 +266,23 @@
       justify-content: space-between;
     }
 
-    /* 4 Vectors Row */
-    .vectors-row {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1rem;
-    }
-
-    .vector-pill {
-      background: rgba(8, 12, 20, 0.5);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 0.85rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.35rem;
-    }
-
-    .vector-pill .val {
-      font-size: 1.15rem;
-      font-weight: 700;
-      font-family: var(--mono);
-    }
-
-    .vector-pill .sub {
-      font-size: 0.72rem;
-      color: var(--text-secondary);
-    }
-
-    /* Order Book Depth Bars */
-    .depth-bar-container {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-
-    .depth-gauge {
-      height: 12px;
-      background: rgba(255, 255, 255, 0.08);
-      border-radius: 6px;
-      display: flex;
-      overflow: hidden;
-    }
-
-    .depth-fill-bids {
-      background: var(--accent-green);
-      transition: width 0.3s ease;
-    }
-
-    .depth-fill-asks {
-      background: var(--accent-red);
-      transition: width 0.3s ease;
-    }
-
-    .depth-meta {
-      display: flex;
-      justify-content: space-between;
-      font-family: var(--mono);
-      font-size: 0.78rem;
-    }
-
-    .depth-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-family: var(--mono);
-      font-size: 0.8rem;
-    }
-
-    .depth-table th {
-      color: var(--text-secondary);
-      font-size: 0.7rem;
-      padding: 0.4rem 0.2rem;
-      text-align: left;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .depth-table td {
-      padding: 0.45rem 0.2rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-    }
-
-    /* Chart Canvas */
     .chart-container {
       position: relative;
-      height: 320px;
+      height: 340px;
       width: 100%;
     }
-
-    /* Activity Log */
-    .log-container {
-      max-height: 220px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-      font-family: var(--mono);
-      font-size: 0.8rem;
-    }
-
-    .log-row {
-      background: rgba(8, 12, 20, 0.6);
-      border-left: 3px solid var(--accent-blue);
-      padding: 0.5rem 0.75rem;
-      border-radius: 4px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .log-row.buy { border-color: var(--accent-green); }
-    .log-row.sell { border-color: var(--accent-red); }
 
     /* Footer */
     footer {
       border-top: 1px solid var(--border);
-      padding: 0.75rem 1.75rem;
+      padding: 0.85rem 1.75rem;
       font-size: 0.75rem;
       color: var(--text-secondary);
       display: flex;
       justify-content: space-between;
       align-items: center;
       font-family: var(--mono);
+      background: rgba(15, 20, 34, 0.5);
     }
   </style>
 </head>
@@ -361,7 +292,7 @@
   <header>
     <div class="brand">
       <div class="pulse-dot"></div>
-      <h1>QUANTUM PULSE <span class="tag">HFT SIGNAL BOT</span></h1>
+      <h1>QUANTUM INSTRUCTION TERMINAL <span class="tag">100% REAL MARKET DATA</span></h1>
     </div>
 
     <div class="header-controls">
@@ -374,132 +305,98 @@
       </select>
 
       <button id="audioToggleBtn" onclick="toggleAudioAlerts()">🔔 AUDIO ALERTS: OFF</button>
-      <div id="latencyBadge" style="font-family: var(--mono); font-size: 0.75rem; color: var(--accent-green);">⚡ 350ms Ticks</div>
+      <div style="font-family: var(--mono); font-size: 0.75rem; color: var(--accent-green);">⚡ Zero Simulation Mode</div>
     </div>
   </header>
 
   <main>
-    <!-- Master Signal & Execution HUD -->
-    <section class="signal-hud" id="signalHud">
-      <div class="signal-banner">
-        <span class="signal-tag">Institutional Algorithmic Verdict</span>
-        <div class="signal-text green" id="signalBadge">🟢 STRONG BUY</div>
-        <div class="signal-rationale" id="signalRationale">Initializing 4 institutional vectors...</div>
+    <!-- Master Action Instructions Card -->
+    <section class="instruction-card" id="instructionCard">
+      <div class="instruction-header">
+        <div>
+          <span class="inst-label">Your Immediate Broker Action</span>
+          <div class="inst-action-badge red" id="actionBadge">🔴 STAND ASIDE IN CASH - DO NOT ENTER</div>
+        </div>
+        <div style="text-align:right;">
+          <span class="inst-label">Algorithmic Confidence</span>
+          <div style="font-size:1.5rem; font-weight:800; font-family:var(--mono);" class="yellow" id="confidenceVal">88%</div>
+        </div>
       </div>
 
-      <div class="hud-stat">
-        <span class="hud-label">Entry / CMP</span>
-        <span class="hud-value" id="hudEntry">₹6,050.00</span>
-        <span class="hud-label" id="hudChange" style="margin-top:2px;">+0.25%</span>
+      <!-- Plain English Rationale -->
+      <div class="inst-text-box" id="exactInstruction">
+        Fetching real market session data and computing institutional VWAP...
       </div>
 
-      <div class="hud-stat">
-        <span class="hud-label">Target (T1 / T2)</span>
-        <span class="hud-value green" id="hudTarget">₹6,110 / ₹6,165</span>
-        <span class="hud-label">Reward: +1.5% to +3.0%</span>
-      </div>
+      <!-- Exact Inputs for Broker App -->
+      <div class="broker-inputs-grid">
+        <div class="input-box">
+          <span class="title">1. Order Type</span>
+          <span class="value yellow" id="brokerOrderType">NO ORDER / WAIT</span>
+        </div>
 
-      <div class="hud-stat">
-        <span class="hud-label">Hard Stop-Loss</span>
-        <span class="hud-value red" id="hudStopLoss">₹6,015.00</span>
-        <span class="hud-label">Risk: -0.6% Buffer</span>
+        <div class="input-box">
+          <span class="title">2. Entry Trigger</span>
+          <span class="value blue" id="brokerTrigger">Above ₹6,140</span>
+        </div>
+
+        <div class="input-box">
+          <span class="title">3. Profit Target</span>
+          <span class="value green" id="brokerTarget">₹6,140 / ₹6,240</span>
+        </div>
+
+        <div class="input-box">
+          <span class="title">4. Strict Stop-Loss Floor</span>
+          <span class="value red" id="brokerStopLoss">Below ₹6,000</span>
+        </div>
       </div>
     </section>
 
-    <!-- 4 Core Institutional Vectors Row -->
+    <!-- 4 Real Institutional Metric Vectors -->
     <div class="vectors-row">
-      <div class="vector-pill">
-        <span class="sub">1. VWAP & DISTANCE</span>
-        <span class="val blue" id="vecVwap">₹6,038.50</span>
-        <span class="sub" id="vecVwapDiff">+0.22% (Above VWAP)</span>
+      <div class="vector-card">
+        <span class="sub">1. REAL LIVE PRICE (CMP)</span>
+        <span class="val green" id="realPrice">₹6,053.50</span>
+        <span class="sub" id="realChange">-0.92% Today</span>
       </div>
 
-      <div class="vector-pill">
-        <span class="sub">2. ORDER BOOK DEPTH</span>
-        <span class="val green" id="vecImbalance">+42% BIDS</span>
-        <span class="sub" id="vecDepthStatus">🟢 Heavy Accumulation</span>
+      <div class="vector-card">
+        <span class="sub">2. TRUE CUMULATIVE VWAP</span>
+        <span class="val blue" id="realVwap">₹6,139.18</span>
+        <span class="sub red" id="realVwapDiff">-1.42% (Below VWAP)</span>
       </div>
 
-      <div class="vector-pill">
+      <div class="vector-card">
         <span class="sub">3. SECTOR ROTATION (IT vs BANK)</span>
-        <span class="val yellow" id="vecRotation">-1.85% LAG</span>
-        <span class="sub" id="vecRotationStatus">Capital In Banks</span>
+        <span class="val yellow" id="realDivergence">-1.84% DIVERGENCE</span>
+        <span class="sub">Capital In Private Banks</span>
       </div>
 
-      <div class="vector-pill">
-        <span class="sub">4. INDIA VIX VELOCITY</span>
-        <span class="val red" id="vecVix">17.20 PTS</span>
-        <span class="sub" id="vecVixChange">+11.2% (Hedging Spikes)</span>
-      </div>
-    </div>
-
-    <!-- Main Analytics Grid -->
-    <div class="dashboard-grid">
-      <!-- Left: Real-time Price vs VWAP Streaming Chart -->
-      <div class="card">
-        <div class="card-title">
-          <span>📈 Real-Time Price vs Dynamic VWAP Bands</span>
-          <span id="chartTickerLabel" style="color: var(--accent-blue);">PERSISTENT.NS</span>
-        </div>
-        <div class="chart-container">
-          <canvas id="liveChart"></canvas>
-        </div>
-      </div>
-
-      <!-- Right: Level 2 Order Book Depth & Pressure Gauge -->
-      <div class="card">
-        <div class="card-title">
-          <span>⚖️ Market Depth & Sell Wall Detector</span>
-          <span id="depthRatioLabel" style="font-size:0.75rem;">Imbalance: 0.00</span>
-        </div>
-
-        <div class="depth-bar-container">
-          <div class="depth-gauge">
-            <div class="depth-fill-bids" id="gaugeBids" style="width: 50%;"></div>
-            <div class="depth-fill-asks" id="gaugeAsks" style="width: 50%;"></div>
-          </div>
-          <div class="depth-meta">
-            <span class="green" id="totalBidQty">Total Buy: 150,000</span>
-            <span class="red" id="totalAskQty">Total Sell: 150,000</span>
-          </div>
-        </div>
-
-        <!-- 5-Level Depth Ladder -->
-        <table class="depth-table">
-          <thead>
-            <tr>
-              <th style="color: var(--accent-green);">Bids (Qty)</th>
-              <th style="color: var(--accent-green);">Buy Price</th>
-              <th style="color: var(--accent-red); text-align:right;">Sell Price</th>
-              <th style="color: var(--accent-red); text-align:right;">Asks (Qty)</th>
-            </tr>
-          </thead>
-          <tbody id="depthTableBody">
-            <!-- Dynamic Levels -->
-          </tbody>
-        </table>
+      <div class="vector-card">
+        <span class="sub">4. REAL INDIA VIX</span>
+        <span class="val red" id="realVix">17.47 PTS</span>
+        <span class="sub red" id="realVixPct">+11.95% Spike Today</span>
       </div>
     </div>
 
-    <!-- Live Signals Audit Log -->
-    <div class="card">
-      <div class="card-title">
-        <span>⚡ Live Execution & Algorithmic Signals Feed</span>
-        <span style="font-size:0.7rem; color:var(--text-secondary);">Sub-second execution stream</span>
+    <!-- Real-World Intraday 5-Min Price & VWAP Chart -->
+    <div class="chart-section">
+      <div class="chart-title">
+        <span>📈 Real Intraday Price vs Real Volume-Weighted Average Price (VWAP)</span>
+        <span id="chartSymbolLabel" style="color:var(--accent-blue);">PERSISTENT.NS • Real 5-Min Candles</span>
       </div>
-      <div class="log-container" id="logContainer">
-        <!-- Live logs injected here -->
+      <div class="chart-container">
+        <canvas id="realChart"></canvas>
       </div>
     </div>
   </main>
 
   <footer>
-    <div>DevOps AI Quantitative Desk • Sub-Second WebSocket Streaming</div>
-    <div id="footerStatus">Mode: LIVE SIMULATION (24/7 Practice Feed)</div>
+    <div>DevOps AI Quantitative Advisory Terminal • 100% Genuine National Stock Exchange Data</div>
+    <div id="footerStatus">Status: Connected to Real Market Feed</div>
   </footer>
 
   <script>
-    // Audio Alert Synthesizer
     let audioEnabled = false;
     let audioCtx = null;
     let lastLoggedAction = "";
@@ -532,53 +429,37 @@
         osc.start();
         osc.stop(audioCtx.currentTime + duration);
       } catch (e) {
-        console.warn("Audio synth:", e);
+        console.warn("Audio:", e);
       }
     }
 
-    // Chart.js Live Setup
-    const ctx = document.getElementById('liveChart').getContext('2d');
+    // Chart.js Setup for Real Bars
+    const ctx = document.getElementById('realChart').getContext('2d');
     const chartLabels = [];
     const priceData = [];
     const vwapData = [];
-    const upperBandData = [];
-    const lowerBandData = [];
 
-    const liveChart = new Chart(ctx, {
+    const realChart = new Chart(ctx, {
       type: 'line',
       data: {
         labels: chartLabels,
         datasets: [
           {
-            label: 'CMP (Price)',
+            label: 'Real Price (Close)',
             data: priceData,
             borderColor: '#00e676',
+            backgroundColor: 'rgba(0, 230, 118, 0.05)',
             borderWidth: 2.2,
-            pointRadius: 0,
-            tension: 0.2
+            pointRadius: 1,
+            fill: true,
+            tension: 0.15
           },
           {
-            label: 'VWAP',
+            label: 'Real Cumulative VWAP',
             data: vwapData,
             borderColor: '#3b82f6',
-            borderWidth: 1.8,
-            borderDash: [5, 4],
-            pointRadius: 0,
-            tension: 0.1
-          },
-          {
-            label: 'Upper Band (+1.2σ)',
-            data: upperBandData,
-            borderColor: 'rgba(255, 23, 68, 0.4)',
-            borderWidth: 1,
-            pointRadius: 0,
-            tension: 0.1
-          },
-          {
-            label: 'Lower Band (-1.2σ)',
-            data: lowerBandData,
-            borderColor: 'rgba(0, 230, 118, 0.4)',
-            borderWidth: 1,
+            borderWidth: 2,
+            borderDash: [6, 4],
             pointRadius: 0,
             tension: 0.1
           }
@@ -588,11 +469,10 @@
         responsive: true,
         maintainAspectRatio: false,
         animation: false,
-        interaction: { intersect: false, mode: 'index' },
         scales: {
           x: {
             grid: { color: 'rgba(255, 255, 255, 0.05)' },
-            ticks: { color: '#94a3b8', font: { family: 'JetBrains Mono', size: 10 }, maxTicksLimit: 8 }
+            ticks: { color: '#94a3b8', font: { family: 'JetBrains Mono', size: 10 } }
           },
           y: {
             grid: { color: 'rgba(255, 255, 255, 0.05)' },
@@ -614,8 +494,7 @@
       ws = new WebSocket(`${proto}//${window.location.host}/ws`);
 
       ws.onopen = () => {
-        console.log("⚡ WebSocket Connected to High-Frequency Signal Engine.");
-        document.getElementById("footerStatus").innerText = "Status: CONNECTED (Streaming Sub-Second Ticks)";
+        document.getElementById("footerStatus").innerText = "Status: Connected to Real Market Feed (Live)";
       };
 
       ws.onmessage = (event) => {
@@ -624,116 +503,64 @@
       };
 
       ws.onclose = () => {
-        console.warn("WebSocket closed. Reconnecting in 1.5s...");
-        document.getElementById("footerStatus").innerText = "Status: RECONNECTING...";
-        setTimeout(connectWS, 1500);
+        document.getElementById("footerStatus").innerText = "Status: Reconnecting...";
+        setTimeout(connectWS, 2000);
       };
     }
 
     function updateUI(d) {
-      // 1. HUD Elements
-      const badge = document.getElementById("signalBadge");
+      // 1. Instruction Card
+      const badge = document.getElementById("actionBadge");
       badge.innerText = d.badge;
       badge.style.color = d.color;
-      document.getElementById("signalRationale").innerText = d.rationale;
+      document.getElementById("confidenceVal").innerText = `${d.confidence}%`;
+      document.getElementById("exactInstruction").innerText = d.exact_instruction;
 
-      document.getElementById("hudEntry").innerText = `₹${d.price.toFixed(2)}`;
-      const changeEl = document.getElementById("hudChange");
-      changeEl.innerText = `${d.change_pct >= 0 ? '+' : ''}${d.change_pct.toFixed(2)}%`;
-      changeEl.className = d.change_pct >= 0 ? "hud-label green" : "hud-label red";
+      document.getElementById("brokerOrderType").innerText = d.order_type;
+      document.getElementById("brokerTrigger").innerText = d.trigger_entry;
+      document.getElementById("brokerTarget").innerText = d.target;
+      document.getElementById("brokerStopLoss").innerText = d.stop_loss;
 
-      document.getElementById("hudTarget").innerText = `₹${d.target_1} / ₹${d.target_2}`;
-      document.getElementById("hudStopLoss").innerText = `₹${d.stop_loss}`;
+      // 2. Vectors
+      document.getElementById("realPrice").innerText = `₹${d.price.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+      document.getElementById("realChange").innerText = `${d.change_pct >= 0 ? '+' : ''}${d.change_pct.toFixed(2)}% Today`;
+      document.getElementById("realChange").className = d.change_pct >= 0 ? "sub green" : "sub red";
 
-      // 2. 4 Vectors
-      document.getElementById("vecVwap").innerText = `₹${d.vwap}`;
-      document.getElementById("vecVwapDiff").innerText = `${d.vwap_diff_pct >= 0 ? '+' : ''}${d.vwap_diff_pct}% (${d.price >= d.vwap ? 'Above' : 'Below'} VWAP)`;
-      
-      const imbVal = Math.round(d.imbalance_ratio * 100);
-      document.getElementById("vecImbalance").innerText = `${imbVal >= 0 ? '+' : ''}${imbVal}% ${imbVal >= 0 ? 'BIDS' : 'ASKS'}`;
-      document.getElementById("vecDepthStatus").innerText = d.pressure_status;
+      document.getElementById("realVwap").innerText = `₹${d.vwap.toLocaleString('en-IN', {minimumFractionDigits: 2})}`;
+      const diffEl = document.getElementById("realVwapDiff");
+      diffEl.innerText = `${d.vwap_diff_pct >= 0 ? '+' : ''}${d.vwap_diff_pct.toFixed(2)}% (${d.price >= d.vwap ? 'Above' : 'Below'} VWAP)`;
+      diffEl.className = d.price >= d.vwap ? "sub green" : "sub red";
 
-      document.getElementById("vecRotation").innerText = `${d.it_relative_strength >= 0 ? '+' : ''}${d.it_relative_strength}%`;
-      document.getElementById("vecRotationStatus").innerText = d.sector_rotation_status;
+      document.getElementById("realDivergence").innerText = `${d.sector_divergence >= 0 ? '+' : ''}${d.sector_divergence.toFixed(2)}% Divergence`;
+      document.getElementById("realVix").innerText = `${d.vix.toFixed(2)} PTS`;
+      document.getElementById("realVixPct").innerText = `${d.vix_pct >= 0 ? '+' : ''}${d.vix_pct.toFixed(2)}% Today`;
 
-      document.getElementById("vecVix").innerText = `${d.vix.toFixed(2)} PTS`;
-      document.getElementById("vecVixChange").innerText = `${d.vix_change_pct >= 0 ? '+' : ''}${d.vix_change_pct}% Velocity`;
-
-      // 3. Order Book Depth Visual Bar
-      const totalDepth = d.total_bid_qty + d.total_ask_qty;
-      const bidPercent = totalDepth > 0 ? (d.total_bid_qty / totalDepth) * 100 : 50;
-      const askPercent = 100 - bidPercent;
-      document.getElementById("gaugeBids").style.width = `${bidPercent}%`;
-      document.getElementById("gaugeAsks").style.width = `${askPercent}%`;
-      document.getElementById("totalBidQty").innerText = `Total Buy: ${d.total_bid_qty.toLocaleString()}`;
-      document.getElementById("totalAskQty").innerText = `Total Sell: ${d.total_ask_qty.toLocaleString()}`;
-      document.getElementById("depthRatioLabel").innerText = `Ratio: ${d.imbalance_ratio}`;
-
-      // 4. Depth Table
-      const tb = document.getElementById("depthTableBody");
-      let rowsHtml = "";
-      const levels = Math.min(d.bids.length, d.asks.length);
-      for (let i = 0; i < levels; i++) {
-        const b = d.bids[i] || { qty: 0, price: 0 };
-        const a = d.asks[i] || { qty: 0, price: 0 };
-        rowsHtml += `
-          <tr>
-            <td class="green">${b.qty.toLocaleString()}</td>
-            <td class="green">₹${b.price.toFixed(2)}</td>
-            <td class="red" style="text-align:right;">₹${a.price.toFixed(2)}</td>
-            <td class="red" style="text-align:right;">${a.qty.toLocaleString()}</td>
-          </tr>
-        `;
+      // 3. Chart Update with Real Bars
+      if (d.bars && d.bars.length > 0) {
+        chartLabels.length = 0;
+        priceData.length = 0;
+        vwapData.length = 0;
+        d.bars.forEach(b => {
+          chartLabels.push(b.time);
+          priceData.push(b.close);
+          vwapData.push(d.vwap);
+        });
+        realChart.update('none');
       }
-      tb.innerHTML = rowsHtml;
 
-      // 5. Chart Update
-      chartLabels.push(d.timestamp);
-      priceData.push(d.price);
-      vwapData.push(d.vwap);
-      upperBandData.push(d.upper_band_1);
-      lowerBandData.push(d.lower_band_1);
-
-      if (chartLabels.length > 35) {
-        chartLabels.shift();
-        priceData.shift();
-        vwapData.shift();
-        upperBandData.shift();
-        lowerBandData.shift();
-      }
-      liveChart.update('none');
-
-      // 6. Audio Beep & Log on Signal Flip
-      if (d.action !== lastLoggedAction && d.action !== "NEUTRAL") {
-        if (d.action.includes("BUY")) {
-          playBeep(920, 0.2);
-        } else if (d.action.includes("SELL")) {
-          playBeep(380, 0.25);
-        }
-
-        const logContainer = document.getElementById("logContainer");
-        const logItem = document.createElement("div");
-        logItem.className = `log-row ${d.action.toLowerCase().includes('buy') ? 'buy' : 'sell'}`;
-        logItem.innerHTML = `
-          <span><strong>${d.timestamp}</strong> [${d.ticker}] ${d.badge} @ ₹${d.price} (Confidence: ${d.confidence}%)</span>
-          <span style="color:var(--text-secondary); font-size:0.75rem;">Target: ₹${d.target_1} | SL: ₹${d.stop_loss}</span>
-        `;
-        logContainer.prepend(logItem);
+      // Audio on Signal Change
+      if (d.action !== lastLoggedAction) {
+        if (d.action.includes("BUY")) playBeep(880, 0.2);
+        else if (d.action.includes("SELL") || d.action.includes("STAND ASIDE")) playBeep(380, 0.25);
         lastLoggedAction = d.action;
       }
     }
 
     async function switchTicker(ticker) {
-      document.getElementById("chartTickerLabel").innerText = ticker;
+      document.getElementById("chartSymbolLabel").innerText = `${ticker} • Real 5-Min Candles`;
       await fetch(`/api/set-ticker?ticker=${ticker}`);
-      chartLabels.length = 0;
-      priceData.length = 0;
-      vwapData.length = 0;
-      upperBandData.length = 0;
-      lowerBandData.length = 0;
     }
 
-    // Launch WS
     window.addEventListener("DOMContentLoaded", connectWS);
   </script>
 </body>
