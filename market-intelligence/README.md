@@ -12,9 +12,9 @@
 | Diagnostic Metric | Live Status / Reading | Operational Strategic Implication |
 | :--- | :--- | :--- |
 | **Trap Radar Detection** | **`ORDERLY EXPANSION 📈`** | **⚖️ BALANCED ACCUMULATION / NORMAL VOLATILITY**<br>_Market is trading within standard technical bands. Follow standard support/resistance pivot levels._ |
-| **Live US Tech Futures (`NQ=F`)** | **+0.27%** | Continuous 23h CME Asian session signal for global tech sentiment. |
-| **Live US S&P Futures (`ES=F`)** | **+0.53%** | Broad market Wall Street dip-buying / continuation gauge. |
-| **Overnight Nasdaq Close (`^IXIC`)** | **+1.09%** | Baseline historical session close. |
+| **Live US Tech Futures (`NQ=F`)** | **+0.18%** | Continuous 23h CME Asian session signal for global tech sentiment. |
+| **Live US S&P Futures (`ES=F`)** | **+0.10%** | Broad market Wall Street dip-buying / continuation gauge. |
+| **Overnight Nasdaq Close (`^IXIC`)** | **+2.74%** | Baseline historical session close. |
 | **Asian Regional Pulse (`^N225`)** | **+2.33%** | Asian semiconductor and exporter health indicator. |
 | **NSE Volatility Index (`^INDIAVIX`)** | **17.42 PTS** | 🟡 Normal market volatility |
 | **Indian IT Decoupling Moat** | **`🛡️ ACTIVE`** | Indian IT provides high-margin enterprise software integration & cloud modernization (services moat), insulating domestic balance sheets from US hardware/GPU capex bubble concerns. |
@@ -38,15 +38,15 @@
 ### 🌐 Global Overnight Benchmarks & Live 23h Futures
 | Global Benchmark / Futures | Live Level | 24h Change | Market Posture | Strategic Market Signal |
 | :--- | :--- | :--- | :--- | :--- |
-| **NASDAQ 100 Futures** (`NQ=F`) | **27,158.00 USD** | **+0.27%** (📈) | `🟢 BULLISH` | Live US Tech E-mini Futures (Trades 23h CME Asian Hours) |
-| **S&P 500 Futures** (`ES=F`) | **7,441.00 USD** | **+0.53%** (📈) | `🟢 BULLISH` | Live US Broad Market E-mini Futures (Asian Hours) |
-| **NASDAQ Composite** (`^IXIC`) | **24,579.42 USD** | **+1.09%** (📈) | `🟢 BULLISH` | Global Technology Benchmark (Overnight US Cash Close) |
-| **S&P 500** (`^GSPC`) | **7,376.86 USD** | **+0.32%** (📈) | `🟢 BULLISH` | US Large-Cap Market Benchmark (Overnight US Cash Close) |
+| **NASDAQ 100 Futures** (`NQ=F`) | **28,066.25 USD** | **+0.18%** (📈) | `🟢 BULLISH` | Live US Tech E-mini Futures (Trades 23h CME Asian Hours) |
+| **S&P 500 Futures** (`ES=F`) | **7,581.50 USD** | **+0.10%** (📈) | `🟢 BULLISH` | Live US Broad Market E-mini Futures (Asian Hours) |
+| **NASDAQ Composite** (`^IXIC`) | **25,253.14 USD** | **+2.74%** (📈) | `🟢 BULLISH` | Global Technology Benchmark (Overnight US Cash Close) |
+| **S&P 500** (`^GSPC`) | **7,549.94 USD** | **+2.35%** (📈) | `🟢 BULLISH` | US Large-Cap Market Benchmark (Overnight US Cash Close) |
 | **NIKKEI 225** (`^N225`) | **58,775.50 JPY** | **+2.33%** (📈) | `🟢 BULLISH` | Japan Benchmark (Asia Market Sentiment) |
 | **HANG SENG** (`^HSI`) | **24,448.95 HKD** | **-0.13%** (📉) | `🔴 BEARISH` | Hong Kong Benchmark (Asia Tech & China Sentiment) |
-| **BRENT CRUDE** (`BZ=F`) | **96.10 USD** | **-2.26%** (📉) | `🔴 BEARISH` | Global Crude Oil Benchmark (Energy Import Cost) |
-| **USD / INR** (`USDINR=X`) | **93.93 INR** | **+0.03%** (📈) | `🟢 BULLISH` | US Dollar vs Indian Rupee Exchange Rate |
-| **US DOLLAR INDEX** (`DX-Y.NYB`) | **101.82 USD** | **-0.47%** (📉) | `🔴 BEARISH` | DXY Dollar Strength Index |
+| **BRENT CRUDE** (`BZ=F`) | **92.09 USD** | **-0.52%** (📉) | `🔴 BEARISH` | Global Crude Oil Benchmark (Energy Import Cost) |
+| **USD / INR** (`USDINR=X`) | **93.92 INR** | **+0.03%** (📈) | `🟢 BULLISH` | US Dollar vs Indian Rupee Exchange Rate |
+| **US DOLLAR INDEX** (`DX-Y.NYB`) | **101.68 USD** | **-0.60%** (📉) | `🔴 BEARISH` | DXY Dollar Strength Index |
 
 ---
 
@@ -56,18 +56,18 @@
 
 | Institutional Segment | Gross Buy (₹ Cr) | Gross Sell (₹ Cr) | Net Inflow / Outflow (₹ Cr) | Institutional Posture | Session Date |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **FII / FPI** (Foreign Institutions) | ₹52.39 Cr | ₹52.64 Cr | **-0.25 Cr** (🔴) | `🔴 NET SELLING` | 08-Nov-2026 |
-| **DII** (Domestic Mutual Funds / Banks) | ₹331.11 Cr | ₹1,031.42 Cr | **-700.31 Cr** (🔴) | `🔴 PROFIT BOOKING` | 08-Nov-2026 |
-| **Combined Institutional Net** | **₹383.50 Cr** | **₹1,084.06 Cr** | **-700.56 Cr** (🔴) | `🔴 NET LIQUIDITY CONTRACTION` | 08-Nov-2026 |
+| **FII / FPI** (Foreign Institutions) | ₹20,310.99 Cr | ₹13,098.77 Cr | **+7,212.22 Cr** (🟢) | `🟢 AGGRESSIVE BUYING` | 09-Nov-2026 |
+| **DII** (Domestic Mutual Funds / Banks) | ₹12,764.97 Cr | ₹19,937.50 Cr | **-7,172.53 Cr** (🔴) | `🔴 PROFIT BOOKING` | 09-Nov-2026 |
+| **Combined Institutional Net** | **₹33,075.96 Cr** | **₹33,036.27 Cr** | **+39.69 Cr** (🟢) | `🟢 NET LIQUIDITY EXPANSION` | 09-Nov-2026 |
 
 
 ### FII vs DII Net Trading Flow
 ```mermaid
 xychart-beta
-    title "Institutional Net Cash Flow: FII vs DII (₹ Crores) - 08-Nov-2026"
+    title "Institutional Net Cash Flow: FII vs DII (₹ Crores) - 09-Nov-2026"
     x-axis ["DII Net Flow", "FII/FPI Net Flow", "Combined Net"]
-    y-axis "Net Value (₹ Cr)" -875 --> 1000
-    bar [-700.31, -0.25, -700.56]
+    y-axis "Net Value (₹ Cr)" -8965 --> 9015
+    bar [-7172.53, 7212.22, 39.69]
 ```
 
 ---
