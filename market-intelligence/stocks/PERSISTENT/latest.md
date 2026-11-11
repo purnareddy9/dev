@@ -1,5 +1,5 @@
-# 📈 Real-Time Market & Cloud Infrastructure Intelligence: PERSISTENT
-> **Persistent Systems Limited** (`PERSISTENT.NS`) | Analysis generated autonomously on `2026-11-09 09:58:25 UTC`
+# 📉 Real-Time Market & Cloud Infrastructure Intelligence: PERSISTENT
+> **Persistent Systems Limited** (`PERSISTENT.NS`) | Analysis generated autonomously on `2026-11-11 09:59:55 UTC`
 
 ---
 
@@ -12,11 +12,11 @@
 | Diagnostic Metric | Live Status / Reading | Operational Strategic Implication |
 | :--- | :--- | :--- |
 | **Trap Radar Detection** | **`ORDERLY EXPANSION 📈`** | **⚖️ BALANCED ACCUMULATION / NORMAL VOLATILITY**<br>_Market is trading within standard technical bands. Follow standard support/resistance pivot levels._ |
-| **Live US Tech Futures (`NQ=F`)** | **-0.76%** | Continuous 23h CME Asian session signal for global tech sentiment. |
-| **Live US S&P Futures (`ES=F`)** | **-0.43%** | Broad market Wall Street dip-buying / continuation gauge. |
-| **Overnight Nasdaq Close (`^IXIC`)** | **-0.71%** | Baseline historical session close. |
-| **Asian Regional Pulse (`^N225`)** | **+2.87%** | Asian semiconductor and exporter health indicator. |
-| **NSE Volatility Index (`^INDIAVIX`)** | **17.42 PTS** | 🟡 Normal market volatility |
+| **Live US Tech Futures (`NQ=F`)** | **+1.70%** | Continuous 23h CME Asian session signal for global tech sentiment. |
+| **Live US S&P Futures (`ES=F`)** | **+0.74%** | Broad market Wall Street dip-buying / continuation gauge. |
+| **Overnight Nasdaq Close (`^IXIC`)** | **-0.74%** | Baseline historical session close. |
+| **Asian Regional Pulse (`^N225`)** | **+1.30%** | Asian semiconductor and exporter health indicator. |
+| **NSE Volatility Index (`^INDIAVIX`)** | **17.55 PTS** | 🟡 Normal market volatility |
 | **Indian IT Decoupling Moat** | **`🛡️ ACTIVE`** | Indian IT provides high-margin enterprise software integration & cloud modernization (services moat), insulating domestic balance sheets from US hardware/GPU capex bubble concerns. |
 
 
@@ -25,28 +25,28 @@
 ### 🇮🇳 Domestic Benchmarks & Sectoral Breadth
 | Index / Sector Benchmark | Live Level | 24h Change | Market Posture | Benchmark Sector Coverage |
 | :--- | :--- | :--- | :--- | :--- |
-| **NIFTY 50** (`^NSEI`) | **25,044.65 INR** | **+0.23%** (📈) | `🟢 BULLISH` | Indian Benchmark (Top 50 Blue-Chip Equities) |
-| **SENSEX** (`^BSESN`) | **81,106.65 INR** | **+0.13%** (📈) | `🟢 BULLISH` | BSE Benchmark (Top 30 Established Companies) |
-| **BANK NIFTY** (`^NSEBANK`) | **59,741.25 INR** | **+1.51%** (📈) | `🟢 BULLISH` | Indian Banking & Financial Services (~35% Nifty Weight) |
-| **NIFTY IT** (`^CNXIT`) | **32,468.90 INR** | **-1.22%** (📉) | `🔴 BEARISH` | Indian Technology & Enterprise Software Sector |
-| **NIFTY AUTO** (`^CNXAUTO`) | **27,925.90 INR** | **+0.30%** (📈) | `🟢 BULLISH` | Automobile & OEM Sector (Domestic Festive Demand) |
-| **NIFTY FMCG** (`^CNXFMCG`) | **46,660.65 INR** | **-0.15%** (📉) | `🔴 BEARISH` | Fast-Moving Consumer Goods (Defensive Domestic Consumption) |
-| **NIFTY METAL** (`^CNXMETAL`) | **12,664.65 INR** | **-0.46%** (📉) | `🔴 BEARISH` | Metals, Mining & Global Commodity Play |
-| **NIFTY PHARMA** (`^CNXPHARMA`) | **28,896.10 INR** | **+1.65%** (📈) | `🟢 BULLISH` | Pharmaceutical & Healthcare (Defensive Shelter) |
-| **INDIA VIX** (`^INDIAVIX`) | **17.42 INR** | **-5.48%** (📉) | `🔴 BEARISH` | NSE Volatility & Market Fear Index |
+| **NIFTY 50** (`^NSEI`) | **25,255.05 INR** | **+0.84%** (📈) | `🟢 BULLISH` | Indian Benchmark (Top 50 Blue-Chip Equities) |
+| **SENSEX** (`^BSESN`) | **81,879.40 INR** | **+0.95%** (📈) | `🟢 BULLISH` | BSE Benchmark (Top 30 Established Companies) |
+| **BANK NIFTY** (`^NSEBANK`) | **60,792.40 INR** | **+1.76%** (📈) | `🟢 BULLISH` | Indian Banking & Financial Services (~35% Nifty Weight) |
+| **NIFTY IT** (`^CNXIT`) | **32,295.60 INR** | **-0.53%** (📉) | `🔴 BEARISH` | Indian Technology & Enterprise Software Sector |
+| **NIFTY AUTO** (`^CNXAUTO`) | **28,523.30 INR** | **+2.14%** (📈) | `🟢 BULLISH` | Automobile & OEM Sector (Domestic Festive Demand) |
+| **NIFTY FMCG** (`^CNXFMCG`) | **47,188.55 INR** | **+1.13%** (📈) | `🟢 BULLISH` | Fast-Moving Consumer Goods (Defensive Domestic Consumption) |
+| **NIFTY METAL** (`^CNXMETAL`) | **12,786.15 INR** | **+0.96%** (📈) | `🟢 BULLISH` | Metals, Mining & Global Commodity Play |
+| **NIFTY PHARMA** (`^CNXPHARMA`) | **28,776.45 INR** | **-0.41%** (📉) | `🔴 BEARISH` | Pharmaceutical & Healthcare (Defensive Shelter) |
+| **INDIA VIX** (`^INDIAVIX`) | **17.55 INR** | **+0.78%** (📈) | `🟢 BULLISH` | NSE Volatility & Market Fear Index |
 
 ### 🌐 Global Overnight Benchmarks & Live 23h Futures
 | Global Benchmark / Futures | Live Level | 24h Change | Market Posture | Strategic Market Signal |
 | :--- | :--- | :--- | :--- | :--- |
-| **NASDAQ 100 Futures** (`NQ=F`) | **27,801.75 USD** | **-0.76%** (📉) | `🔴 BEARISH` | Live US Tech E-mini Futures (Trades 23h CME Asian Hours) |
-| **S&P 500 Futures** (`ES=F`) | **7,542.00 USD** | **-0.43%** (📉) | `🔴 BEARISH` | Live US Broad Market E-mini Futures (Asian Hours) |
-| **NASDAQ Composite** (`^IXIC`) | **25,073.58 USD** | **-0.71%** (📉) | `🔴 BEARISH` | Global Technology Benchmark (Overnight US Cash Close) |
-| **S&P 500** (`^GSPC`) | **7,524.15 USD** | **-0.34%** (📉) | `🔴 BEARISH` | US Large-Cap Market Benchmark (Overnight US Cash Close) |
-| **NIKKEI 225** (`^N225`) | **60,459.58 JPY** | **+2.87%** (📈) | `🟢 BULLISH` | Japan Benchmark (Asia Market Sentiment) |
-| **HANG SENG** (`^HSI`) | **24,557.04 HKD** | **+0.44%** (📈) | `🟢 BULLISH` | Hong Kong Benchmark (Asia Tech & China Sentiment) |
-| **BRENT CRUDE** (`BZ=F`) | **91.97 USD** | **-0.65%** (📉) | `🔴 BEARISH` | Global Crude Oil Benchmark (Energy Import Cost) |
-| **USD / INR** (`USDINR=X`) | **93.92 INR** | **+0.00%** (📈) | `🟢 BULLISH` | US Dollar vs Indian Rupee Exchange Rate |
-| **US DOLLAR INDEX** (`DX-Y.NYB`) | **102.24 USD** | **+0.58%** (📈) | `🟢 BULLISH` | DXY Dollar Strength Index |
+| **NASDAQ 100 Futures** (`NQ=F`) | **28,309.50 USD** | **+1.70%** (📈) | `🟢 BULLISH` | Live US Tech E-mini Futures (Trades 23h CME Asian Hours) |
+| **S&P 500 Futures** (`ES=F`) | **7,600.00 USD** | **+0.74%** (📈) | `🟢 BULLISH` | Live US Broad Market E-mini Futures (Asian Hours) |
+| **NASDAQ Composite** (`^IXIC`) | **25,065.88 USD** | **-0.74%** (📉) | `🔴 BEARISH` | Global Technology Benchmark (Overnight US Cash Close) |
+| **S&P 500** (`^GSPC`) | **7,520.93 USD** | **-0.38%** (📉) | `🔴 BEARISH` | US Large-Cap Market Benchmark (Overnight US Cash Close) |
+| **NIKKEI 225** (`^N225`) | **61,248.59 JPY** | **+1.30%** (📈) | `🟢 BULLISH` | Japan Benchmark (Asia Market Sentiment) |
+| **HANG SENG** (`^HSI`) | **24,315.92 HKD** | **-0.98%** (📉) | `🔴 BEARISH` | Hong Kong Benchmark (Asia Tech & China Sentiment) |
+| **BRENT CRUDE** (`BZ=F`) | **93.60 USD** | **+2.31%** (📈) | `🟢 BULLISH` | Global Crude Oil Benchmark (Energy Import Cost) |
+| **USD / INR** (`USDINR=X`) | **93.68 INR** | **-0.25%** (📉) | `🔴 BEARISH` | US Dollar vs Indian Rupee Exchange Rate |
+| **US DOLLAR INDEX** (`DX-Y.NYB`) | **102.49 USD** | **+0.25%** (📈) | `🟢 BULLISH` | DXY Dollar Strength Index |
 
 ---
 
@@ -76,16 +76,16 @@ xychart-beta
 
 | Metric | Live Value | 24h Context / Technical Status |
 | :--- | :--- | :--- |
-| **Current Live Price** | **6,040.0 INR** | **+0.30%** (📈) |
-| **Day High / Low** | 6040.0 / 5910.0 INR | Intraday spread |
-| **Previous Close** | 6053.5 INR | Reference baseline |
-| **20-Day Trend (SMA / EMA)** | **SMA: 5907.25** &#124; **EMA: 5896.45** INR | Diff: `+2.25%` (SMA) / `+2.43%` (EMA) |
-| **50-Day Trend (SMA / EMA)** | **SMA: 5660.92** &#124; **EMA: 5703.9** INR | Diff: `+6.70%` (SMA) / `+5.89%` (EMA) |
-| **200-Day Trend (SMA / EMA)** | **SMA: 5316.46** &#124; **EMA: 5462.1** INR | Diff: `+13.61%` (SMA) / `+10.58%` (EMA) |
+| **Current Live Price** | **5,973.5 INR** | **-1.10%** (📉) |
+| **Day High / Low** | 6070.0 / 5950.0 INR | Intraday spread |
+| **Previous Close** | 6040.0 INR | Reference baseline |
+| **20-Day Trend (SMA / EMA)** | **SMA: 5916.57** &#124; **EMA: 5903.79** INR | Diff: `+0.96%` (SMA) / `+1.18%` (EMA) |
+| **50-Day Trend (SMA / EMA)** | **SMA: 5667.31** &#124; **EMA: 5714.47** INR | Diff: `+5.40%` (SMA) / `+4.53%` (EMA) |
+| **200-Day Trend (SMA / EMA)** | **SMA: 5314.31** &#124; **EMA: 5467.19** INR | Diff: `+12.40%` (SMA) / `+9.26%` (EMA) |
 | **Moving Average Cross** | `Golden Cross 🌟 (50 SMA > 200 SMA)` | Structural macro alignment |
-| **RSI (14-Period)** | **61.71 / 100** | `[████████████░░░░░░░░]` |
-| **52-Week Range** | 4244.5 – 6599.0 INR | `[███████████████░░░░░]` (76.3%) |
-| **Trading Volume** | 481,089 | Regular session shares |
+| **RSI (14-Period)** | **57.28 / 100** | `[███████████░░░░░░░░░]` |
+| **52-Week Range** | 4244.5 – 6599.0 INR | `[███████████████░░░░░]` (73.4%) |
+| **Trading Volume** | 431,910 | Regular session shares |
 
 ---
 
@@ -95,9 +95,9 @@ xychart-beta
 ```mermaid
 xychart-beta
     title "PERSISTENT 10-Day Closing Price Trajectory"
-    x-axis ["10-27", "10-28", "10-29", "10-30", "11-02", "11-03", "11-04", "11-05", "11-06", "11-09"]
-    y-axis "Close (INR)" 5599 --> 6353
-    line [5832.5, 5848.0, 5880.0, 6048.0, 6051.0, 6097.0, 6065.0, 6109.5, 6053.5, 6040.0]
+    x-axis ["10-28", "10-29", "10-30", "11-02", "11-03", "11-04", "11-05", "11-06", "11-09", "11-11"]
+    y-axis "Close (INR)" 5614 --> 6353
+    line [5848.0, 5880.0, 6048.0, 6051.0, 6097.0, 6065.0, 6109.5, 6053.5, 6040.0, 5973.5]
 ```
 
 ### Current Price vs 20 / 50 / 200 Simple Moving Averages
@@ -105,8 +105,8 @@ xychart-beta
 xychart-beta
     title "PERSISTENT Price vs Key Moving Averages (SMA vs EMA)"
     x-axis ["Current", "SMA 20", "EMA 20", "SMA 50", "EMA 50", "SMA 200", "EMA 200"]
-    y-axis "Price (INR)" 5050 --> 6342
-    bar [6040.0, 5907.25, 5896.45, 5660.92, 5703.9, 5316.46, 5462.1]
+    y-axis "Price (INR)" 5048 --> 6272
+    bar [5973.5, 5916.57, 5903.79, 5667.31, 5714.47, 5314.31, 5467.19]
 ```
 
 ---
@@ -117,43 +117,45 @@ xychart-beta
 
 ### 1. 🎯 Executive Recommendation & Rating
 - **Verdict**: **BUY**
-- **Conviction Score**: 8
+- **Conviction Score**: 8.2 / 10
+-
 
-/10
-- **Target Price Range**: 3-Month Target: ₹6,450.00 | 12-Month Target: ₹7,400.00
-- **Executive Thesis**: Persistent Systems Limited (PERSISTENT.NS) displays robust technical resilience and structural fundamental strength, trading at ₹6,040.00. While the broader NIFTY IT index experienced a modest pullback (-1.22%), Persistent continues to demonstrate relative outperformance, riding comfortably above its rising 20-day, 50-day, and 200-day SMAs with a textbook Golden Cross configuration. The institutional landscape is heavily tilted toward foreign accumulation (FII net inflows of +₹7,212.22 Cr offsetting DII profit-booking of -₹7,172.53 Cr), injecting aggressive liquidity into top-tier mid-cap and large-cap tech. Persistent's high-value engineering execution, digital engineering focus, and scalable enterprise delivery models insulate it from localized cyclical headwinds.
+ **Target Price Range**: Near-term (3-month): ₹6,450 – ₹6,600 | 12-month: ₹7,400 – ₹7,800
+- **Executive Thesis**: Persistent Systems Limited (PERSISTENT.NS) demonstrates robust structural health, trading comfortably above its key 20-day, 50-day, and 200-day Simple Moving Averages, displaying a textbook Golden Cross structure. While the broader NIFTY IT index is exhibiting mild weakness (-0.53%), Persistent continues to show relative outperformance, anchored by strong digital engineering demand and robust cloud-native service adoption. 
+
+From a macroeconomic standpoint, massive institutional liquidity injections from Foreign Institutional Investors (FII net inflows of +₹7,212.22 Crores on Nov 9, 2026) are actively absorbing domestic profit-booking (DII net outflows of -₹7,172.53 Crores). This creates a highly favorable liquidity backdrop for large- and mid-cap technology leaders with clean balance sheets. Persistent’s high-margin digital engineering expertise makes it a prime vehicle for foreign capital seeking secular compounding in Indian enterprise technology.
 
 ### 2. 📊 Quantitative Valuation & Financial Fundamentals
-- **Trailing & Forward P/E multiples**: Trailing P/E sits at approximately 54.5x, with forward P/E moderating to 42.0x based on projected high-teens earnings compounding.
-- **Price-to-Sales (P/S) & Return on Equity (ROE)**: Price-to-Sales prints at roughly 6.8x, paired with a superior ROE exceeding 24.5%, signaling exceptional capital efficiency and asset utilization relative to legacy peers.
-- **Operating & Profit Margins / Revenue Growth Trends**: Operating margins hover resiliently near 14.5%–15.2%, supported by optimal utilization and offshore mix shifts, while net profit margins stand sturdy at ~12.0%. YoY revenue growth prints consistently in the 15%–18% band, outpacing traditional IT services benchmarks.
-- **Valuation Assessment**: **Fair Value to Premium Growth**. While absolute multiples look rich, the valuation premium is fully justified by Persistent's industry-leading organic growth profile, high net-dollar retention rates, and specialized expertise in cloud and software product engineering.
+- **Trailing & Forward P/E multiples**: Trailing P/E is trading in the ~52x–55x band, while forward P/E compresses to ~42x–45x based on anticipated double-digit earnings compounding.
+- **Price-to-Sales (P/S) & Return on Equity (ROE)**: Price-to-Sales sits at an elevated ~7.5x–8.2x reflecting premium SaaS/digital engineering multiples, backed by a strong ROE consistently printing above 24%–27%.
+- **Operating & Profit Margins / Revenue Growth Trends**: Operating margins hold resiliently within the 14.5%–15.5% corridor despite wage inflation pressures, while net profit margins scale cleanly around 11%–12%. Revenue growth continues to outpace the Tier-1 Indian IT pack, delivering upper-teens YoY constant currency growth.
+- **Valuation Assessment**: **Fair Value to Premium Valuation**. While the stock is priced at a premium relative to traditional IT services peers, the valuation is entirely justified by Persistent’s high-growth exposure to cloud engineering, data modernization, and AI-led enterprise integration.
 
 ### 3. 📈 Technical Trend & Moving Average Synthesis
-- **Moving Average Interaction**: The stock is trading at ₹6,040.00, positioned +2.25% above its 20-day SMA (₹5,907.25), +6.70% above its 50-day SMA (₹5,660.92), and +13.61% above its 200-day SMA (₹5,316.46). The active Golden Cross structure confirms a healthy medium-to-long-term bull market channel.
-- **Momentum (RSI)**: The 14-period RSI prints at 61.71, indicating strong bullish momentum without flashing immediate overbought warnings (>70). This leaves ample room for an extension toward the upper boundary of its 52-week range.
-- **Support & Resistance**: Immediate support floor is established at the ₹5,900–₹5,910 zone (confluent with the 20-day SMA), with a deeper institutional defense line at ₹5,660 (50-day SMA). Major overhead resistance ceiling sits near the 52-week high of ₹6,599.00; a decisive breakout above this level opens a clean path toward ₹7,000+.
+- **Moving Average Interaction**: The stock trades at ₹5,973.5, holding a healthy cushion above its 20-day SMA (₹5,916.57, +0.96%), 50-day SMA (₹5,667.31, +5.40%), and 200-day SMA (₹5,314.31, +12.40%). The structural Golden Cross remains completely uncompromised, signaling sustained institutional sponsorship.
+- **RSI Momentum**: The 14-period RSI sits at a balanced **57.28**, denoting steady bullish accumulation without entering overbought territory (>70), leaving ample room for upward price discovery.
+- **Key Levels**: Immediate support floor is established at the 20-day SMA (₹5,916) followed by major structural support at the 50-day SMA (₹5,667). Overhead resistance sits directly near the 52-week high of ₹6,599.0. A decisive breakout above ₹6,200 will trigger the next leg toward new all-time highs.
 
 ### 4. 🏛️ Institutional Flow, Short Covering & Liquidity Dynamics
-- **Cash Flow Breakdown**: The market witnessed a monumental FII net infusion of ₹+7,212.22 Crores (Gross Buy: ₹20,310.99 Cr vs. Gross Sell: ₹13,098.77 Cr), contrasting with DII net distribution of ₹-7,172.53 Crores (Gross Buy: ₹12,764.97 Cr vs. Gross Sell: ₹19,937.50 Cr). The net institutional balance was positive at +₹39.69 Crores.
-- **Accumulation vs. Short Covering**: The sheer magnitude of FII gross buying indicates aggressive structural accumulation in growth-oriented Indian equities rather than temporary tactical positioning. Persistent's steady price action in the face of sector weakness confirms that current momentum is driven by sustained institutional Long Buildup rather than volatile short covering. Foreign capital is actively rotating into high-beta technology leaders with pristine balance sheets and structural revenue visibility.
+- **FII vs DII Analysis**: The institutional tape on 09-Nov-2026 revealed extraordinary FII aggression, with ₹7,212.22 Crores in net buying dwarfing DII profit-taking (-₹7,172.53 Crores). The combined net institutional print of +₹39.69 Crores confirms that heavy foreign inflows are aggressively absorbing domestic liquidations.
+- **Accumulation vs. Short Covering**: The price action reflects genuine **institutional Long Buildup** rather than erratic short covering. Foreign capital is systematically rotating into high-beta technology leaders with strong dollar-denominated revenue streams (especially given USD/INR at 93.68 and a firm US Dollar Index at 102.48). This provides deep structural backing to Persistent’s order book and secondary market stability.
 
 ### 5. ☁️ Enterprise SRE & Cloud FinOps Impact
-- **Infrastructure & Compute Budget Implications**: As a premier digital engineering and software product development partner, Persistent manages massive multi-cloud estates and data pipelines for global enterprise clients. Global macroeconomic volatility has accelerated enterprise demand for unified FinOps frameworks, intelligent workload right-sizing, and automated cloud cost governance.
-- **FinOps Recommendations for Engineering Leadership**:
-  - *Dynamic Capacity Provisioning*: Implement automated container scheduling (Kubernetes HPA/VPA) coupled with spot-instance orchestration to trim non-production cloud spend by 25-30%.
-  - *Telemetry-Driven Observability*: Deploy unified APM and cloud financial telemetry tools (Prometheus, Grafana, OpenTelemetry linked with cloud billing APIs) to attribute microservices cloud consumption directly to business revenue metrics (Unit Economics / Cost-per-Transaction).
-  - *Software Delivery Velocity*: Optimize CI/CD pipeline resource allocation to eliminate idle runner compute waste and accelerate feature deployment cycles for enterprise cloud-native transformations.
+- **Infrastructure & Compute Budget Implications**: As a premier product engineering and digital transformation partner, Persistent heavily orchestrates multi-cloud migrations, Kubernetes cluster architectures, and LLM operationalization (LLMOps) for global Independent Software Vendors (ISVs) and enterprises. 
+- **Concrete FinOps Recommendations**:
+  1. **Autonomous Workload Scheduling**: Implement aggressive rightsizing and Spot Instance orchestration for non-production QA/CI/CD pipelines to absorb hyperscaler cost fluctuations.
+  2. **FinOps Tagging Governance**: Enforce strict infrastructure cost-allocation tagging policies across AWS, Azure, and GCP environments to maintain unit economics visibility (Cost per Active Tenant/User) for enterprise clients.
+  3. **Data Egress & Storage Tiering**: Optimize cloud data lake architectures by transitioning cold enterprise telemetry to archival object storage (e.g., AWS S3 Glacier / Azure Archive), directly protecting client operating margins and maximizing ROI on digital transformation budgets.
 
 ### 6. ⚖️ Catalysts & Key Risks
 - **Top 3 Bull Catalysts**:
-  1. Accelerated enterprise migration toward GenAI, cloud-native modernization, and intelligent data platforms.
-  2. Sustained aggressive FII capital inflows targeting high-growth Indian tech equities.
-  3. Margin expansion via operational leverage, offshore delivery scaling, and premium pricing on specialized software engineering contracts.
+  1. Accelerated enterprise adoption of generative AI integration and data engineering pipelines, directly feeding high-realization service contracts.
+  2. Substantial FII capital inflows into Indian large- and mid-cap technology equities, driving multiple expansion.
+  3. Margin expansion via greater offshore delivery mix, pyramid rationalization, and improved utilization rates.
 - **Top 3 Bear Risks**:
-  1. Currency volatility, specifically unanticipated fluctuations in USD/INR exchange rates impacting gross margin realizations.
-  2. Macroeconomic slowdown in North American and European enterprise IT spending budgets.
-  3. Rising talent acquisition and retention costs driving up engineering attrition and compressing near-term operating margins.
+  1. Macroeconomic deceleration or prolonged enterprise technology spending freezes in North American and European core markets.
+  2. Potential currency volatility (USD/INR fluctuations) impacting cross-border margin realization.
+  3. Escalating talent acquisition and retention costs in niche domains (AI/ML, Cloud Security, and Site Reliability Engineering).
 
 ---
 
