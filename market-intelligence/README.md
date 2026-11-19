@@ -12,11 +12,11 @@
 | Diagnostic Metric | Live Status / Reading | Operational Strategic Implication |
 | :--- | :--- | :--- |
 | **Trap Radar Detection** | **`ORDERLY EXPANSION 📈`** | **⚖️ BALANCED ACCUMULATION / NORMAL VOLATILITY**<br>_Market is trading within standard technical bands. Follow standard support/resistance pivot levels._ |
-| **Live US Tech Futures (`NQ=F`)** | **+0.37%** | Continuous 23h CME Asian session signal for global tech sentiment. |
-| **Live US S&P Futures (`ES=F`)** | **-0.26%** | Broad market Wall Street dip-buying / continuation gauge. |
+| **Live US Tech Futures (`NQ=F`)** | **+2.08%** | Continuous 23h CME Asian session signal for global tech sentiment. |
+| **Live US S&P Futures (`ES=F`)** | **+1.19%** | Broad market Wall Street dip-buying / continuation gauge. |
 | **Overnight Nasdaq Close (`^IXIC`)** | **+0.42%** | Baseline historical session close. |
-| **Asian Regional Pulse (`^N225`)** | **+0.28%** | Asian semiconductor and exporter health indicator. |
-| **NSE Volatility Index (`^INDIAVIX`)** | **15.52 PTS** | 🟢 Low market panic; dips will be absorbed |
+| **Asian Regional Pulse (`^N225`)** | **+0.71%** | Asian semiconductor and exporter health indicator. |
+| **NSE Volatility Index (`^INDIAVIX`)** | **16.11 PTS** | 🟡 Normal market volatility |
 | **Indian IT Decoupling Moat** | **`🛡️ ACTIVE`** | Indian IT provides high-margin enterprise software integration & cloud modernization (services moat), insulating domestic balance sheets from US hardware/GPU capex bubble concerns. |
 
 
@@ -25,28 +25,28 @@
 ### 🇮🇳 Domestic Benchmarks & Sectoral Breadth
 | Index / Sector Benchmark | Live Level | 24h Change | Market Posture | Benchmark Sector Coverage |
 | :--- | :--- | :--- | :--- | :--- |
-| **NIFTY 50** (`^NSEI`) | **25,227.95 INR** | **-0.63%** (📉) | `🔴 BEARISH` | Indian Benchmark (Top 50 Blue-Chip Equities) |
-| **SENSEX** (`^BSESN`) | **82,031.81 INR** | **-0.61%** (📉) | `🔴 BEARISH` | BSE Benchmark (Top 30 Established Companies) |
-| **BANK NIFTY** (`^NSEBANK`) | **62,038.65 INR** | **-0.38%** (📉) | `🔴 BEARISH` | Indian Banking & Financial Services (~35% Nifty Weight) |
-| **NIFTY IT** (`^CNXIT`) | **31,262.30 INR** | **-1.24%** (📉) | `🔴 BEARISH` | Indian Technology & Enterprise Software Sector |
-| **NIFTY AUTO** (`^CNXAUTO`) | **27,394.95 INR** | **-1.35%** (📉) | `🔴 BEARISH` | Automobile & OEM Sector (Domestic Festive Demand) |
-| **NIFTY FMCG** (`^CNXFMCG`) | **47,569.10 INR** | **-0.09%** (📉) | `🔴 BEARISH` | Fast-Moving Consumer Goods (Defensive Domestic Consumption) |
-| **NIFTY METAL** (`^CNXMETAL`) | **12,222.30 INR** | **-2.46%** (📉) | `🔴 BEARISH` | Metals, Mining & Global Commodity Play |
-| **NIFTY PHARMA** (`^CNXPHARMA`) | **28,200.50 INR** | **+0.15%** (📈) | `🟢 BULLISH` | Pharmaceutical & Healthcare (Defensive Shelter) |
-| **INDIA VIX** (`^INDIAVIX`) | **15.52 INR** | **+0.00%** (📈) | `🟢 BULLISH` | NSE Volatility & Market Fear Index |
+| **NIFTY 50** (`^NSEI`) | **25,514.30 INR** | **+1.14%** (📈) | `🟢 BULLISH` | Indian Benchmark (Top 50 Blue-Chip Equities) |
+| **SENSEX** (`^BSESN`) | **83,021.75 INR** | **+1.21%** (📈) | `🟢 BULLISH` | BSE Benchmark (Top 30 Established Companies) |
+| **BANK NIFTY** (`^NSEBANK`) | **63,063.00 INR** | **+1.65%** (📈) | `🟢 BULLISH` | Indian Banking & Financial Services (~35% Nifty Weight) |
+| **NIFTY IT** (`^CNXIT`) | **30,919.45 INR** | **-1.10%** (📉) | `🔴 BEARISH` | Indian Technology & Enterprise Software Sector |
+| **NIFTY AUTO** (`^CNXAUTO`) | **28,601.30 INR** | **+4.40%** (📈) | `🟢 BULLISH` | Automobile & OEM Sector (Domestic Festive Demand) |
+| **NIFTY FMCG** (`^CNXFMCG`) | **48,564.25 INR** | **+2.09%** (📈) | `🟢 BULLISH` | Fast-Moving Consumer Goods (Defensive Domestic Consumption) |
+| **NIFTY METAL** (`^CNXMETAL`) | **12,299.75 INR** | **+0.63%** (📈) | `🟢 BULLISH` | Metals, Mining & Global Commodity Play |
+| **NIFTY PHARMA** (`^CNXPHARMA`) | **28,371.80 INR** | **+0.61%** (📈) | `🟢 BULLISH` | Pharmaceutical & Healthcare (Defensive Shelter) |
+| **INDIA VIX** (`^INDIAVIX`) | **16.11 INR** | **+3.80%** (📈) | `🟢 BULLISH` | NSE Volatility & Market Fear Index |
 
 ### 🌐 Global Overnight Benchmarks & Live 23h Futures
 | Global Benchmark / Futures | Live Level | 24h Change | Market Posture | Strategic Market Signal |
 | :--- | :--- | :--- | :--- | :--- |
-| **NASDAQ 100 Futures** (`NQ=F`) | **27,175.00 USD** | **+0.37%** (📈) | `🟢 BULLISH` | Live US Tech E-mini Futures (Trades 23h CME Asian Hours) |
-| **S&P 500 Futures** (`ES=F`) | **7,340.25 USD** | **-0.26%** (📉) | `🔴 BEARISH` | Live US Broad Market E-mini Futures (Asian Hours) |
+| **NASDAQ 100 Futures** (`NQ=F`) | **27,753.25 USD** | **+2.08%** (📈) | `🟢 BULLISH` | Live US Tech E-mini Futures (Trades 23h CME Asian Hours) |
+| **S&P 500 Futures** (`ES=F`) | **7,427.75 USD** | **+1.19%** (📈) | `🟢 BULLISH` | Live US Broad Market E-mini Futures (Asian Hours) |
 | **NASDAQ Composite** (`^IXIC`) | **24,429.88 USD** | **+0.42%** (📈) | `🟢 BULLISH` | Global Technology Benchmark (Overnight US Cash Close) |
 | **S&P 500** (`^GSPC`) | **7,323.63 USD** | **-0.23%** (📉) | `🔴 BEARISH` | US Large-Cap Market Benchmark (Overnight US Cash Close) |
-| **NIKKEI 225** (`^N225`) | **59,024.28 JPY** | **+0.28%** (📈) | `🟢 BULLISH` | Japan Benchmark (Asia Market Sentiment) |
-| **HANG SENG** (`^HSI`) | **23,294.75 HKD** | **-0.91%** (📉) | `🔴 BEARISH` | Hong Kong Benchmark (Asia Tech & China Sentiment) |
-| **BRENT CRUDE** (`BZ=F`) | **88.68 USD** | **-1.87%** (📉) | `🔴 BEARISH` | Global Crude Oil Benchmark (Energy Import Cost) |
-| **USD / INR** (`USDINR=X`) | **93.46 INR** | **-0.01%** (📉) | `🔴 BEARISH` | US Dollar vs Indian Rupee Exchange Rate |
-| **US DOLLAR INDEX** (`DX-Y.NYB`) | **103.80 USD** | **+0.30%** (📈) | `🟢 BULLISH` | DXY Dollar Strength Index |
+| **NIKKEI 225** (`^N225`) | **59,444.21 JPY** | **+0.71%** (📈) | `🟢 BULLISH` | Japan Benchmark (Asia Market Sentiment) |
+| **HANG SENG** (`^HSI`) | **22,841.62 HKD** | **-1.95%** (📉) | `🔴 BEARISH` | Hong Kong Benchmark (Asia Tech & China Sentiment) |
+| **BRENT CRUDE** (`BZ=F`) | **89.33 USD** | **+0.18%** (📈) | `🟢 BULLISH` | Global Crude Oil Benchmark (Energy Import Cost) |
+| **USD / INR** (`USDINR=X`) | **93.29 INR** | **-0.18%** (📉) | `🔴 BEARISH` | US Dollar vs Indian Rupee Exchange Rate |
+| **US DOLLAR INDEX** (`DX-Y.NYB`) | **103.65 USD** | **-0.20%** (📉) | `🔴 BEARISH` | DXY Dollar Strength Index |
 
 ---
 
@@ -56,15 +56,15 @@
 
 | Institutional Segment | Gross Buy (₹ Cr) | Gross Sell (₹ Cr) | Net Inflow / Outflow (₹ Cr) | Institutional Posture | Session Date |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **FII / FPI** (Foreign Institutions) | ₹31,797.86 Cr | ₹16,823.18 Cr | **+14,974.68 Cr** (🟢) | `🟢 AGGRESSIVE BUYING` | 18-Nov-2026 |
-| **DII** (Domestic Mutual Funds / Banks) | ₹22,168.28 Cr | ₹32,612.82 Cr | **-10,444.54 Cr** (🔴) | `🔴 PROFIT BOOKING` | 18-Nov-2026 |
-| **Combined Institutional Net** | **₹53,966.14 Cr** | **₹49,436.00 Cr** | **+4,530.14 Cr** (🟢) | `🟢 NET LIQUIDITY EXPANSION` | 18-Nov-2026 |
+| **FII / FPI** (Foreign Institutions) | ₹31,797.86 Cr | ₹16,823.18 Cr | **+14,974.68 Cr** (🟢) | `🟢 AGGRESSIVE BUYING` | 19-Nov-2026 |
+| **DII** (Domestic Mutual Funds / Banks) | ₹22,168.28 Cr | ₹32,612.82 Cr | **-10,444.54 Cr** (🔴) | `🔴 PROFIT BOOKING` | 19-Nov-2026 |
+| **Combined Institutional Net** | **₹53,966.14 Cr** | **₹49,436.00 Cr** | **+4,530.14 Cr** (🟢) | `🟢 NET LIQUIDITY EXPANSION` | 19-Nov-2026 |
 
 
 ### FII vs DII Net Trading Flow
 ```mermaid
 xychart-beta
-    title "Institutional Net Cash Flow: FII vs DII (₹ Crores) - 18-Nov-2026"
+    title "Institutional Net Cash Flow: FII vs DII (₹ Crores) - 19-Nov-2026"
     x-axis ["DII Net Flow", "FII/FPI Net Flow", "Combined Net"]
     y-axis "Net Value (₹ Cr)" -13055 --> 18718
     bar [-10444.54, 14974.68, 4530.14]
@@ -96,7 +96,7 @@ xychart-beta
 | **[GOLDBEES](./stocks/GOLDBEES/README.md)** | GOLDBEES | View | +0.00% | N/A | [Latest](./stocks/GOLDBEES/latest.md) • [News](./stocks/GOLDBEES/news.md) • [History](./stocks/GOLDBEES/history/) |
 | **[HDFC](./stocks/HDFC/README.md)** | HDFC | View | +0.00% | N/A | [Latest](./stocks/HDFC/latest.md) • [News](./stocks/HDFC/news.md) • [History](./stocks/HDFC/history/) |
 | **[NVDA](./stocks/NVDA/README.md)** | NVDA | View | +0.00% | N/A | [Latest](./stocks/NVDA/latest.md) • [News](./stocks/NVDA/news.md) • [History](./stocks/NVDA/history/) |
-| **[PERSISTENT](./stocks/PERSISTENT/README.md)** | Persistent Systems Limited | 5857.0 INR | -0.91% | 51.88 | [Latest](./stocks/PERSISTENT/latest.md) • [News](./stocks/PERSISTENT/news.md) • [History](./stocks/PERSISTENT/history/) |
+| **[PERSISTENT](./stocks/PERSISTENT/README.md)** | Persistent Systems Limited | 5880.0 INR | +0.39% | 50.02 | [Latest](./stocks/PERSISTENT/latest.md) • [News](./stocks/PERSISTENT/news.md) • [History](./stocks/PERSISTENT/history/) |
 | **[PVP](./stocks/PVP/README.md)** | PVP | View | +0.00% | N/A | [Latest](./stocks/PVP/latest.md) • [News](./stocks/PVP/news.md) • [History](./stocks/PVP/history/) |
 | **[TRENT](./stocks/TRENT/README.md)** | TRENT | View | +0.00% | N/A | [Latest](./stocks/TRENT/latest.md) • [News](./stocks/TRENT/news.md) • [History](./stocks/TRENT/history/) |
 
