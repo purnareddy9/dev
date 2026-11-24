@@ -12,9 +12,9 @@
 | Diagnostic Metric | Live Status / Reading | Operational Strategic Implication |
 | :--- | :--- | :--- |
 | **Trap Radar Detection** | **`ORDERLY EXPANSION 📈`** | **⚖️ BALANCED ACCUMULATION / NORMAL VOLATILITY**<br>_Market is trading within standard technical bands. Follow standard support/resistance pivot levels._ |
-| **Live US Tech Futures (`NQ=F`)** | **-2.07%** | Continuous 23h CME Asian session signal for global tech sentiment. |
-| **Live US S&P Futures (`ES=F`)** | **-1.17%** | Broad market Wall Street dip-buying / continuation gauge. |
-| **Overnight Nasdaq Close (`^IXIC`)** | **+6.51%** | Baseline historical session close. |
+| **Live US Tech Futures (`NQ=F`)** | **-0.11%** | Continuous 23h CME Asian session signal for global tech sentiment. |
+| **Live US S&P Futures (`ES=F`)** | **-0.12%** | Broad market Wall Street dip-buying / continuation gauge. |
+| **Overnight Nasdaq Close (`^IXIC`)** | **-1.48%** | Baseline historical session close. |
 | **Asian Regional Pulse (`^N225`)** | **+3.91%** | Asian semiconductor and exporter health indicator. |
 | **NSE Volatility Index (`^INDIAVIX`)** | **17.70 PTS** | 🟡 Normal market volatility |
 | **Indian IT Decoupling Moat** | **`🛡️ ACTIVE`** | Indian IT provides high-margin enterprise software integration & cloud modernization (services moat), insulating domestic balance sheets from US hardware/GPU capex bubble concerns. |
@@ -38,15 +38,15 @@
 ### 🌐 Global Overnight Benchmarks & Live 23h Futures
 | Global Benchmark / Futures | Live Level | 24h Change | Market Posture | Strategic Market Signal |
 | :--- | :--- | :--- | :--- | :--- |
-| **NASDAQ 100 Futures** (`NQ=F`) | **26,254.00 USD** | **-2.07%** (📉) | `🔴 BEARISH` | Live US Tech E-mini Futures (Trades 23h CME Asian Hours) |
-| **S&P 500 Futures** (`ES=F`) | **7,169.75 USD** | **-1.17%** (📉) | `🔴 BEARISH` | Live US Broad Market E-mini Futures (Asian Hours) |
-| **NASDAQ Composite** (`^IXIC`) | **24,089.56 USD** | **+6.51%** (📈) | `🟢 BULLISH` | Global Technology Benchmark (Overnight US Cash Close) |
-| **S&P 500** (`^GSPC`) | **7,237.17 USD** | **+4.73%** (📈) | `🟢 BULLISH` | US Large-Cap Market Benchmark (Overnight US Cash Close) |
+| **NASDAQ 100 Futures** (`NQ=F`) | **26,247.00 USD** | **-0.11%** (📉) | `🔴 BEARISH` | Live US Tech E-mini Futures (Trades 23h CME Asian Hours) |
+| **S&P 500 Futures** (`ES=F`) | **7,208.75 USD** | **-0.12%** (📉) | `🔴 BEARISH` | Live US Broad Market E-mini Futures (Asian Hours) |
+| **NASDAQ Composite** (`^IXIC`) | **23,733.53 USD** | **-1.48%** (📉) | `🔴 BEARISH` | Global Technology Benchmark (Overnight US Cash Close) |
+| **S&P 500** (`^GSPC`) | **7,201.09 USD** | **-0.50%** (📉) | `🔴 BEARISH` | US Large-Cap Market Benchmark (Overnight US Cash Close) |
 | **NIKKEI 225** (`^N225`) | **58,644.63 JPY** | **+3.91%** (📈) | `🟢 BULLISH` | Japan Benchmark (Asia Market Sentiment) |
 | **HANG SENG** (`^HSI`) | **22,219.65 HKD** | **-0.73%** (📉) | `🔴 BEARISH` | Hong Kong Benchmark (Asia Tech & China Sentiment) |
-| **BRENT CRUDE** (`BZ=F`) | **87.29 USD** | **+0.70%** (📈) | `🟢 BULLISH` | Global Crude Oil Benchmark (Energy Import Cost) |
+| **BRENT CRUDE** (`BZ=F`) | **88.39 USD** | **-0.44%** (📉) | `🔴 BEARISH` | Global Crude Oil Benchmark (Energy Import Cost) |
 | **USD / INR** (`USDINR=X`) | **92.90 INR** | **+0.00%** (📈) | `🟢 BULLISH` | US Dollar vs Indian Rupee Exchange Rate |
-| **US DOLLAR INDEX** (`DX-Y.NYB`) | **103.89 USD** | **-0.41%** (📉) | `🔴 BEARISH` | DXY Dollar Strength Index |
+| **US DOLLAR INDEX** (`DX-Y.NYB`) | **103.85 USD** | **-0.45%** (📉) | `🔴 BEARISH` | DXY Dollar Strength Index |
 
 ---
 
