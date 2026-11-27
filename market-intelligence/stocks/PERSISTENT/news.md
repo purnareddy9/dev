@@ -1,5 +1,5 @@
 # 📰 Live News & Financial Catalyst Feed: PERSISTENT (Persistent Systems Limited)
-> *Last updated: `2026-11-26 09:58:37 UTC`*
+> *Last updated: `2026-11-27 09:59:10 UTC`*
 
 _No recent breaking news found for this ticker._
 
